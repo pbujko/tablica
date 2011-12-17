@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<allNodes xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+  xsi:noNamespaceSchemaLocation='test.xsd'> 
+    <node label="NODE_1" id="1">
+        <node label="NODE_11" id="11"/>
+        <node label="NODE_12" id="12">
+            <node label="NODE_121" id="121"/>
+        </node>
+    </node>
+    <node label="NODE_2" id="2"/>
+    <node label="NODE_3" id="3"/>
+</allNodes>
