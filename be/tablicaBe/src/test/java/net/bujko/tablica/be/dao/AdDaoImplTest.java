@@ -56,7 +56,6 @@ public class AdDaoImplTest {
         c2 = new Category("2");
         c2.setLabel("c2");
         catDao.save(c2);
-
         
         catDao.update(c2);
 

@@ -8,6 +8,7 @@ import net.bujko.tablica.be.model.Ad;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes.Name;
 import net.bujko.tablica.be.model.Category;
 import net.bujko.tablica.be.categs.CategoryManager;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -29,11 +30,13 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author pbujko
  */
+@Repository("searchDao")
 public class LuceneSearcherDaoImpl implements ISearcherDao {
     
     private final String FIELD_CAT_NAME = "cat";
