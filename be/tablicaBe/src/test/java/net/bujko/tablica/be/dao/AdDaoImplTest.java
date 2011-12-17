@@ -57,6 +57,7 @@ public class AdDaoImplTest {
         c2.setLabel("c2");
         catDao.save(c2);
 
+        
         catDao.update(c2);
 
     }
