@@ -4,6 +4,7 @@
  */
 package net.bujko.tablica.be.dao;
 
+import java.util.List;
 import java.util.UUID;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -41,6 +42,12 @@ public class AdDaoImplTest {
 
     @Before
     public void setUp() {
+
+        List<Category> l =
+                catDao.getAll();
+        for (Category c : l) {
+            catDao.delete(c);
+        }
 
         c1 = new Category("1");
         c1.setLabel("c1");

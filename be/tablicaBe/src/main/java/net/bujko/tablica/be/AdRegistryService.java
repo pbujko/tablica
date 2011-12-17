@@ -16,8 +16,13 @@ import net.bujko.tablica.be.model.Ad;
 public class AdRegistryService {
 
     ISearcherDao searchIndexDao;
+    
     public void saveAd(Map<String, String> adProps) throws Exception{
+    //to do add loci
         
+        //persist
+        
+        //add to lucenee
     }
     
 }

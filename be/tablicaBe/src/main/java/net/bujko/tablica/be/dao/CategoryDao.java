@@ -4,6 +4,7 @@
  */
 package net.bujko.tablica.be.dao;
 
+import java.util.List;
 import net.bujko.tablica.be.model.Category;
 
 /**
@@ -18,4 +19,7 @@ public interface CategoryDao {
     void saveOrUpdate(Category c);
 
     void delete(Category c);
+    
+   List<Category> getAll();
+   
 }
