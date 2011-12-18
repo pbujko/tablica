@@ -12,8 +12,11 @@
   </head>
   <body>
     <h1>Sample line</h1>
-    ${cats.categoryCount}
-        <br /></br>
-    ${cats.topLevel}
-  </body>
+${cats.categoryCount}
+    <br /></br>
+
+  <g:each in="${cats.topLevelCategories}">
+${it.label}<br/>
+  </g:each>
+</body>
 </html>

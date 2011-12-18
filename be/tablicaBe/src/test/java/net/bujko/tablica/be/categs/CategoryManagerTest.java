@@ -67,11 +67,11 @@ public class CategoryManagerTest {
         assertEquals(1, cm.getChildCategories("12").size());
         assertEquals(new Category("121"), cm.getChildCategories("12").get(0));
 
-        assertEquals(3, cm.getTopLevel().size());
+        assertEquals(3, cm.getTopLevelCategories().size());
 
         //top level cats are 0.1, 0.2, 0.3
-        assertTrue(cm.getTopLevel().contains(new Category("0.1")));
-        assertTrue(cm.getTopLevel().contains(new Category("0.2")));
-        assertTrue(cm.getTopLevel().contains(new Category("0.3")));
+        assertTrue(cm.getTopLevelCategories().contains(new Category("0.1")));
+        assertTrue(cm.getTopLevelCategories().contains(new Category("0.2")));
+        assertTrue(cm.getTopLevelCategories().contains(new Category("0.3")));
     }
 }

@@ -25,7 +25,7 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-compile 'tablica:tablicaBe:0.2.6.2-SNAPSHOT'
+compile 'tablica:tablicaBe:0.2.6.3-SNAPSHOT'
          runtime 'mysql:mysql-connector-java:5.1.13'
     }
 }
