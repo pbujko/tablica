@@ -1,9 +1,11 @@
-dataSource {
+
+dataSource {    	
     pooled = true
-    driverClassName = "org.hsqldb.jdbcDriver"
+    driverClassName = "org.h2.Driver"
     username = "sa"
     password = ""
 }
+
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = true
@@ -13,8 +15,11 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            url = "jdbc:hsqldb:mem:devDB"
+            //dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            url = "jdbc:mysql://localhost:3306/tablica"
+                driverClassName = "com.mysql.jdbc.Driver"
+    username = "root"
+    password = ""
         }
     }
     test {

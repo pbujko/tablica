@@ -14,6 +14,7 @@ import net.bujko.tablica.be.model.Category;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.*;
@@ -24,6 +25,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/spring-context.xml"})
+@Ignore
 public class AdDaoImplTest {
 
     @Autowired
@@ -41,7 +43,7 @@ public class AdDaoImplTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
 
         List<Category> l =
                 catDao.getAll();

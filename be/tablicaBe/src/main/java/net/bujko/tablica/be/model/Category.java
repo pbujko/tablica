@@ -6,11 +6,11 @@ package net.bujko.tablica.be.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+//import javax.persistence.Column;
+//import javax.persistence.Entity;
+//import javax.persistence.Id;
+//import javax.persistence.Table;
+//import javax.persistence.Transient;
 import net.bujko.tablica.be.categs.Node;
 
 /**
@@ -18,21 +18,21 @@ import net.bujko.tablica.be.categs.Node;
  * ta klasa tutaj ma lepsza konwencje nazewnicza itp.
  * @author pbujko
  */
-@Entity
-@Table(name = "category")
+//@Entity
+//@Table(name = "category")
 public class Category {
 
-    @Id
-    @Column(name="cat_id")
+//    @Id
+//    @Column(name="cat_id")
     private String id;
     
-    @Column
+//    @Column
     private String label;
     
-    @Transient
+//    @Transient
     final private List<Category> childCategories = new ArrayList<Category>();
     
-    @Transient
+//    @Transient
     private Category parent;
 
     public Category() {

@@ -6,23 +6,23 @@ package net.bujko.tablica.be.model;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+//import javax.persistence.Column;
+//import javax.persistence.Entity;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.GenerationType;
+//import javax.persistence.Id;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.JoinTable;
+//import javax.persistence.OneToMany;
+//import javax.persistence.Table;
+//import javax.persistence.Transient;
 
 /**
  *
  * @author pbujko
  */
-@Entity
-@Table(name = "ad")
+//@Entity
+//@Table(name = "ad")
 public class Ad {
 
     private Set<Category> assignedCategories = new HashSet<Category>();
@@ -36,7 +36,7 @@ public class Ad {
         this.description = description;
     }
 
-    @Column(name = "ad_hashed_id", unique = true, nullable = false, length = 50)
+//    @Column(name = "ad_hashed_id", unique = true, nullable = false, length = 50)
     public String getHashedId() {
         return hashedId;
     }
@@ -45,9 +45,9 @@ public class Ad {
         this.hashedId = hashedId;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ad_id", unique = true, nullable = false, columnDefinition = "int")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "ad_id", unique = true, nullable = false, columnDefinition = "int")
     public String getId() {
         return id;
     }
@@ -56,7 +56,7 @@ public class Ad {
         this.id = id;
     }
 
-    @Column(name = "ad_title", nullable = false)
+//    @Column(name = "ad_title", nullable = false)
     public String getTitle() {
         return title;
     }
@@ -73,12 +73,12 @@ public class Ad {
         assignedCategories = ac;
     }
 
-    @OneToMany
-    @JoinTable(
-            name="ad_categs",
-            joinColumns = @JoinColumn( name="ad_id"),
-            inverseJoinColumns = @JoinColumn( name="cat_id")
-    )
+//    @OneToMany
+//    @JoinTable(
+//            name="ad_categs",
+//            joinColumns = @JoinColumn( name="ad_id"),
+//            inverseJoinColumns = @JoinColumn( name="cat_id")
+//    )
     public Set<Category> getAssignedCategories() {
         return assignedCategories;
     }

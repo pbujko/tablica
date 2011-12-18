@@ -12,14 +12,14 @@ import net.bujko.tablica.be.model.Category;
  * @author pbujko
  */
 public interface CategoryDao {
-        void save(Category c);
 
-    void update(Category c);
-    
-    void saveOrUpdate(Category c);
+    void save(Category c) throws Exception;
 
-    void delete(Category c);
-    
-   List<Category> getAll();
-   
+    void update(Category c) throws Exception;
+
+    void saveOrUpdate(Category c) throws Exception;
+
+    void delete(Category c) throws Exception;
+
+    List<Category> getAll() throws Exception;
 }

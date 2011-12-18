@@ -5,10 +5,11 @@
 package net.bujko.tablica.be.categs;
 
 import net.bujko.tablica.be.model.Category;
-import java.io.FileReader;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
@@ -26,15 +27,15 @@ import org.springframework.stereotype.Service;
 public class CategoryManager {
 
     private Map<String, Category> flattened = new HashMap<String, Category>();
+    private Set<Category> topLevelCats = new HashSet<Category>();
     Logger logger = LoggerFactory.getLogger(CategoryManager.class);
-    @Autowired
+  @Autowired
     CategoryDao categoryDao;
 
-    public CategoryManager() throws Exception {
-        //init();
-    }
+    private boolean inited;
+    
 
-    public void init() throws Exception {
+    private void init() throws Exception {
 
         JAXBContext context = JAXBContext.newInstance(
                 "net.bujko.tablica.be.categs");
@@ -49,10 +50,13 @@ public class CategoryManager {
         for (Node node : listOfNodes) {
             processNode(null, node);
         }
-        
-        for(Category c: flattened.values())
+
+        for (Category c : flattened.values()) {
             categoryDao.saveOrUpdate(c);
-        
+            if(c.getParent() == null)
+                topLevelCats.add(c);
+        }
+
         logger.info("{} up. Categories loaded: {}", this.getClass().getName(), flattened.size());
     }
 
@@ -77,14 +81,18 @@ public class CategoryManager {
     }
 
     public int getCategoryCount() {
+        doInit();
         return this.flattened.size();
     }
 
     public Category getCategoryById(String id) {
+        doInit();
         return this.flattened.get(id);
     }
 
     public Category getParentCategory(String id) {
+        doInit();
+        
         Category c = flattened.get(id);
         if (c != null) {
             return c.getParent();
@@ -94,11 +102,27 @@ public class CategoryManager {
     }
 
     public List<Category> getChildCategories(String id) {
+        doInit();
         Category c = flattened.get(id);
         if (c != null) {
             return c.getChildCategories();
         } else {
             return null;
+        }
+    }
+
+    public Set<Category> getTopLevelCategories() {
+        doInit();
+        return topLevelCats;
+    }
+    
+    private void doInit(){
+    if(!inited)
+        try {
+            init();
+            inited=true;
+        } catch (Exception ex) {
+            logger.error("{}",ex);
         }
     }
 }

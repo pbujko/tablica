@@ -19,7 +19,6 @@ public class App
     public static void main(String[] args) throws JAXBException, FileNotFoundException, Exception {
         System.out.println("Unmarshall test!");
 
-
         JAXBContext context = JAXBContext.newInstance(
                 "net.bujko.tablica.be.categs");
         Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -29,7 +28,5 @@ public class App
         for(Node node : listOfNodes){
             System.out.println(node);        
         }
-        
-        new CategoryManager();
     }
 }

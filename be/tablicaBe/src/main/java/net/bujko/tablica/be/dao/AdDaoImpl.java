@@ -12,25 +12,45 @@ import org.springframework.stereotype.Repository;
  * @author pbujko
  */
 @Repository("adDao")
-public class AdDaoImpl extends CustomHibernateDaoSupport implements AdDao {
-    
+public class AdDaoImpl implements AdDao {
+
     @Override
     public void save(Ad ad) {
-        getHibernateTemplate().save(ad);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     @Override
     public void update(Ad ad) {
-        getHibernateTemplate().update(ad);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     @Override
     public void delete(Ad ad) {
-        getHibernateTemplate().delete(ad);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Ad findById(String id) {
-return (Ad) getHibernateTemplate().get(Ad.class, id);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
+//    
+//    @Override
+//    public void save(Ad ad) {
+//        getHibernateTemplate().save(ad);
+//    }
+//    
+//    @Override
+//    public void update(Ad ad) {
+//        getHibernateTemplate().update(ad);
+//    }
+//    
+//    @Override
+//    public void delete(Ad ad) {
+//        getHibernateTemplate().delete(ad);
+//    }
+//
+//    @Override
+//    public Ad findById(String id) {
+//return (Ad) getHibernateTemplate().get(Ad.class, id);
+//    }
 }

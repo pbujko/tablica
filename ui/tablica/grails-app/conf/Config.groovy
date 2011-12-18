@@ -46,7 +46,7 @@ grails.enable.native2ascii = true
 // whether to install the java.util.logging bridge for sl4j. Disable for AppEngine!
 grails.logging.jul.usebridge = true
 // packages to include in Spring bean scanning
-grails.spring.bean.packages = []
+grails.spring.bean.packages = ['net.bujko.tablica.be']
 
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
@@ -83,8 +83,10 @@ log4j = {
            'org.codehaus.groovy.grails.plugins', // plugins
            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
            'org.springframework',
-           'org.hibernate',
+           'org.hibernate'
            'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
+
+info 'net.bujko'    
 }

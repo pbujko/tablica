@@ -8,7 +8,6 @@ import net.bujko.tablica.be.model.Ad;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Attributes.Name;
 import net.bujko.tablica.be.model.Category;
 import net.bujko.tablica.be.categs.CategoryManager;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -24,12 +23,10 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -47,12 +44,14 @@ public class LuceneSearcherDaoImpl implements ISearcherDao {
     StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_35);
     IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35, analyzer);
     Directory index = new RAMDirectory();
+    
+    @Autowired
     CategoryManager cm;
 
     public LuceneSearcherDaoImpl() throws Exception {
         
         w = new IndexWriter(index, conf);
-        cm = new CategoryManager();
+     //   cm = new CategoryManager();
     }
     
     @Override

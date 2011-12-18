@@ -5,7 +5,6 @@
 package net.bujko.tablica.be.categs;
 
 import net.bujko.tablica.be.model.Category;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
+
 /**
  *
  * @author pbujko
@@ -45,18 +45,16 @@ public class CategoryManagerTest {
     CategoryManager cm;
 
     @Before
-    
     public void setUp() throws Exception {
-     cm.init();
+        //   cm.init();
     }
 
     @Test
     public void testLoadedData() throws Exception {
 
-        assertTrue(cm.getCategoryCount() == 6);
-
-        //ensure category 1 is top level
-        assertNull(
+        assertEquals(9, cm.getCategoryCount());
+        //ensure category 1 is not top level
+        assertNotNull(
                 cm.getParentCategory("1"));
 
         //ensure category 11 has parent (id:1) and no child
@@ -69,5 +67,11 @@ public class CategoryManagerTest {
         assertEquals(1, cm.getChildCategories("12").size());
         assertEquals(new Category("121"), cm.getChildCategories("12").get(0));
 
+        assertEquals(3, cm.getTopLevel().size());
+
+        //top level cats are 0.1, 0.2, 0.3
+        assertTrue(cm.getTopLevel().contains(new Category("0.1")));
+        assertTrue(cm.getTopLevel().contains(new Category("0.2")));
+        assertTrue(cm.getTopLevel().contains(new Category("0.3")));
     }
 }
