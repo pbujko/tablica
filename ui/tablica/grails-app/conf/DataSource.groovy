@@ -15,11 +15,11 @@ hibernate {
 environments {
     development {
         dataSource {
-            //dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            dbCreate = "create" // one of 'create', 'create-drop','update'
             url = "jdbc:mysql://localhost:3306/tablica"
-                driverClassName = "com.mysql.jdbc.Driver"
-    username = "root"
-    password = ""
+            driverClassName = "com.mysql.jdbc.Driver"
+            username = "root"
+            //password = ""
         }
     }
     test {

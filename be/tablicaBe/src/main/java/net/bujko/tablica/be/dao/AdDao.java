@@ -4,19 +4,23 @@
  */
 package net.bujko.tablica.be.dao;
 
+import java.util.List;
 import net.bujko.tablica.be.model.Ad;
 
 /**
  *
  * @author pbujko
  */
+
 public interface AdDao {
 
-    void save(Ad ad);
+    void save(Ad ad) throws Exception;
 
-    void update(Ad ad);
+    void update(Ad ad) throws Exception;
 
-    void delete(Ad ad);
+    void delete(Ad ad) throws Exception;
+
+    Ad findById(String id) throws Exception;
     
-    Ad findById(String id);
+    List<Ad> listAll() throws Exception;
 }

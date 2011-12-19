@@ -11,11 +11,9 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- Auto scan the components -->
-    <context:component-scan 
-		base-package="net.bujko.tablica.be.dao" />
 
     <context:component-scan 
-		base-package="net.bujko.tablica.be.categs" />
+		base-package="net.bujko.tablica.be" />
 
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
