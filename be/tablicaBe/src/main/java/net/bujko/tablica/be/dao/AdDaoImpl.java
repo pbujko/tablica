@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import net.bujko.tablica.be.model.Ad;
+import net.bujko.tablica.be.model.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,19 @@ public class AdDaoImpl implements AdDao {
         rs.next();
         int insertedKeyValue = rs.getInt(1);
         ad.setId(insertedKeyValue + "");
+
+        //store categroties
+
+        ps = conn.prepareStatement("replace into ad_categs(ad_id, cat_id) values (?, ?)");
+        for (Category c : ad.getAssignedCategories()) {
+            ps.setInt(1, insertedKeyValue);
+            ps.setString(2, c.getId());
+            ps.executeUpdate();
+
+        }       
         conn.close();
+        
+        logger.debug("saved Ad {}", ad);
     }
 
     @Override

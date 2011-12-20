@@ -65,7 +65,9 @@ public class Ad {
         this.title = title;
     }
 
-    public void addCategory(Category c) {
+    public void addCategory(Category c) throws Exception {
+        if(c == null)
+            throw new Exception("CATNLL");
         assignedCategories.add(c);
     }
 
@@ -103,5 +105,10 @@ public class Ad {
         int hash = 7;
         hash = 37 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[{}, id: {}]", this.getClass().getName(), this.getId());
     }
 }

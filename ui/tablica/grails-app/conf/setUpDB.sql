@@ -18,7 +18,7 @@ CREATE TABLE `ad` (
   PRIMARY KEY (`ad_id`),
   UNIQUE KEY `ad_id` (`ad_id`),
   UNIQUE KEY `ad_hashed_id` (`ad_hashed_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 --
@@ -47,6 +47,7 @@ CREATE TABLE `ad_categs` (
   KEY `FK11D08417716F6A88` (`ad_id`),
   KEY `FK11D084175A3E2C50` (`cat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 -- Dump completed on 2011-12-19 11:13:00

@@ -18,5 +18,9 @@ ${cats.categoryCount}
   <g:each in="${cats.topLevelCategories}">
 ${it.label}<br/>
   </g:each>
+  
+  <h3>some links</h3>
+  <g:link mapping="adDetails" params="[id:'2', niewazneCo:'gazy-jelitowe']">szczegoly ogloszenia </g:link>
+
 </body>
 </html>

@@ -4,6 +4,7 @@
  */
 package net.bujko.tablica.be.dao;
 
+import java.util.Random;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,8 +30,7 @@ public class AdDaoImplTest {
     
     @Autowired
     AdDao adDao;
-    @Autowired
-    CategoryDao catDao;
+
     Category c1, c2;
     
     @BeforeClass
@@ -45,7 +45,13 @@ public class AdDaoImplTest {
     public void setUp() throws Exception {
         for (Ad a : adDao.listAll()) {            
             adDao.delete(a);
-        }
+        }        
+        
+        c1 = new Category(new Random().nextInt(100)+"");
+        c1.setLabel("label_" + c1.getId());
+        
+        c2 = new Category(new Random().nextInt(100)+"");
+        c2.setLabel("label_" + c2.getId());        
     }
 
     /**

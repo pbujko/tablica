@@ -33,6 +33,7 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,9 +42,8 @@ import org.springframework.stereotype.Repository;
  * @author pbujko
  */
 @Repository("searchDao")
-public final class LuceneSearcherDaoImpl implements ISearcherDao {
+public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBean {
 
-    
     final String FIELD_ID = "id";
     final String FIELD_HASHEDID = "hashId";
     final String FIELD_TITLE = "title";
@@ -58,7 +58,7 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao {
     @Autowired
     LuceneSearcherDaoImpl(AdDao addao) throws Exception {
         this.adDao = addao;
-        rebuild();
+
     }
 
     private IndexWriter obtainWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
@@ -67,7 +67,7 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao {
     }
 
     @Override
-    public void add(Ad item) throws Exception {
+    public synchronized void add(Ad item) throws Exception {
         Document doc = new Document();
         doc.add(new Field(FIELD_ID, item.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         doc.add(new Field(FIELD_HASHEDID, item.getHashedId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
@@ -121,7 +121,13 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao {
             Ad item = new Ad();
             item.setId(d.get(FIELD_ID));
             for (Fieldable f : d.getFieldables(FIELD_CAT_NAME)) {
-                item.addCategory(cm.getCategoryById(f.stringValue()));
+                Category tmpC = cm.getCategoryById(f.stringValue());
+                if (tmpC != null) {
+                    item.addCategory(tmpC);
+                } else {
+                    logger.error("UNKNWNCAT: {}, itemId: {}", f.stringValue(), item.getId());
+                }
+
             }
 
             ret.add(item);
@@ -180,7 +186,6 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao {
         logger.info("rebuild end, added {} entries", cnt);
     }
 
-    
     /**
      * cat|value -> cat:value
      * 
@@ -192,12 +197,19 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao {
         if (params == null) {
             return "";
         }
-        
-        StringBuilder sb=new StringBuilder();
-        
-        if(params.containsKey("cat"))
+
+        StringBuilder sb = new StringBuilder();
+
+        if (params.containsKey("cat")) {
             sb.append(ISearcherDao.FIELD_CAT_NAME).append(":").append(params.get("cat"));
+        }
 
         return sb.toString();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        rebuild();
+        logger.info("init completed");
     }
 }
