@@ -26,17 +26,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CategoryManager implements InitializingBean {
+    // catId -> Category
 
-    private Map<String, Category> flattened;
+    private Map<String, Category> allCategsById;
+    // catCode -> Category
+    private Map<String, Category> allCategsByCode;
     private Set<Category> topLevelCats = new HashSet<Category>();
     Logger logger = LoggerFactory.getLogger(CategoryManager.class);
     @Autowired
     CategoryDao categoryDao;
 
     public void init() throws Exception {
-        
-        
-        flattened  = new HashMap<String, Category>();
+
+        allCategsById = new HashMap<String, Category>();
+        allCategsByCode = new HashMap<String, Category>();
+
 
         JAXBContext context = JAXBContext.newInstance(
                 "net.bujko.tablica.be.categs");
@@ -52,30 +56,38 @@ public class CategoryManager implements InitializingBean {
             processNode(null, node);
         }
 
-        for (Category c : flattened.values()) {
+        for (Category c : allCategsById.values()) {
             categoryDao.saveOrUpdate(c);
             if (c.getParent() == null) {
                 topLevelCats.add(c);
             }
         }
 
-        logger.info("{} is up. Categories loaded: {}", this.getClass().getName(), flattened.size());
+        logger.info("{} is up. Categories loaded: {}", this.getClass().getName(), allCategsById.size());
     }
 
     private void processNode(Category parentC, Node n) throws Exception {
 
         Category c = new Category(n);
 
-        if (flattened.containsKey(c.getId())) {
-            throw new Exception("DUPLICATED_CATEGORY: " + c.getId());
+        if (allCategsById.containsKey(c.getId())) {
+            throw new Exception("DUPLICATED_CATID: " + c.getId());
+        }
+
+        if (allCategsByCode.containsKey(c.getCode())) {
+            throw new Exception("DUPLICATED_CATCODE: " + c.getCode());
         }
 
         if (parentC != null) {
             c.setParent(parentC);
+            c.setDepth(parentC.getDepth() + 1);
             parentC.addChild(c);
+        } else {
+            c.setDepth(1);
         }
 
-        flattened.put(c.getId(), c);
+        allCategsById.put(c.getId(), c);
+        allCategsByCode.put(c.getCode(), c);
 
         for (Node tmpN : n.getNode()) {
             processNode(c, tmpN);
@@ -84,18 +96,20 @@ public class CategoryManager implements InitializingBean {
 
     public int getCategoryCount() {
 
-        return this.flattened.size();
+        return this.allCategsById.size();
+    }
+
+    public Category getCategoryByCode(String code) {
+        return this.allCategsByCode.get(code);
     }
 
     public Category getCategoryById(String id) {
-
-        return this.flattened.get(id);
+        return this.allCategsById.get(id);
     }
 
     public Category getParentCategory(String id) {
 
-
-        Category c = flattened.get(id);
+        Category c = allCategsById.get(id);
         if (c != null) {
             return c.getParent();
         } else {
@@ -105,7 +119,7 @@ public class CategoryManager implements InitializingBean {
 
     public List<Category> getChildCategories(String id) {
 
-        Category c = flattened.get(id);
+        Category c = allCategsById.get(id);
         if (c != null) {
             return c.getChildCategories();
         } else {
@@ -116,6 +130,24 @@ public class CategoryManager implements InitializingBean {
     public Set<Category> getTopLevelCategories() {
 
         return topLevelCats;
+    }
+
+    /**
+     * depth - top level is level 1
+     * @param depth
+     * @return 
+     */
+    public Set<Category> getCatsByDepth(int depth) {
+        Set<Category> retS = new HashSet<Category>();
+
+        for (Category c : allCategsById.values()) {
+
+            if (c.getDepth() == depth) {
+                retS.add(c);
+            }
+        }
+
+        return retS;
     }
 
     @Override

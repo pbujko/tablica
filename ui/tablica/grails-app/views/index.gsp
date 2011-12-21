@@ -1,59 +1,23 @@
 <html>
-    <head>
-        <title>Welcome to Grails</title>
-        
-        <style type="text/css" media="screen">
+  <head>
+    <title>Welcome to Grails</title>
 
-        #nav {
-            margin-top:20px;
-            margin-left:30px;
-            width:228px;
-            float:left;
 
-        }
-        .homePagePanel * {
-            margin:0px;
-        }
-        .homePagePanel .panelBody ul {
-            list-style-type:none;
-            margin-bottom:10px;
-        }
-        .homePagePanel .panelBody h1 {
-            text-transform:uppercase;
-            font-size:1.1em;
-            margin-bottom:10px;
-        }
-        .homePagePanel .panelBody {
-            background: url(images/leftnav_midstretch.png) repeat-y top;
-            margin:0px;
-            padding:15px;
-        }
-        .homePagePanel .panelBtm {
-            background: url(images/leftnav_btm.png) no-repeat top;
-            height:20px;
-            margin:0px;
-        }
+  </head>
+  <body>
 
-        .homePagePanel .panelTop {
-            background: url(images/leftnav_top.png) no-repeat top;
-            height:11px;
-            margin:0px;
-        }
-        h2 {
-            margin-top:15px;
-            margin-bottom:15px;
-            font-size:1.2em;
-        }
-        #pageBody {
-            margin-left:280px;
-            margin-right:20px;
-        }
-        </style>
-    </head>
-    <body>
-        
-  <h3>some links</h3>
-  <g:link mapping="adDetails" params="[id:'2', niewazneCo:'gazy-jelitowe']">szczegoly ogloszenia </g:link>
+    <h2>top categs</h2>
+    <ul>
+      <g:each in="${categoryManager.topLevelCategories}">
+        <li><g:link mapping="subcategs" params="[parentCode:it.code]">${it.label}</g:link></li>
+      </g:each>
+    </ul>
 
-    </body>
+    
+
+    <h3>some links</h3>
+  <g:link mapping="adDetails" params="[id:'2', niewazneCo:'gazy-jelitowe']">szczegoly ogloszenia </g:link><br />
+  <g:link mapping="adDetails" params="[id:'2982', niewazneCo:'gazy-jelitowe']">szczegoly nieistniejacego ogloszenia </g:link>
+
+</body>
 </html>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <allNodes xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
   xsi:noNamespaceSchemaLocation='test.xsd'>
-    <node label="NODE_0" id="0.1">      
-        <node label="NODE_1" id="1">
-            <node label="NODE_11" id="11"/>
-            <node label="NODE_12" id="12">
-                <node label="NODE_121" id="121"/>
+    <node label="NODE_0" id="0.1" code="node-0">      
+        <node label="NODE numer 1" id="1" code="node-numer-1">
+            <node label="NODE 11" id="11" code="node-11"/>
+            <node label="NODE 12" id="12" code="node-12">
+                <node label="NODE numer 121" id="121" code="node-numer-121"/>
             </node>
         </node>
     </node>
-    <node label="NODE_0" id="0.2">      
-        <node label="NODE_2" id="2"/>
+    <node label="top node 0.2" id="0.2" code="node-0.2">      
+        <node label="NODE_2" id="2" code="node-2"/>
     </node>
 
-    <node label="NODE_3" id="0.3">
-        <node label="NODE_3" id="3"/>
+    <node label="NODE 0.3" id="0.3" code="node-0.3">
+        <node label="NODE_3" id="3" code="node-3"/>
     </node>
 </allNodes>

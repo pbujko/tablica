@@ -6,32 +6,30 @@ package net.bujko.tablica.be.model;
 
 import java.util.ArrayList;
 import java.util.List;
-//import javax.persistence.Column;
-//import javax.persistence.Entity;
-//import javax.persistence.Id;
-//import javax.persistence.Table;
-//import javax.persistence.Transient;
 import net.bujko.tablica.be.categs.Node;
 
 /**
  * klasa owija Node, AllNodes ktore sa generowane automatycznie przez JAXB.
  * ta klasa tutaj ma lepsza konwencje nazewnicza itp.
+ * 
+ * przyklad: kategoria:
+ * 
+ * Label = Auto i moto
+ * Id: (jakis kod)
+ * Code: url friendly wersja labela -> auto-i-moto 
+ *
  * @author pbujko
  */
-//@Entity
-//@Table(name = "category")
 public class Category {
 
 //    @Id
 //    @Column(name="cat_id")
     private String id;
-    
 //    @Column
-    private String label;
-    
+    private String label, code;
+    private int depth;
 //    @Transient
     final private List<Category> childCategories = new ArrayList<Category>();
-    
 //    @Transient
     private Category parent;
 
@@ -45,6 +43,7 @@ public class Category {
     public Category(Node n) {
         this.label = n.getLabel();
         this.id = n.getId();
+        this.code = n.getCode();
     }
 
     public List<Category> getChildCategories() {
@@ -80,6 +79,23 @@ public class Category {
         this.parent = parent;
     }
 
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int level) {
+        this.depth = level;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -100,5 +116,10 @@ public class Category {
         int hash = 7;
         hash = 47 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" + "id=" + id + ", label=" + label + '}';
     }
 }
