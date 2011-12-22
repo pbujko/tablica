@@ -35,6 +35,8 @@ public class AdDaoImpl implements AdDao {
 
     @Override
     public void save(Ad ad) throws SQLException {
+        
+        logger.trace("saving Ad {}", ad);
         Connection conn = dataSource.getConnection();
         PreparedStatement ps = conn.prepareStatement("insert into ad(description,ad_hashed_id, ad_title) values(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, ad.getDescription());
@@ -48,8 +50,8 @@ public class AdDaoImpl implements AdDao {
         ad.setId(insertedKeyValue + "");
 
         //store category
-
-        ps = conn.prepareStatement("replace into ad_categs(ad_id, cat_id) values (?, ?)");
+        logger.debug("saving categs, ad:{}, categ {}", ad, ad.getCategory().getId());
+        ps = conn.prepareStatement("insert into ad_categs(ad_id, cat_id) values (?, ?)");
 
         ps.setInt(1, insertedKeyValue);
         ps.setString(2, ad.getCategory().getId());

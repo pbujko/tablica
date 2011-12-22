@@ -43,7 +43,6 @@ CREATE TABLE `ad_categs` (
   `ad_id` int(11) NOT NULL,
   `cat_id` varchar(255) NOT NULL,
   PRIMARY KEY (`ad_id`,`cat_id`),
-  UNIQUE KEY `cat_id` (`cat_id`),
   KEY `FK11D08417716F6A88` (`ad_id`),
   KEY `FK11D084175A3E2C50` (`cat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

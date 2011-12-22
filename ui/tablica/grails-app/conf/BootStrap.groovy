@@ -21,46 +21,40 @@ class BootStrap {
             
         }
                 
-
-        //ad1 
-        Ad ad = new Ad()
-       
-        ad.setDescription("description ad cat 121")
-        ad.setTitle("title ad cat121")
-        ad.setHashedId("---1---1---")
-        
-        Category c = new Category("121")
-        c.setLabel("categ121") 
-        ad.addCategory(c)
-
+        Ad ad = new Ad()       
+        ad.setDescription("description ad cat 1.1")
+        ad.setTitle("Mercedesa, cat 1.1")
+        ad.setHashedId("---1---1--asd-")      
+        ad.addCategory(categoryManager.getCategoryById("1.1"))
         adDao.save(ad)        
         
-        //ad 2, one categ
-        ad = new Ad()
-       
-        ad.setDescription("description ad cat11")
-        ad.setTitle("title ad cat11")
-        ad.setHashedId("---2---")
-
-        c = new Category("11")
-        c.setLabel("categ11") 
-        ad.addCategory(c)
- 
-        adDao.save(ad)
-
-        
-        //ad 3
         ad = new Ad()       
-        ad.setDescription("description ad cat1")
-        ad.setTitle("title ad cat1")
-        ad.setHashedId("---2--12df-")
+        ad.setDescription("opis syrenke")
+        ad.setTitle("Syrenkeeeeeeeee")
+        ad.setHashedId("-sfd-sdf-sdffgh-sdfgg-")
+        ad.addCategory(categoryManager.getCategoryById("1.1"))
+        adDao.save(ad)   
+        
+        ad = new Ad()       
+        ad.setDescription("opis syrenke")
+        ad.setTitle("Syrenke")
+        ad.setHashedId("-sfd-sdf-sdf-sdfgg-")
+        ad.addCategory(categoryManager.getCategoryById("1.1"))
+        adDao.save(ad)        
 
-        c = new Category("1")
-        c.setLabel("categ1") 
-        ad.addCategory(c)         
-        
-        adDao.save(ad)
-        
+        ad = new Ad()       
+        ad.setDescription("owczarka niemieckiego")
+        ad.setTitle("Owczarka niemieckiego")
+        ad.setHashedId("-sfd-sssss-")
+        ad.addCategory(categoryManager.getCategoryById("2.1"))
+        adDao.save(ad)          
+
+        ad = new Ad()       
+        ad.setDescription("kocura perskiego")
+        ad.setTitle("Kota mam")
+        ad.setHashedId("-sfd-ssssssss-")
+        ad.addCategory(categoryManager.getCategoryById("2.2"))
+        adDao.save(ad)                  
 
         //wolaj init jeszcze raz tylko dlatego, ze po automatycznym init baza jest kasowana przez powyzszy SQL.
         //w produkcji nie ma potrzeby manualnego wolania init()

@@ -5,6 +5,7 @@
 package net.bujko.tablica.be.model;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -17,6 +18,15 @@ public class Ad {
     private Category category;
     private String description, id, hashedId, title;
 
+    public Ad(){
+    }
+    
+    public Ad(Map<String, String> m){
+        if(m.containsKey("description"))
+            setDescription(m.get("description"));
+    }
+    
+    
     public String getDescription() {
         return description;
     }
@@ -112,6 +122,6 @@ public class Ad {
 
     @Override
     public String toString() {
-        return String.format("[%s, id: %s]", this.getClass().getName(), this.getId());
+        return String.format("[%s, id: %s, %s]", this.getClass().getName(), this.getId(), this.category.toString());
     }
 }

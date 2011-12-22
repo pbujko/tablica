@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <allNodes xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
   xsi:noNamespaceSchemaLocation='test.xsd'>
-    <node label="kategoria top 0.1" id="0.1" code="node-01">      
-        <node label="kat 0.1,1" id="1" code="to-jest-node-1">
-        <!-- ad -->
-            <node label="NODE 0.1,1,1" id="11" code="node-sroed-11"/>
-            <!-- ad -->
-            <node label="NODE 0.1,1,2" id="12" code="node-12">
-                <node label="NODE_0.1,1,2,1" id="121" code="a-to-jest-node-121"/>
-                <!-- ad -->
-            </node>
-        </node>
-        <node label="kat 0.1,2" id="0.1,2" code="to-jest-node-01-2"/>
+    <node label="Auto Moto"     id="1"      code="auto-moto">      
+        <node label="Osobowe"   id="1.1"    code="osobowe"/>
+        <node label="Ciężarowe" id="1.2"    code="ciezarowe"/>
+        <node label="Motocykle" id="1.3"    code="motocykle"/>
+        <node label="Części"    id="1.4"    code="czesci"/>        
     </node>
-    <node label="kategoria top 0.2" id="0.2" code="node-0.2">      
-        <node label="0.2,1" id="2" code="node-2-trala-la"/>
+    <node label="Zwierzaki"     id="2"      code="zwierzaki">
+        <node label="Psy"       id="2.1"    code="psy"/>
+        <node label="Koty"      id="2.2"    code="koty"/>
+        <node label="Jeże"      id="2.3"    code="jeze"/>
     </node>
 
-    <node label="kategoria top 0.3" id="0.3" code="to-jest-dlugi-code-node-0.3">
-        <node label="0.3,1" id="3" code="node-3"/>
+    <node label="Dom i Ogród"   id="3" code="dom-i-ogrod">
+        <node label="Meble"     id="3.1" code="meble"/>
+        <node label="Inne"     id="3.2" code="inne-32"/>
     </node>
 </allNodes>
