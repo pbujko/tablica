@@ -4,13 +4,13 @@
  */
 package net.bujko.tablica.be.categs;
 
+import java.util.Collection;
 import net.bujko.tablica.be.model.Category;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -96,8 +96,11 @@ public class CategoryManager implements InitializingBean {
         }
     }
 
-    public int getCategoryCount() {
+    public Collection<Category> getAllCategories() {
+        return this.allCategsById.values();
+    }
 
+    public int getCategoryCount() {
         return this.allCategsById.size();
     }
 

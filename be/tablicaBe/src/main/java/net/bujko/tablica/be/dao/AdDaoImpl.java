@@ -50,7 +50,7 @@ public class AdDaoImpl implements AdDao {
         ad.setId(insertedKeyValue + "");
 
         //store category
-        logger.debug("saving categs, ad:{}, categ {}", ad, ad.getCategory().getId());
+        logger.trace("saving categs, ad:{}, categ {}", ad, ad.getCategory().getId());
         ps = conn.prepareStatement("insert into ad_categs(ad_id, cat_id) values (?, ?)");
 
         ps.setInt(1, insertedKeyValue);

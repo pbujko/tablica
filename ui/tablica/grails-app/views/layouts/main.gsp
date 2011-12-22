@@ -20,9 +20,8 @@
     <g:link controller="index" >home</g:link><br />
     <g:link mapping="adDetails" params="[id:'2', niewazneCo:'gazy-jelitowe']">szczegoly ogloszenia </g:link><br />
     <g:link mapping="adDetails" params="[id:'2982', niewazneCo:'gazy-jelitowe']">szczegoly nieistniejacego ogloszenia </g:link>
-
+    <p>Total ads: ${application.searchStats.adsTotal}</p>
     <p>ogonki test: śĄłŁąóŚ</p>          
-
   </div>
 
 </body>

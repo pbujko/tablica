@@ -2,14 +2,19 @@ package tablica
 
 class IndexController {
     def categoryManager
+    
     def index = {
-        render(view:"/index", model:categoryManager)    
+
+        [categoryManager:categoryManager]
     }
     
     def secLevel={
         println "${params}"
         def parentCat = categoryManager.getCategoryByCode(params.parentCode)
-        [parentCat:parentCat, cats:categoryManager.getChildCategories(parentCat.id)]            
+        [
+            parentCat:parentCat, 
+            cats:categoryManager.getChildCategories(parentCat.id)
+        ]            
     }
 }
 

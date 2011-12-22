@@ -13,14 +13,14 @@
 
   </head>
   <body>
-    <h1>Strona podkategori dla: ${parentCat.label}</h1>
+    <h1>Strona podkategorii dla: ${parentCat.label}</h1>
 
     <ul>
       <g:each in="${cats}">
         <li>
 
-        <g:link mapping="search" params="[topCat:parentCat.code, code:it.code]">${it.label}</g:link>
-        (id: ${it.id},  code: ${it.code}        )
+        <g:link mapping="search" params="[topCat:parentCat.code, code:it.code]">${it.label} (${application.searchStats['adsPerCat_'+it.id]})</g:link>
+        [id: ${it.id},  code: ${it.code}]
         </li>
 
       </g:each>

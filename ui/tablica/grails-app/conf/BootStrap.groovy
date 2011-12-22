@@ -7,8 +7,14 @@ import net.bujko.tablica.be.model.Category
 class BootStrap {
 
     def grailsApplication
-    def adDao, categoryManager
+    def adDao, categoryManager, searchDao
+    
     def init = { servletContext ->
+        
+        servletContext["searchStats"] = searchDao.summary
+        
+        
+        
     
         String sqlFilePath = 'grails-app/conf/setUpDB.sql'
         String sqlString = new File(sqlFilePath).text
