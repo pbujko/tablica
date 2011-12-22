@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+import net.bujko.tablica.be.categs.CategoryManager;
 import net.bujko.tablica.be.model.Ad;
 import net.bujko.tablica.be.model.Category;
 import org.slf4j.Logger;
@@ -29,6 +30,8 @@ public class AdDaoImpl implements AdDao {
     Logger logger = LoggerFactory.getLogger(AdDaoImpl.class);
     @Autowired
     DataSource dataSource;
+    @Autowired
+    CategoryManager cm;
 
     @Override
     public void save(Ad ad) throws SQLException {
@@ -44,17 +47,16 @@ public class AdDaoImpl implements AdDao {
         int insertedKeyValue = rs.getInt(1);
         ad.setId(insertedKeyValue + "");
 
-        //store categroties
+        //store category
 
         ps = conn.prepareStatement("replace into ad_categs(ad_id, cat_id) values (?, ?)");
-        for (Category c : ad.getAssignedCategories()) {
-            ps.setInt(1, insertedKeyValue);
-            ps.setString(2, c.getId());
-            ps.executeUpdate();
 
-        }       
+        ps.setInt(1, insertedKeyValue);
+        ps.setString(2, ad.getCategory().getId());
+        ps.executeUpdate();
+
         conn.close();
-        
+
         logger.debug("saved Ad {}", ad);
     }
 
@@ -74,10 +76,13 @@ public class AdDaoImpl implements AdDao {
     }
 
     @Override
-    public Ad findById(String id) throws SQLException {
+    public Ad findById(String id) throws SQLException, Exception {
         Connection conn = dataSource.getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("select * from ad where ad_id=?");
+            PreparedStatement ps = conn.prepareStatement("select *, GROUP_CONCAT(ad_categs.cat_id) as categs "
+                    + "from ad inner join ad_categs on ad.ad_id=ad_categs.ad_id "
+                    + "where ad.ad_id=? "
+                    + "group by ad.ad_id limit 10");
             ps.setInt(1, new Integer(id));
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -86,6 +91,16 @@ public class AdDaoImpl implements AdDao {
                 ad.setHashedId(rs.getString("ad_hashed_id"));
                 ad.setTitle(rs.getString("ad_title"));
                 ad.setDescription(rs.getString("description"));
+
+                //categs
+                if (rs.getString("categs") != null) {
+
+                    for (String sCatId : rs.getString("categs").split(",")) {
+                        Category c = cm.getCategoryById(sCatId);
+                        ad.addCategory(c);
+                    }
+                }
+
                 return ad;
             } else {
                 return null;
@@ -103,13 +118,28 @@ public class AdDaoImpl implements AdDao {
         Connection conn = dataSource.getConnection();
         try {
 
-            ResultSet rs = conn.createStatement().executeQuery("select * from ad limit 10");
+            ResultSet rs = conn.createStatement().
+                    executeQuery("select *, GROUP_CONCAT(ad_categs.cat_id) as categs "
+                    + "from ad inner join ad_categs on ad.ad_id=ad_categs.ad_id "
+                    + "group by ad.ad_id limit 10");
             while (rs.next()) {
                 Ad ad = new Ad();
                 ad.setId(rs.getInt("ad_id") + "");
                 ad.setHashedId(rs.getString("ad_hashed_id"));
                 ad.setTitle(rs.getString("ad_title"));
                 ad.setDescription(rs.getString("description"));
+
+                //categs
+                if (rs.getString("categs") != null) {
+                    //iteracja po kolekcji ale w rzeczywistosci
+                    //powinna byc zawsze tylko jedna
+                    
+                    for (String sCatId : rs.getString("categs").split(",")) {
+                        Category c = cm.getCategoryById(sCatId);
+                        ad.addCategory(c);
+                    }
+                }
+
                 retL.add(ad);
             }
 

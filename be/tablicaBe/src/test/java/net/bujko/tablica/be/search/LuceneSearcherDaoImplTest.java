@@ -4,6 +4,8 @@
  */
 package net.bujko.tablica.be.search;
 
+import javax.sql.DataSource;
+import net.bujko.tablica.be.categs.CategoryManager;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
@@ -32,7 +34,11 @@ public class LuceneSearcherDaoImplTest {
 
     @Autowired
     @Qualifier("searchDao")
-    LuceneSearcherDaoImpl instance;
+    LuceneSearcherDaoImpl searchDaoInstance;
+    @Autowired
+    DataSource ds;
+    @Autowired
+    CategoryManager cm;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -44,7 +50,8 @@ public class LuceneSearcherDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-//        instance = new LuceneSearcherDaoImpl();
+        ds.getConnection().createStatement().executeUpdate("truncate table ad_categs;");
+        ds.getConnection().createStatement().executeUpdate("truncate table ad;");        
     }
 
     /**
@@ -52,93 +59,77 @@ public class LuceneSearcherDaoImplTest {
      */
     @Test
     public void testAddSearch() throws Exception {
-        String itemId1 = new Random().nextInt(5678)+"";
+        String itemId1 = new Random().nextInt(5678) + "";
+        String hashedId1 = "hashedId_" + itemId1;
+        String title1 = "title_" + itemId1;
+        String description1 = "description for " + itemId1;
 
-        String catId1 = "cat1_" + itemId1;
-        String catId2 = "cat2_" + itemId1;
-        String hashedId = "hashedId_" + itemId1;
-        String title = "title_" + itemId1;
-        String description = "description for " + itemId1;
+        Category c1 = cm.getCategoryById("1");
+        assertNotNull(c1);
 
-        System.out.println("add");
         Ad item1 = new Ad();
         item1.setId(itemId1);
-        item1.addCategory(new Category(catId1));
-        item1.addCategory(new Category(catId2));
-        item1.setHashedId(hashedId);
-        item1.setTitle(title);
-        item1.setDescription(description);
+        item1.addCategory(c1);
+        item1.setHashedId(hashedId1);
+        item1.setTitle(title1);
+        item1.setDescription(description1);
 
+        searchDaoInstance.add(item1);
 
-        instance.add(item1);
+        Category c2 = cm.getCategoryById("2");
 
-
-        String itemId2 = new Random().nextInt(1234)+"";
-        String catId21 = "cat21_" + itemId2;
-        String catId22 = "cat22_" + itemId2;
+        String itemId2 = new Random().nextInt(1234) + "";
+        String catId2 = "cat2_" + itemId2;
         String hashedId2 = "hashedId2_" + itemId2;
         String title2 = "title_" + itemId2;
         String description2 = "description2 for " + itemId2;
 
-
         Ad item2 = new Ad();
         item2.setId(itemId2);
-        item2.addCategory(new Category(catId21));
-        item2.addCategory(new Category(catId22));
+        item2.addCategory(c2);
         item2.setHashedId(hashedId2);
         item2.setTitle(title2);
         item2.setDescription(description2);
 
-        instance.add(item2);
+        searchDaoInstance.add(item2);
 
-
-        //search by catId1 resturns item1 item1
-        List<Ad> res = instance.search(catId1);
+        //search by catId1 resturns item1
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("cat", c1.getId());
+        List<Ad> res = searchDaoInstance.search(searchDaoInstance.buildQuery(m));
         assertEquals(1, res.size());
         Ad si1 = res.get(0);
         assertEquals(itemId1, si1.getId());
 
-        //searching by catId2 returns item1
-        res = instance.search(catId2);
-        assertEquals(1, res.size());
-        si1 = res.get(0);
-        assertEquals(itemId1, si1.getId());
 
-        //same results
-        res = instance.search(catId2 + " AND " + catId1);
-        assertEquals(1, res.size());
-        si1 = res.get(0);
-        assertEquals(itemId1, si1.getId());
-
-        res = instance.search(catId2 + " AND " + catId1 + " AND booo");
+        //finds nothing
+        res = searchDaoInstance.search(c1.getId() + " AND " + c2.getId());
         assertEquals(0, res.size());
 
 
-
-        //searching by carId2 returns item1
-        res = instance.search(catId21);
+        //searching by cart2 returns item2
+        res = searchDaoInstance.search(c2.getId());
         assertEquals(1, res.size());
         Ad si2 = res.get(0);
         assertEquals(itemId2, si2.getId());
 
         //returns two items
-        res = instance.search(catId21 + " OR " + catId1);
+        res = searchDaoInstance.search(c1.getId() + " OR " + c2.getId());
         assertEquals(2, res.size());
 
         assertEquals(itemId1, res.get(0).getId());
         assertEquals(itemId2, res.get(1).getId());
-        
-        instance.rebuild();
 
+        searchDaoInstance.rebuild();
     }
-    
+
     @Test
-    public void testBuildQuery(){
-        Map<String, String> params=new HashMap<String, String>();        
-        String catName=UUID.randomUUID()+"";
+    public void testBuildQuery() {
+        Map<String, String> params = new HashMap<String, String>();
+        String catName = UUID.randomUUID() + "";
         params.put(ISearcherDao.FIELD_CAT_NAME, catName);
-        
-        assertEquals(ISearcherDao.FIELD_CAT_NAME+":"+catName, instance.buildQuery(params));
-        
+
+        assertEquals(ISearcherDao.FIELD_CAT_NAME + ":\"" + catName + "\"", searchDaoInstance.buildQuery(params));
+
     }
 }

@@ -43,50 +43,53 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("searchDao")
 public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBean {
-
+    
     final String FIELD_ID = "id";
     final String FIELD_HASHEDID = "hashId";
     final String FIELD_TITLE = "title";
     final String FIELD_DESCRIPTION = "description";
+    final String FIELD_ASSIGNED_CAT = "assignedCat";
     Logger logger = LoggerFactory.getLogger(LuceneSearcherDaoImpl.class);
     StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_35);
     Directory index = new RAMDirectory();
     @Autowired
     CategoryManager cm;
     AdDao adDao;
-
+    
     @Autowired
     LuceneSearcherDaoImpl(AdDao addao) throws Exception {
         this.adDao = addao;
-
+        
     }
-
+    
     private IndexWriter obtainWriter() throws CorruptIndexException, LockObtainFailedException, IOException {
         IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35, analyzer);
         return new IndexWriter(index, conf);
     }
-
+    
     @Override
-    public synchronized void add(Ad item) throws Exception {
+    public synchronized void add(Ad ad) throws Exception {
         Document doc = new Document();
-        doc.add(new Field(FIELD_ID, item.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        doc.add(new Field(FIELD_HASHEDID, item.getHashedId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        doc.add(new Field(FIELD_TITLE, item.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
-        doc.add(new Field(FIELD_DESCRIPTION, item.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
+        doc.add(new Field(FIELD_ID, ad.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        doc.add(new Field(FIELD_HASHEDID, ad.getHashedId(), Field.Store.YES, Field.Index.NO));
+        doc.add(new Field(FIELD_TITLE, ad.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
+        doc.add(new Field(FIELD_DESCRIPTION, ad.getDescription(), Field.Store.YES, Field.Index.ANALYZED));
+        doc.add(new Field(FIELD_ASSIGNED_CAT, ad.getCategory().getId(), Field.Store.YES, Field.Index.NO));
 
-        for (Category c : item.getAssignedCategories()) {
+        
+        for (Category c : ad.getAssignedCategories()) {
             doc.add(new Field(FIELD_CAT_NAME, c.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         }
 
         //delete old
-        delete(item);
-
+        delete(ad);
+        
         IndexWriter w = obtainWriter();
         w.addDocument(doc);
         w.commit();
         w.close();
     }
-
+    
     @Override
     public void delete(Ad item) throws Exception {
         IndexWriter w = obtainWriter();
@@ -94,100 +97,105 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
         w.commit();
         w.close();
     }
-
+    
     @Override
     public List<Ad> search(String searchQ) throws Exception {
-
+        
         String LUCENE_ESCAPE_CHARS = "[\\\\+\\-\\!\\(\\)\\:\\^\\]\\{\\}\\~\\*\\?]";
         Pattern LUCENE_PATTERN = Pattern.compile(LUCENE_ESCAPE_CHARS);
         String REPLACEMENT_STRING = "\\\\$0";
-
-        String escaped = LUCENE_PATTERN.matcher(searchQ).replaceAll(REPLACEMENT_STRING);
-
-        Query q = new QueryParser(Version.LUCENE_35, FIELD_CAT_NAME, analyzer).parse(escaped);
+        
+       // String escaped = LUCENE_PATTERN.matcher(searchQ).replaceAll(REPLACEMENT_STRING);
+        
+        Query q = new QueryParser(Version.LUCENE_35, FIELD_CAT_NAME, analyzer).parse(searchQ);
         IndexReader reader = IndexReader.open(index, true);
         // 3. search
 
         IndexSearcher searcher = new IndexSearcher(reader);
-
+        
         ScoreDoc[] hits = searcher.search(q, 100).scoreDocs;
-
-        List ret =
+        
+        List retL =
                 new ArrayList<Ad>(hits.length);
-
+        
         for (ScoreDoc sd : hits) {
-
+            
             Document d = searcher.doc(sd.doc);
-            Ad item = new Ad();
-            item.setId(d.get(FIELD_ID));
-            for (Fieldable f : d.getFieldables(FIELD_CAT_NAME)) {
-                Category tmpC = cm.getCategoryById(f.stringValue());
-                if (tmpC != null) {
-                    item.addCategory(tmpC);
-                } else {
-                    logger.error("UNKNWNCAT: {}, itemId: {}", f.stringValue(), item.getId());
-                }
-
-            }
-
-            ret.add(item);
+            Ad ad = new Ad();
+            ad.setId(d.get(FIELD_ID));
+            ad.setTitle(d.get(FIELD_TITLE));
+            ad.setHashedId(d.get(FIELD_HASHEDID));
+            ad.setDescription(d.get(FIELD_DESCRIPTION));
+//            for (Fieldable f : d.getFieldables(FIELD_CAT_NAME)) {
+//                Category tmpC = cm.getCategoryById(f.stringValue());
+//                if (tmpC != null) {
+//                    ad.addCategory(tmpC);
+//                } else {
+//                    logger.error("UNKNWNCAT: {}, itemId: {}", f.stringValue(), ad.getId());
+//                }                
+//            }
+            ad.addCategory(cm.getCategoryById(d.get(FIELD_ASSIGNED_CAT)));
+            
+            retL.add(ad);
         }
-
+        
         reader.close();
         searcher.close();
-        return ret;
+        return retL;
     }
-
+    
     @Override
-    public void update(Ad item) throws Exception {
-
+    public void update(Ad ad) throws Exception {
+        
         Document doc = new Document();
-        doc.add(new Field(FIELD_ID, item.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        doc.add(new Field(FIELD_HASHEDID, item.getHashedId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        doc.add(new Field(FIELD_TITLE, item.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
-        doc.add(new Field(FIELD_DESCRIPTION, item.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
-
-        for (Category c : item.getAssignedCategories()) {
+        doc.add(new Field(FIELD_ID, ad.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        doc.add(new Field(FIELD_HASHEDID, ad.getHashedId(), Field.Store.YES, Field.Index.NO));
+        doc.add(new Field(FIELD_TITLE, ad.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
+        doc.add(new Field(FIELD_DESCRIPTION, ad.getDescription(), Field.Store.YES, Field.Index.ANALYZED));
+        doc.add(new Field(FIELD_ASSIGNED_CAT, ad.getCategory().getId(), Field.Store.YES, Field.Index.NO));        
+        
+        for (Category c : ad.getAssignedCategories()) {
             doc.add(new Field(FIELD_CAT_NAME, c.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         }
         IndexWriter w = obtainWriter();
-        w.updateDocument(new Term(FIELD_ID, item.getId()), doc);
+        w.updateDocument(new Term(FIELD_ID, ad.getId()), doc);
         w.commit();
         w.close();
     }
-
+    
     @Override
     public synchronized void rebuild() throws Exception {
         logger.info("rebuild start...");
-
+        
         Directory tmpIndex = new RAMDirectory();
         IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35, analyzer);
-
+        
         IndexWriter tmpWriter = new IndexWriter(tmpIndex, conf);
         int cnt = 0;
-        for (Ad item : adDao.listAll()) {
+        for (Ad ad : adDao.listAll()) {
             Document doc = new Document();
-            doc.add(new Field(FIELD_ID, item.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            doc.add(new Field(FIELD_HASHEDID, item.getHashedId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            doc.add(new Field(FIELD_TITLE, item.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
-            doc.add(new Field(FIELD_DESCRIPTION, item.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
+            doc.add(new Field(FIELD_ID, ad.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.add(new Field(FIELD_HASHEDID, ad.getHashedId(), Field.Store.YES, Field.Index.NO));
+            doc.add(new Field(FIELD_TITLE, ad.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
+            doc.add(new Field(FIELD_DESCRIPTION, ad.getDescription(), Field.Store.YES, Field.Index.ANALYZED));
+            doc.add(new Field(FIELD_ASSIGNED_CAT, ad.getCategory().getId(), Field.Store.YES, Field.Index.NO));
 
-            for (Category c : item.getAssignedCategories()) {
+            for (Category c : ad.getAssignedCategories()) {
                 doc.add(new Field(FIELD_CAT_NAME, c.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             }
-
+            
             tmpWriter.addDocument(doc);
             cnt++;
         }
         tmpWriter.commit();
         tmpWriter.close();
-
+        
         this.index = tmpIndex;
         logger.info("rebuild end, added {} entries", cnt);
     }
 
     /**
-     * cat|value -> cat:value
+     * cat|value -> cat:"value"  - cudzyslow potrzebny zeby wyszukiwanie exact
      * 
      * @param params
      * @return 
@@ -197,16 +205,16 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
         if (params == null) {
             return "";
         }
-
+        
         StringBuilder sb = new StringBuilder();
-
+        
         if (params.containsKey("cat")) {
-            sb.append(ISearcherDao.FIELD_CAT_NAME).append(":").append(params.get("cat"));
+            sb.append(ISearcherDao.FIELD_CAT_NAME).append(":\"").append(params.get("cat")).append("\"");
         }
-
+        
         return sb.toString();
     }
-
+    
     @Override
     public void afterPropertiesSet() throws Exception {
         rebuild();

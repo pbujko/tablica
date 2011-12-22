@@ -8,17 +8,16 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Sec level</title>
+    <title>Sample title</title>
   </head>
   <body>
-    <h1>${parentCat.label}</h1>
-
+    <h1>wyniki wyszukiwania śĄłŁąóŚ </h1>
+    <h2>wybrana ${searchCat.label}</h2>
     <ul>
-      <g:each in="${cats}">
-        <li>${it.label}<br />id: ${it.id} <br />code: ${it.code}</li>
+      <g:each in="${res}">
+        <li>${it.title}, ${it.id}, ${it.hashedId}, ${it.description}</li>
       </g:each>
     </ul>
-
 
   </body>
 </html>

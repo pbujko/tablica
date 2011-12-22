@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.junit.runner.RunWith;
-import java.util.List;
 import net.bujko.tablica.be.model.Category;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -13,14 +13,18 @@ import java.util.Map;
  * @author pbujko
  */
 public interface ISearcherDao {
+
     final String FIELD_CAT_NAME = "cat";
-    void add(Ad item) throws Exception;
-    void delete(Ad item) throws Exception;
-    void update(Ad ad) throws Exception;
-    List<Ad> search (String searchQ) throws Exception;
-    
-    void rebuild() throws Exception;
-    
-    String buildQuery(Map<String, String> params);
-    
+
+    public void add(Ad item) throws Exception;
+
+    public void delete(Ad item) throws Exception;
+
+    public void update(Ad ad) throws Exception;
+
+    public List<Ad> search(String searchQ) throws Exception;
+
+    public void rebuild() throws Exception;
+
+    public String buildQuery(Map<String, String> params);
 }

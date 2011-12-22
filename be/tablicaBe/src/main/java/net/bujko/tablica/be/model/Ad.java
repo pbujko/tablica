@@ -6,26 +6,15 @@ package net.bujko.tablica.be.model;
 
 import java.util.HashSet;
 import java.util.Set;
-//import javax.persistence.Column;
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Id;
-//import javax.persistence.JoinColumn;
-//import javax.persistence.JoinTable;
-//import javax.persistence.OneToMany;
-//import javax.persistence.Table;
-//import javax.persistence.Transient;
 
 /**
  *
  * @author pbujko
  */
-//@Entity
-//@Table(name = "ad")
 public class Ad {
 
-    private Set<Category> assignedCategories = new HashSet<Category>();
+    //private Set<Category> assignedCategories = new HashSet<Category>();
+    private Category category;
     private String description, id, hashedId, title;
 
     public String getDescription() {
@@ -36,7 +25,6 @@ public class Ad {
         this.description = description;
     }
 
-//    @Column(name = "ad_hashed_id", unique = true, nullable = false, length = 50)
     public String getHashedId() {
         return hashedId;
     }
@@ -45,9 +33,6 @@ public class Ad {
         this.hashedId = hashedId;
     }
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "ad_id", unique = true, nullable = false, columnDefinition = "int")
     public String getId() {
         return id;
     }
@@ -56,7 +41,6 @@ public class Ad {
         this.id = id;
     }
 
-//    @Column(name = "ad_title", nullable = false)
     public String getTitle() {
         return title;
     }
@@ -65,24 +49,43 @@ public class Ad {
         this.title = title;
     }
 
+    /**
+     * dodany limit - przypisujemy tylko jedna kategorie
+     * @param c
+     * @throws Exception 
+     */
     public void addCategory(Category c) throws Exception {
-        if(c == null)
+        if (c == null) {
             throw new Exception("CATNLL");
-        assignedCategories.add(c);
+        }
+//        if (!assignedCategories.isEmpty()) {
+//            throw new Exception("CAT_ALREADY_ASSIGNED: " + assignedCategories);
+//        }
+//        assignedCategories.add(c);
+        if (this.category != null) {
+            throw new Exception("CAT_ALREADY_ASSIGNED: " + this.category);
+        } else {
+            this.category = c;
+        }
+
     }
 
-    public void setAssignedCategories(Set<Category> ac) {
-        assignedCategories = ac;
-    }
-
-//    @OneToMany
-//    @JoinTable(
-//            name="ad_categs",
-//            joinColumns = @JoinColumn( name="ad_id"),
-//            inverseJoinColumns = @JoinColumn( name="cat_id")
-//    )
+    /**
+     * zwraca kategorie wybrana ale rowniez wszystkich starszych z drzewa az do roota.
+     * @param ac 
+     */
     public Set<Category> getAssignedCategories() {
-        return assignedCategories;
+        Set<Category> retS = new HashSet<Category>();
+
+        if (this.category != null) {
+            this.category.collectParent(retS);
+        }
+
+        return retS;
+    }
+
+    public Category getCategory() {
+        return this.category;
     }
 
     @Override
@@ -109,6 +112,6 @@ public class Ad {
 
     @Override
     public String toString() {
-        return String.format("[{}, id: {}]", this.getClass().getName(), this.getId());
+        return String.format("[%s, id: %s]", this.getClass().getName(), this.getId());
     }
 }

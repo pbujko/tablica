@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
@@ -31,7 +33,7 @@ public class CategoryManager implements InitializingBean {
     private Map<String, Category> allCategsById;
     // catCode -> Category
     private Map<String, Category> allCategsByCode;
-    private Set<Category> topLevelCats = new HashSet<Category>();
+    private Set<Category> topLevelCats = new TreeSet<Category>();
     Logger logger = LoggerFactory.getLogger(CategoryManager.class);
     @Autowired
     CategoryDao categoryDao;

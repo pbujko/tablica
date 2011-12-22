@@ -4,9 +4,8 @@
  */
 package net.bujko.tablica.be.dao;
 
-import java.util.Random;
-import java.util.List;
 import java.util.UUID;
+import net.bujko.tablica.be.categs.CategoryManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.junit.runner.RunWith;
@@ -15,7 +14,6 @@ import net.bujko.tablica.be.model.Category;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.*;
@@ -27,31 +25,31 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/spring-context.xml"})
 public class AdDaoImplTest {
-    
+
     @Autowired
     AdDao adDao;
+    @Autowired
+    CategoryManager cm;
+    Category c01, c1, c11;
 
-    Category c1, c2;
-    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
-    
+
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() throws Exception {
-        for (Ad a : adDao.listAll()) {            
+        for (Ad a : adDao.listAll()) {
             adDao.delete(a);
-        }        
-        
-        c1 = new Category(new Random().nextInt(100)+"");
-        c1.setLabel("label_" + c1.getId());
-        
-        c2 = new Category(new Random().nextInt(100)+"");
-        c2.setLabel("label_" + c2.getId());        
+        }
+
+        c01 = cm.getCategoryById("0.1");
+        c1 = cm.getCategoryById("1");
+        c11 = cm.getCategoryById("11");
+
     }
 
     /**
@@ -59,23 +57,32 @@ public class AdDaoImplTest {
      */
     @Test
     public void testSave() throws Exception {
+
+//        c11 = cm.getCategoryById("11");
+        assertNotNull(c11);
+
         String hashId = UUID.randomUUID().toString();
         Ad ad = new Ad();
         ad.setHashedId(hashId);
         ad.setTitle("title_" + hashId);
         ad.setDescription("description_" + hashId);
-        ad.addCategory(c1);
-        ad.addCategory(c2);
+        ad.addCategory(c11);
         adDao.save(ad);
-        
-        
-        System.out.println(String.format("saved, id %s", ad.getId()));
-        
+
+
+        System.out.println(String.format("saved, id %s", ad));
+
         Ad res =
                 adDao.findById(ad.getId());
         assertNotNull(res);
         assertEquals(res, ad);
-        
+        assertEquals(c11, ad.getCategory());
+        assertEquals(3, ad.getAssignedCategories().size());
+        assertTrue(ad.getAssignedCategories().contains(c11));
+        assertTrue(ad.getAssignedCategories().contains(c1));
+        assertTrue(ad.getAssignedCategories().contains(c01));
+
+
         assertEquals(1, adDao.listAll().size());
     }
 }

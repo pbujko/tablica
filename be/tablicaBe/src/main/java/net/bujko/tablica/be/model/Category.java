@@ -5,7 +5,9 @@
 package net.bujko.tablica.be.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import net.bujko.tablica.be.categs.Node;
 
 /**
@@ -20,7 +22,7 @@ import net.bujko.tablica.be.categs.Node;
  *
  * @author pbujko
  */
-public class Category {
+public class Category implements Comparable {
 
 //    @Id
 //    @Column(name="cat_id")
@@ -47,12 +49,13 @@ public class Category {
     }
 
     public List<Category> getChildCategories() {
+
         return childCategories;
     }
 
     public void addChild(Category c) {
         this.childCategories.add(c);
-
+        Collections.sort(childCategories);
     }
 
     public String getId() {
@@ -75,6 +78,14 @@ public class Category {
         return parent;
     }
 
+    void collectParent(Set memo) {
+        memo.add(this);
+        if (parent != null) {
+            parent.collectParent(memo);
+        }
+
+    }
+
     public void setParent(Category parent) {
         this.parent = parent;
     }
@@ -95,7 +106,6 @@ public class Category {
         this.code = code;
     }
 
-    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -121,5 +131,21 @@ public class Category {
     @Override
     public String toString() {
         return "Category{" + "id=" + id + ", label=" + label + '}';
+    }
+
+    @Override
+    public int compareTo(Object t) {
+        if (t == null) {
+            return -1;
+        }
+
+        if (!(t instanceof Category)) {
+            return -1;
+        }
+
+        if (this.getLabel() == null || ((Category) t).getLabel() == null) {
+            return -1;
+        }
+        return this.getLabel().compareToIgnoreCase(((Category) t).getLabel());
     }
 }

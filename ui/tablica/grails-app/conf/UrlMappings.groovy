@@ -15,6 +15,13 @@ class UrlMappings {
                    action="secLevel"
                    
                }
+
+               name search: "/ogloszenia/$topCat/$code"{
+                   controller= "search"
+                   action="index"
+                   
+               }
+
         
                name adDetails: "/ogloszenie/${niewazneCo}_$id?"{
                     controller = "ad"

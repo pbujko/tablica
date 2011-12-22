@@ -22,18 +22,14 @@ class BootStrap {
         }
                 
 
-        //ad1 + 2 categs
+        //ad1 
         Ad ad = new Ad()
        
-        ad.setDescription("description ad 1")
-        ad.setTitle("title ad 1")
+        ad.setDescription("description ad cat 121")
+        ad.setTitle("title ad cat121")
         ad.setHashedId("---1---1---")
-
-        Category c = new Category("12")
-        c.setLabel("categ12") 
-        ad.addCategory(c)
         
-        c = new Category("121")
+        Category c = new Category("121")
         c.setLabel("categ121") 
         ad.addCategory(c)
 
@@ -42,19 +38,32 @@ class BootStrap {
         //ad 2, one categ
         ad = new Ad()
        
-        ad.setDescription("description ad 2")
-        ad.setTitle("title ad 2")
+        ad.setDescription("description ad cat11")
+        ad.setTitle("title ad cat11")
         ad.setHashedId("---2---")
 
         c = new Category("11")
         c.setLabel("categ11") 
         ad.addCategory(c)
+ 
+        adDao.save(ad)
+
+        
+        //ad 3
+        ad = new Ad()       
+        ad.setDescription("description ad cat1")
+        ad.setTitle("title ad cat1")
+        ad.setHashedId("---2--12df-")
+
+        c = new Category("1")
+        c.setLabel("categ1") 
+        ad.addCategory(c)         
         
         adDao.save(ad)
         
 
-//wolaj init jeszcze raz tylko dlatego, ze po automatycznym init baza jest kasowana przez powyzszy SQL.
-//w produkcji nie ma potrzeby manualnego wolania init()
+        //wolaj init jeszcze raz tylko dlatego, ze po automatycznym init baza jest kasowana przez powyzszy SQL.
+        //w produkcji nie ma potrzeby manualnego wolania init()
         categoryManager.init()
     }
     def destroy = {
