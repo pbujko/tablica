@@ -19,15 +19,23 @@
 
 
       <g:if test="${searchCat.attributes}">
+  <g:form name="myForm" action="redir" id="1">
+        <g:hiddenField name="topCat" value="${params.topCat}" />
+    <g:hiddenField name="catCode" value="${searchCat.code}" />
+
+      
         <g:each in="${searchCat.attributes}">
-          <g:select name="${it.id}"
+          <g:select name="att|${it.id}"
                     from="${it.choices}"
                     optionKey="id"
                     optionValue="label"
                     noSelection="['':'--'+it.label+'--']"
+                    onChange=""
                     />
         </g:each>
+    <g:submitButton name="update" value="Update" />
 
+  </g:form>
 
       </g:if>
 
@@ -37,7 +45,7 @@
         <g:each in="${res}">
 
           <li>
-          <g:link mapping="adDetails" params="[niewazneCo:it.title, id:it.id]">${it.title}</g:link>
+          <g:link mapping="adDetails" params="[niewazneCo:it.title, id:it.id]" >${it.title}</g:link>
           [${it.id}]
           </li>
         </g:each>
