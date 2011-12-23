@@ -15,6 +15,7 @@ CREATE TABLE `ad` (
   `description` varchar(255) DEFAULT NULL,
   `ad_hashed_id` varchar(50) NOT NULL,
   `ad_title` varchar(255) NOT NULL,
+  `ad_atts` varchar(255),
   PRIMARY KEY (`ad_id`),
   UNIQUE KEY `ad_id` (`ad_id`),
   UNIQUE KEY `ad_hashed_id` (`ad_hashed_id`)

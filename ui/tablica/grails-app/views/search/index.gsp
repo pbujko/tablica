@@ -15,11 +15,33 @@
   <body>
     <h1>wyniki wyszukiwania</h1>
     <h2>wybrana ${searchCat.label} [id: ${searchCat.id}, code: ${searchCat.code}]</h2>
-    <ul>
-      <g:each in="${res}">
-        <li>${it.title}, ${it.id}, ${it.hashedId}, ${it.description}</li>
-      </g:each>
-    </ul>
+    <div>
+
+
+      <g:if test="${searchCat.attributes}">
+        <g:each in="${searchCat.attributes}">
+          <g:select name="${it.id}"
+                    from="${it.choices}"
+                    optionKey="id"
+                    optionValue="label"
+                    noSelection="['':'--'+it.label+'--']"
+                    />
+        </g:each>
+
+
+      </g:if>
+
+
+
+      <ul>
+        <g:each in="${res}">
+
+          <li>
+          <g:link mapping="adDetails" params="[niewazneCo:it.title, id:it.id]">${it.title}</g:link>
+          [${it.id}]
+          </li>
+        </g:each>
+      </ul>
 
   </body>
 </html>

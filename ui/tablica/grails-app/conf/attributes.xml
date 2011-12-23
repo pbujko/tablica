@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <allAtts xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
   xsi:noNamespaceSchemaLocation='atts.xsd'>
-    <attribute catId="1" id="cat1_1" label="att1 cat1">
+    <attribute catId="1.1" id="cat1_1" label="Marka">
         <choice label="choice 1" id="1_1"/>
         <choice label="choice 2" id="1_2"/>
         <choice label="choice 3" id="1_3"/>
@@ -9,13 +9,13 @@
         <choice label="choice 5" id="1_5"/>
     </attribute>
       
-    <attribute catId="2" id="cat2_1" label="att1 cat2">
+    <attribute catId="1.1" id="cat2_1" label="Paliwo">
         <choice label="choice 1" id="2_1"/>
         <choice label="choice 2" id="2_2"/>
         <choice label="choice 3" id="2_3"/>
     </attribute>
     
-    <attribute catId="2" id="cat2_2" label="att2 cat2">
+    <attribute catId="1.2" id="cat2_2" label="att2 cat2">
         <choice label="choice 1" id="2_1"/>
         <choice label="choice 2" id="2_2"/>
         <choice label="choice 3" id="2_3"/>

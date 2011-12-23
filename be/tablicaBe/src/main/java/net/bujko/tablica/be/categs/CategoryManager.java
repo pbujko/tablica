@@ -20,6 +20,7 @@ import javax.xml.bind.Unmarshaller;
 import net.bujko.tablica.be.categs.binding.atts.AllAtts;
 import net.bujko.tablica.be.categs.binding.atts.Attribute;
 import net.bujko.tablica.be.dao.CategoryDao;
+import net.bujko.tablica.be.model.AttributeEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -38,6 +39,8 @@ public class CategoryManager implements InitializingBean {
     // catCode -> Category
     private Map<String, Category> allCategsByCode;
     private Set<Category> topLevelCats = new TreeSet<Category>();
+    // attributeId -> attributeEntity
+    final private Map<String, AttributeEntity> allAttEns = new HashMap<String, AttributeEntity>();
     Logger logger = LoggerFactory.getLogger(CategoryManager.class);
     @Autowired
     CategoryDao categoryDao;
@@ -68,17 +71,22 @@ public class CategoryManager implements InitializingBean {
             }
         }
 
-       
-       context = JAXBContext.newInstance(
+
+        context = JAXBContext.newInstance(
                 "net.bujko.tablica.be.categs.binding.atts");
         unmarshaller = context.createUnmarshaller();
         AllAtts allAtts = (AllAtts) unmarshaller.unmarshal(getClass().getClassLoader().getResourceAsStream("attributes.xml"));
-List<Attribute> listOfAtts= allAtts.getAttribute(); 
-        
-        
-        
-        
-        
+
+        for (Attribute tmpA : allAtts.getAttribute()) {
+                
+            AttributeEntity ae = new AttributeEntity(tmpA);
+            if(allAttEns.containsValue(ae))
+                throw new Exception("DUPLICATED AE: " +ae);
+            
+            ae.setParentCat(this.allCategsById.get(tmpA.getCatId()));
+            ae.getParentCat().addAttribute(ae);
+        }
+
         logger.info("{} is up. Categories loaded: {}", this.getClass().getName(), allCategsById.size());
     }
 

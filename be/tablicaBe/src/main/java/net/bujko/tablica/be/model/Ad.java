@@ -4,6 +4,8 @@
  */
 package net.bujko.tablica.be.model;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,16 +19,21 @@ public class Ad {
     //private Set<Category> assignedCategories = new HashSet<Category>();
     private Category category;
     private String description, id, hashedId, title;
+//    private Collection<AttributeEntity> atts = new HashSet<AttributeEntity>();
+    /**
+     * jakie opcje zostaly wybrane z atrybutow
+     * moze byc puste kiedy nie wybrano zadnego atrybutu
+     * format mapy:
+     * entityAttributeId -> choiceId
+     * 
+     * entityAttributeId musi byc unikalny poniewaz dozwolony tylko jeden choice z danego atrybutu
+     * 
+     */
+    private Map<String, String> choices = new HashMap<String, String>();
 
-    public Ad(){
+    public Ad() {
     }
-    
-    public Ad(Map<String, String> m){
-        if(m.containsKey("description"))
-            setDescription(m.get("description"));
-    }
-    
-    
+
     public String getDescription() {
         return description;
     }
@@ -68,10 +75,7 @@ public class Ad {
         if (c == null) {
             throw new Exception("CATNLL");
         }
-//        if (!assignedCategories.isEmpty()) {
-//            throw new Exception("CAT_ALREADY_ASSIGNED: " + assignedCategories);
-//        }
-//        assignedCategories.add(c);
+
         if (this.category != null) {
             throw new Exception("CAT_ALREADY_ASSIGNED: " + this.category);
         } else {
@@ -98,6 +102,27 @@ public class Ad {
         return this.category;
     }
 
+    public void addChoices(Map<String, String> aChoices) throws Exception{
+        if(aChoices == null)
+            return;
+        
+        for(String k: aChoices.keySet()){
+            addChoice(k, aChoices.get(k));
+        }
+    }
+    
+    public void addChoice(String attId, String choiceId) throws Exception {
+        if (this.choices.containsKey(attId)) {
+            throw new Exception("ATTR_ALREADY_ASSIGND: " + attId);
+        } else {
+            this.choices.put(attId, choiceId);
+        }
+    }
+
+    public Map<String, String> getChoices() {
+        return this.choices;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -122,6 +147,6 @@ public class Ad {
 
     @Override
     public String toString() {
-        return String.format("[%s, id: %s, %s]", this.getClass().getName(), this.getId(), this.category.toString());
+        return String.format("[%s, id: %s, %s]", this.getClass().getName(), this.getId() != null ? this.getId() : "<noid>", this.category != null ? this.category : "<nocat>");
     }
 }

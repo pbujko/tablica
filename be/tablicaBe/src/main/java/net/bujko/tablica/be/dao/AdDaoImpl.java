@@ -10,11 +10,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.sql.DataSource;
 import net.bujko.tablica.be.categs.CategoryManager;
 import net.bujko.tablica.be.model.Ad;
 import net.bujko.tablica.be.model.Category;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("adDao")
 public class AdDaoImpl implements AdDao {
+    
+    private final String COLUMN_AD_ADATTS = "ad_atts";
 
     Logger logger = LoggerFactory.getLogger(AdDaoImpl.class);
     @Autowired
@@ -35,13 +42,18 @@ public class AdDaoImpl implements AdDao {
 
     @Override
     public void save(Ad ad) throws SQLException {
-        
+
         logger.trace("saving Ad {}", ad);
         Connection conn = dataSource.getConnection();
-        PreparedStatement ps = conn.prepareStatement("insert into ad(description,ad_hashed_id, ad_title) values(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = conn.prepareStatement("insert into ad("
+                + "description,ad_hashed_id, ad_title, "
+                + COLUMN_AD_ADATTS
+                + ") "
+                + "values(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, ad.getDescription());
         ps.setString(2, ad.getHashedId());
         ps.setString(3, ad.getTitle());
+        ps.setString(4, marshallAttChoices(ad.getChoices()));
         ps.executeUpdate();
 
         ResultSet rs = ps.getGeneratedKeys();
@@ -93,7 +105,7 @@ public class AdDaoImpl implements AdDao {
                 ad.setHashedId(rs.getString("ad_hashed_id"));
                 ad.setTitle(rs.getString("ad_title"));
                 ad.setDescription(rs.getString("description"));
-
+                ad.addChoices(unmarshallAttChoices(rs.getString(COLUMN_AD_ADATTS)));
                 //categs
                 if (rs.getString("categs") != null) {
 
@@ -130,12 +142,12 @@ public class AdDaoImpl implements AdDao {
                 ad.setHashedId(rs.getString("ad_hashed_id"));
                 ad.setTitle(rs.getString("ad_title"));
                 ad.setDescription(rs.getString("description"));
-
+                ad.addChoices(unmarshallAttChoices(rs.getString(COLUMN_AD_ADATTS)));
                 //categs
                 if (rs.getString("categs") != null) {
                     //iteracja po kolekcji ale w rzeczywistosci
                     //powinna byc zawsze tylko jedna
-                    
+
                     for (String sCatId : rs.getString("categs").split(",")) {
                         Category c = cm.getCategoryById(sCatId);
                         ad.addCategory(c);
@@ -153,5 +165,29 @@ public class AdDaoImpl implements AdDao {
             conn.close();
         }
 
+    }
+
+    private String marshallAttChoices(Map<String, String> attChoices) {
+
+        if (attChoices == null) {
+            return "";
+        }
+
+        return new org.json.JSONObject(attChoices).toString();
+    }
+
+    private Map<String, String> unmarshallAttChoices(String rawString) throws JSONException {
+        Map<String, String> retM = new HashMap<String, String>();
+
+        JSONObject o = new JSONObject(rawString);
+        Iterator i = o.keys();
+        while (i.hasNext()) {
+
+            String k = (String) i.next();
+            retM.put(k, o.getString(k));
+
+        }
+
+        return retM;
     }
 }

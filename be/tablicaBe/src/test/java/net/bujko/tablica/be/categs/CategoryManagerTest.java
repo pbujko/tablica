@@ -5,6 +5,7 @@
 package net.bujko.tablica.be.categs;
 
 import java.util.Iterator;
+import net.bujko.tablica.be.model.AttributeEntity;
 import org.junit.Ignore;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,10 +85,34 @@ public class CategoryManagerTest {
         assertEquals(
                 cm.getCategoryByCode("node-11"),
                 cm.getCategoryById("11"));
+
+
     }
 
     @Test
-    @Ignore
+    public void testLoadedAtts() {
+        //cat "1" has one attribute bound
+        assertEquals(1, cm.getCategoryById("1").getAttributes().size());
+        //cat "1" has one attribute bound
+        assertEquals(2, cm.getCategoryById("2").getAttributes().size());
+
+        Iterator i = cm.getCategoryById("2").getAttributes().iterator();
+
+        assertTrue(
+                cm.getCategoryById("2").getAttributes().contains(new AttributeEntity("cat2_1")));
+        assertTrue(
+                cm.getCategoryById("2").getAttributes().contains(new AttributeEntity("cat2_2")));
+    }
+    
+    
+    @Test(expected=java.lang.Exception.class)
+    public void testDuplicatedAttr() throws Exception{
+        //should thor exception while trying to add duplicated attentity
+        cm.getCategoryById("2").addAttribute(new AttributeEntity("cat2_2"));
+ 
+    }
+
+    @Test
     public void testExampleData() {
         assertNull(cm.getCategoryById("9999999"));
 

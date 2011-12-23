@@ -4,6 +4,8 @@
  */
 package net.bujko.tablica.be.dao;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
 import net.bujko.tablica.be.categs.CategoryManager;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,6 +33,7 @@ public class AdDaoImplTest {
     @Autowired
     CategoryManager cm;
     Category c01, c1, c11;
+    String attChoiceId, attChoiceId2, choiceId, choiceId2;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -49,6 +52,10 @@ public class AdDaoImplTest {
         c01 = cm.getCategoryById("0.1");
         c1 = cm.getCategoryById("1");
         c11 = cm.getCategoryById("11");
+        attChoiceId = UUID.randomUUID().toString();
+        choiceId = "choice_" + attChoiceId;
+        attChoiceId2 = UUID.randomUUID().toString();
+        choiceId2 = "choice2_" + attChoiceId2;
 
     }
 
@@ -58,7 +65,6 @@ public class AdDaoImplTest {
     @Test
     public void testSave() throws Exception {
 
-//        c11 = cm.getCategoryById("11");
         assertNotNull(c11);
 
         String hashId = UUID.randomUUID().toString();
@@ -67,6 +73,12 @@ public class AdDaoImplTest {
         ad.setTitle("title_" + hashId);
         ad.setDescription("description_" + hashId);
         ad.addCategory(c11);
+
+        Map<String, String> mAttChoices = new HashMap<String, String>();
+        mAttChoices.put(attChoiceId, choiceId);
+        mAttChoices.put(attChoiceId2, choiceId2);
+        ad.addChoices(mAttChoices);
+
         adDao.save(ad);
 
 
@@ -81,7 +93,7 @@ public class AdDaoImplTest {
         assertTrue(ad.getAssignedCategories().contains(c11));
         assertTrue(ad.getAssignedCategories().contains(c1));
         assertTrue(ad.getAssignedCategories().contains(c01));
-
+        assertEquals(mAttChoices, ad.getChoices());
 
         assertEquals(1, adDao.listAll().size());
     }

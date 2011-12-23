@@ -52,6 +52,8 @@ public class Attribute {
     protected String label;
     @XmlAttribute(required = true)
     protected String catId;
+    @XmlAttribute(required = true)
+    protected String id;    
 
     /**
      * Gets the value of the choice property.
@@ -128,6 +130,14 @@ public class Attribute {
      */
     public void setCatId(String value) {
         this.catId = value;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 }
