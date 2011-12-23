@@ -17,6 +17,8 @@ import java.util.TreeSet;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
+import net.bujko.tablica.be.categs.binding.atts.AllAtts;
+import net.bujko.tablica.be.categs.binding.atts.Attribute;
 import net.bujko.tablica.be.dao.CategoryDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +68,17 @@ public class CategoryManager implements InitializingBean {
             }
         }
 
+       
+       context = JAXBContext.newInstance(
+                "net.bujko.tablica.be.categs.binding.atts");
+        unmarshaller = context.createUnmarshaller();
+        AllAtts allAtts = (AllAtts) unmarshaller.unmarshal(getClass().getClassLoader().getResourceAsStream("attributes.xml"));
+List<Attribute> listOfAtts= allAtts.getAttribute(); 
+        
+        
+        
+        
+        
         logger.info("{} is up. Categories loaded: {}", this.getClass().getName(), allCategsById.size());
     }
 
