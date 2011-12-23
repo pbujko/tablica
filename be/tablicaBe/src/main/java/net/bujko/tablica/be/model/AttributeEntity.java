@@ -16,7 +16,7 @@ import net.bujko.tablica.be.categs.binding.atts.Choice;
 public class AttributeEntity {
 
     private Collection<AttributeChoiceEntity> choices = new HashSet<AttributeChoiceEntity>();
-    private String id, label;
+    private String id, label, code;
     Category parentCat;
 
     public AttributeEntity(String id) {
@@ -26,6 +26,7 @@ public class AttributeEntity {
     public AttributeEntity(net.bujko.tablica.be.categs.binding.atts.Attribute bindingAtt) throws Exception {
         this.label = bindingAtt.getLabel();
         this.id = bindingAtt.getId();
+        this.code = bindingAtt.getCode();
 
         for (Choice tmpChoice : bindingAtt.getChoice()) {
             AttributeChoiceEntity ace = new AttributeChoiceEntity(tmpChoice);
@@ -56,6 +57,10 @@ public class AttributeEntity {
         this.parentCat = parentCat;
     }
 
+    public String getCode() {
+        return code;
+    }
+        
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

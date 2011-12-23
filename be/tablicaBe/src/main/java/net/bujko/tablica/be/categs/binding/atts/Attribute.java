@@ -4,8 +4,6 @@
 // Any modifications to this file will be lost upon recompilation of the source schema. 
 // Generated on: 2011.12.23 at 12:19:46 AM GMT 
 //
-
-
 package net.bujko.tablica.be.categs.binding.atts;
 
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 
 /**
  * <p>Java class for anonymous complex type.
@@ -53,7 +50,9 @@ public class Attribute {
     @XmlAttribute(required = true)
     protected String catId;
     @XmlAttribute(required = true)
-    protected String id;    
+    protected String id;
+    @XmlAttribute(required = true)
+    protected String code;
 
     /**
      * Gets the value of the choice property.
@@ -140,4 +139,11 @@ public class Attribute {
         this.id = id;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

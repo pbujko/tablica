@@ -25,9 +25,9 @@
 
       
         <g:each in="${searchCat.attributes}">
-          <g:select name="att|${it.id}"
+          <g:select name="att|${it.code}"
                     from="${it.choices}"
-                    optionKey="id"
+                    optionKey="code"
                     optionValue="label"
                     noSelection="['':'--'+it.label+'--']"
                     onChange=""

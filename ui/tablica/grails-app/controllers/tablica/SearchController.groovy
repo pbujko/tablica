@@ -19,8 +19,9 @@ class SearchController {
         params.findAll(){            
             it.key.startsWith('att|') && it.value            
         }.each(){            
-            attsUrl = attsUrl + "${it.key.substring(4)}-${it.value}|"
+            attsUrl = attsUrl + "|${it.key.substring(4)}-${it.value}"
         }
+        attsUrl=attsUrl.substring(1)
         println ">>${attsUrl}<<"
         
         redirect(mapping:'search', params:[topCat:params.topCat, code:params.catCode, otherParams:attsUrl])

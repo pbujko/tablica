@@ -11,14 +11,15 @@ import net.bujko.tablica.be.categs.binding.atts.Choice;
  * @author pbujko
  */
 public class AttributeChoiceEntity {
-    private String id, label;
 
-    AttributeChoiceEntity(Choice choice){
+    private String id, label, code;
+
+    AttributeChoiceEntity(Choice choice) {
         this.id = choice.getId();
         this.label = choice.getLabel();
-    
+        this.code = choice.getCode();
     }
-    
+
     public String getId() {
         return id;
     }
@@ -33,6 +34,16 @@ public class AttributeChoiceEntity {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getCode() {
+        if(code==null || code.isEmpty())
+            return this.label.toLowerCase().replace(' ', '_');
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override
@@ -61,7 +72,4 @@ public class AttributeChoiceEntity {
     public String toString() {
         return "AttributeChoiceEntity{" + "id=" + id + '}';
     }
-    
-    
-    
 }

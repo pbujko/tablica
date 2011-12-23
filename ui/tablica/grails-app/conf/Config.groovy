@@ -88,5 +88,5 @@ log4j = {
 
     warn   'org.mortbay.log'
 
-debug 'net.bujko'    
+info 'net.bujko'    
 }

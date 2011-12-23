@@ -42,6 +42,8 @@ public class Choice {
     protected String label;
     @XmlAttribute(required = true)
     protected String id;
+    @XmlAttribute(required = false)
+    protected String code;
 
     /**
      * Gets the value of the label property.
@@ -89,6 +91,14 @@ public class Choice {
      */
     public void setId(String value) {
         this.id = value;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
 }

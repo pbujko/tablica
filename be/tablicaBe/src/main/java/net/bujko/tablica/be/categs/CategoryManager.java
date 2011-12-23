@@ -20,6 +20,7 @@ import javax.xml.bind.Unmarshaller;
 import net.bujko.tablica.be.categs.binding.atts.AllAtts;
 import net.bujko.tablica.be.categs.binding.atts.Attribute;
 import net.bujko.tablica.be.dao.CategoryDao;
+import net.bujko.tablica.be.model.AttributeChoiceEntity;
 import net.bujko.tablica.be.model.AttributeEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,8 @@ public class CategoryManager implements InitializingBean {
     private Map<String, Category> allCategsByCode;
     private Set<Category> topLevelCats = new TreeSet<Category>();
     // attributeId -> attributeEntity
-    final private Map<String, AttributeEntity> allAttEns = new HashMap<String, AttributeEntity>();
+    private Map<String, AttributeEntity> allAttEntityById;
+    private Map<String, AttributeChoiceEntity> allAttChoiceEntById;
     Logger logger = LoggerFactory.getLogger(CategoryManager.class);
     @Autowired
     CategoryDao categoryDao;
@@ -49,8 +51,8 @@ public class CategoryManager implements InitializingBean {
 
         allCategsById = new HashMap<String, Category>();
         allCategsByCode = new HashMap<String, Category>();
-
-
+        allAttEntityById = new HashMap<String, AttributeEntity>();
+        allAttChoiceEntById = new HashMap<String, AttributeChoiceEntity>();
         JAXBContext context = JAXBContext.newInstance(
                 "net.bujko.tablica.be.categs.binding.categs");
         Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -78,13 +80,30 @@ public class CategoryManager implements InitializingBean {
         AllAtts allAtts = (AllAtts) unmarshaller.unmarshal(getClass().getClassLoader().getResourceAsStream("attributes.xml"));
 
         for (Attribute tmpA : allAtts.getAttribute()) {
-                
+
             AttributeEntity ae = new AttributeEntity(tmpA);
-            if(allAttEns.containsValue(ae))
-                throw new Exception("DUPLICATED AE: " +ae);
-            
-            ae.setParentCat(this.allCategsById.get(tmpA.getCatId()));
+            logger.trace("processing {}", ae);
+            logger.trace("allAttEntityById is: {}", allAttEntityById);
+            if (allAttEntityById.containsValue(ae)) {
+                throw new Exception("DUPLICATED_ATTENT: " + ae);
+            }
+
+            for (AttributeChoiceEntity ache : ae.getChoices()) {
+                if (this.allAttChoiceEntById.containsValue(ache)) {
+                    throw new Exception("DUPL_ATTCHOENT: " + ache);
+                }
+                allAttChoiceEntById.put(ache.getId(), ache);
+            }
+
+            allAttEntityById.put(ae.getId(), ae);
+
+            Category tmpC = this.allCategsById.get(tmpA.getCatId());
+            if (tmpC == null) {
+                throw new Exception("UNKATTRCAT: " + tmpA.getCatId());
+            }
+            ae.setParentCat(tmpC);
             ae.getParentCat().addAttribute(ae);
+            logger.trace("adding to allAttEntityById: {}", ae);
         }
 
         logger.info("{} is up. Categories loaded: {}", this.getClass().getName(), allCategsById.size());
