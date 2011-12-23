@@ -4,8 +4,8 @@
  */
 package net.bujko.tablica.be.categs;
 
+import java.util.Iterator;
 import org.junit.Ignore;
-import net.bujko.tablica.be.model.Category;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,9 +55,19 @@ public class CategoryManagerTest {
         assertEquals(3, cm.getTopLevelCategories().size());
 
         //top level cats are 0.1, 0.2, 0.3
-        assertTrue(cm.getTopLevelCategories().contains( cm.getCategoryById("0.1") ));
+        assertTrue(cm.getTopLevelCategories().contains(cm.getCategoryById("0.1")));
         assertTrue(cm.getTopLevelCategories().contains(cm.getCategoryById("0.2")));
         assertTrue(cm.getTopLevelCategories().contains(cm.getCategoryById("0.3")));
+
+        //top level sorted 0.2, 0.1, 0.3
+        Iterator i = cm.getTopLevelCategories().iterator();
+        assertEquals(cm.getCategoryById("0.2"), i.next());
+        assertEquals(cm.getCategoryById("0.1"), i.next());
+        assertEquals(cm.getCategoryById("0.3"), i.next());
+
+        i = cm.getChildCategories("1").iterator();
+        assertEquals(cm.getCategoryById("12"), i.next());
+        assertEquals(cm.getCategoryById("11"), i.next());
 
         //second level cats are 1,2,3
         assertEquals(cm.getCatsByDepth(2).size(), 3);

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import net.bujko.tablica.be.categs.Node;
+import net.bujko.tablica.be.categs.binding.categs.Node;
 
 /**
  * klasa owija Node, AllNodes ktore sa generowane automatycznie przez JAXB.
@@ -28,7 +28,7 @@ public class Category implements Comparable {
 //    @Column(name="cat_id")
     private String id;
 //    @Column
-    private String label, code;
+    private String label, code, order = "999";
     private int depth;
 //    @Transient
     final private List<Category> childCategories = new ArrayList<Category>();
@@ -46,10 +46,12 @@ public class Category implements Comparable {
         this.label = n.getLabel();
         this.id = n.getId();
         this.code = n.getCode();
+        if (n.getOrder() != null) {
+            this.order = n.getOrder();
+        }
     }
 
     public List<Category> getChildCategories() {
-
         return childCategories;
     }
 
@@ -146,6 +148,12 @@ public class Category implements Comparable {
         if (this.getLabel() == null || ((Category) t).getLabel() == null) {
             return -1;
         }
+        
+        int retVal = 0;
+        retVal = this.order.compareToIgnoreCase(((Category) t).order);
+        if(retVal != 0)
+            return retVal;
+
         return this.getLabel().compareToIgnoreCase(((Category) t).getLabel());
     }
 }

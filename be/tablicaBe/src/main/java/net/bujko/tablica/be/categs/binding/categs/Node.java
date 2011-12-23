@@ -6,7 +6,7 @@
 //
 
 
-package net.bujko.tablica.be.categs;
+package net.bujko.tablica.be.categs.binding.categs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +52,8 @@ public class Node {
     protected String id;
     @XmlAttribute(required = true)
     protected String code;
+    @XmlAttribute(required = false)
+    protected String order;
 
     
     
@@ -149,7 +151,15 @@ public class Node {
 
     public void setCode(String code) {
         this.code = code;
-    } 
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
     
 
     @Override

@@ -4,6 +4,8 @@
  */
 package net.bujko.tablica.be.categs;
 
+import net.bujko.tablica.be.categs.binding.categs.AllNodes;
+import net.bujko.tablica.be.categs.binding.categs.Node;
 import java.util.Collection;
 import net.bujko.tablica.be.model.Category;
 import java.util.HashMap;
@@ -45,9 +47,8 @@ public class CategoryManager implements InitializingBean {
 
 
         JAXBContext context = JAXBContext.newInstance(
-                "net.bujko.tablica.be.categs");
+                "net.bujko.tablica.be.categs.binding.categs");
         Unmarshaller unmarshaller = context.createUnmarshaller();
-
 
         //load nodes from config, build in memory Category tree
         //AllNodes allnodes = (AllNodes) unmarshaller.unmarshal(new FileReader("/Users/pbujko/NetBeansProjects/tablica/be/tablicaBe/src/test/resources/nodesData.xml"));

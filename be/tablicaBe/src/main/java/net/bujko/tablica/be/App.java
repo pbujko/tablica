@@ -6,9 +6,9 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import net.bujko.tablica.be.categs.AllNodes;
+import net.bujko.tablica.be.categs.binding.categs.AllNodes;
 import net.bujko.tablica.be.categs.CategoryManager;
-import net.bujko.tablica.be.categs.Node;
+import net.bujko.tablica.be.categs.binding.categs.Node;
 
 /**
  * Hello world!

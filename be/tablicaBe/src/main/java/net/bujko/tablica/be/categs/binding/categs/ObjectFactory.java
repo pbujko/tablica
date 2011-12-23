@@ -6,8 +6,10 @@
 //
 
 
-package net.bujko.tablica.be.categs;
+package net.bujko.tablica.be.categs.binding.categs;
 
+import net.bujko.tablica.be.categs.binding.categs.AllNodes;
+import net.bujko.tablica.be.categs.binding.categs.Node;
 import javax.xml.bind.annotation.XmlRegistry;
 
 

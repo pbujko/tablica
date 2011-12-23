@@ -6,8 +6,9 @@
 //
 
 
-package net.bujko.tablica.be.categs;
+package net.bujko.tablica.be.categs.binding.categs;
 
+import net.bujko.tablica.be.categs.binding.categs.Node;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
