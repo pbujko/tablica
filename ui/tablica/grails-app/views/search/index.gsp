@@ -19,7 +19,6 @@
 
       <g:if test="${searchCat.attributes}">
         <g:form name="catAttsSelect" action="redir" id="1">
-          <g:hiddenField name="topCat" value="${params.topCat}" />
           <g:hiddenField name="catCode" value="${searchCat.code}" />
 
           <g:each in="${searchCat.attributes}">

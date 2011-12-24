@@ -19,7 +19,7 @@
       <g:each in="${cats}">
         <li>
 
-        <g:link mapping="search" params="[topCat:parentCat.code, code:it.code]">${it.label} (${application.searchStats['adsPerCat_'+it.id]})</g:link>
+        <g:link mapping="search" params="[ code:it.code]">${it.label} (${application.searchStats['adsPerCat_'+it.id]})</g:link>
         [id: ${it.id},  code: ${it.code}]
         </li>
 

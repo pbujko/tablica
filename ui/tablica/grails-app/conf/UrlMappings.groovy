@@ -16,7 +16,7 @@ class UrlMappings {
                    
                }
 
-               name search: "/ogloszenia/$topCat/$code/$atts?"{
+               name search: "/szukaj/$code/$atts?"{
                    controller= "search"
                    action="index"
                    
