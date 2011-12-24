@@ -17,25 +17,23 @@
     <h2>wybrana ${searchCat.label} [id: ${searchCat.id}, code: ${searchCat.code}]</h2>
     <div>
 
-
       <g:if test="${searchCat.attributes}">
-  <g:form name="myForm" action="redir" id="1">
-        <g:hiddenField name="topCat" value="${params.topCat}" />
-    <g:hiddenField name="catCode" value="${searchCat.code}" />
+        <g:form name="catAttsSelect" action="redir" id="1">
+          <g:hiddenField name="topCat" value="${params.topCat}" />
+          <g:hiddenField name="catCode" value="${searchCat.code}" />
 
-      
-        <g:each in="${searchCat.attributes}">
-          <g:select name="att|${it.code}"
-                    from="${it.choices}"
-                    optionKey="code"
-                    optionValue="label"
-                    noSelection="['':'--'+it.label+'--']"
-                    onChange=""
-                    />
-        </g:each>
-    <g:submitButton name="update" value="Update" />
-
-  </g:form>
+          <g:each in="${searchCat.attributes}">
+            <g:select name="att|${it.code}"
+                      from="${it.choices}"
+                      optionKey="code"
+                      optionValue="label"
+                      value="${params.choicesSelected[it.code]?.code}"
+                      noSelection="['':'--'+it.label+'--']"
+                      onChange="document.forms['catAttsSelect'].submit();"
+                      />
+        
+          </g:each>
+        </g:form>
 
       </g:if>
 

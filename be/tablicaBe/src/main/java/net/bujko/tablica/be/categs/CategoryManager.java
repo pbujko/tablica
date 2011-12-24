@@ -196,6 +196,20 @@ public class CategoryManager implements InitializingBean {
         return retS;
     }
 
+    public AttributeChoiceEntity getChoiceById(String choiceId) {
+        return this.allAttChoiceEntById.get(choiceId);
+    }
+
+    public AttributeChoiceEntity getChoiceByCode(String choiceCode) {
+        for (AttributeChoiceEntity ch : this.allAttChoiceEntById.values()) {
+            if (ch.getCode().equals(choiceCode)) {
+                return ch;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         init();
