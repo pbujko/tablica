@@ -210,6 +210,15 @@ public class CategoryManager implements InitializingBean {
         return null;
     }
 
+    public AttributeEntity getAttributeByCode(String code) {
+        for (AttributeEntity ea : this.allAttEntityById.values()) {
+            if (ea.getCode().equals(code)) {
+                return ea;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         init();

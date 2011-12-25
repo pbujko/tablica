@@ -32,6 +32,7 @@ class BootStrap {
         ad.setTitle("Mercedesa")
         ad.setHashedId("---1---1--asd-")      
         ad.addCategory(categoryManager.getCategoryById("1.1"))
+        ad.addChoice("cat1_1", "1_1")
         adDao.save(ad)        
         
         ad = new Ad()       

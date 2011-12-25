@@ -6,7 +6,7 @@
   </head>
   <body>
 
-    <h1>top categs</h1>
+    <h1>Strona glowna</h1>
     <ul>
       <g:each in="${categoryManager.topLevelCategories}">
         <li><g:link mapping="subcategs" params="[parentCode:it.code]">${it.label} (${application.searchStats['adsPerCat_'+it.id]})</g:link></li>

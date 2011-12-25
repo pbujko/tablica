@@ -12,12 +12,12 @@
     <attribute catId="1.1" id="cat2_1" label="Paliwo" code="paliwo">
         <choice label="diesel" id="2_1"/>
         <choice label="benzyna" id="2_2"/>
-        <choice label="test śĄłŁąóŚ" id="2_3"/>
+        <choice label="test śĄłŁąóŚ" id="2_3" code="tes21"/>
     </attribute>
     
     <attribute catId="1.2" id="cat2_2" label="Kolor plandeki" code="kolor_plandeki">
-        <choice label="Różowa" id="2_1_1"/>
+        <choice label="Różowa" id="2_1_1" code="rozowa"/>
         <choice label="Zielona" id="2_2_2"/>
-        <choice label="Pomarańczowa" id="2_2_3"/>
+        <choice label="Pomarańczowa" id="2_2_3" code="pomaranczowa"/>
     </attribute>    
 </allAtts>

@@ -9,23 +9,32 @@ class SearchController {
     def index() {
         print "search: ${params}"
 
+        def searchQParams=[:]
+        
         def choicesSelected = [:]
         if(params.atts){
 
             params.atts.tokenize(ATTS_SEPARATOR).each(){
-                println "${it},"
+                
                 def attChoiceCode = it.tokenize(ATTS_KEYVAL_SEPARATOR)[1]
                 def attCode = it.tokenize(ATTS_KEYVAL_SEPARATOR)[0]
-                def attChoice = categoryManager.getChoiceByCode(attChoiceCode) 
-                print "${attChoiceCode} -> ${attChoice} ,${attCode}"
+                def attChoice = categoryManager.getChoiceByCode(attChoiceCode)
+                def tmpAtt = categoryManager.getAttributeByCode(attCode)
+                
                 choicesSelected[attCode] = attChoice
+                searchQParams['attChoice'+attCode]=  tmpAtt.id+"|"+attChoice.id
             }
 
         }        
         params['choicesSelected'] = choicesSelected
-        def searchCat = categoryManager.getCategoryByCode(params.code)
-        def searchQ = searchDao.buildQuery("cat":searchCat.id)        
         
+        def searchCat = categoryManager.getCategoryByCode(params.code)
+        
+        searchQParams.cat = searchCat.id
+//        def searchQ = searchDao.buildQuery("cat":searchCat.id)   
+
+        def searchQ = searchDao.buildQuery(searchQParams)        
+        println searchQ
         [searchCat:searchCat, res:searchDao.search(searchQ)]
     }
     
