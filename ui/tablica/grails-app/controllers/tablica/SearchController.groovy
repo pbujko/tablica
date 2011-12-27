@@ -59,7 +59,9 @@ class SearchController {
     }
     
     def recent(){
-        [res:adService.listRecent(0,10)]
+        def offset =  params.offset? params.offset as int:0
+        
+        [res:adService.listRecent(offset,5), total:adService.getTotalNumberOfRecent()]
     }
     
     def redir() {    
