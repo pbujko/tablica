@@ -5,4 +5,8 @@ class AdService {
     def listRecent(from, limit) {
         adDao.listRecent(from, limit)
     }
+    
+    def getTotalNumberOfRecent(){
+        adDao.listRecent(0, 1000).size()
+    }
 }
