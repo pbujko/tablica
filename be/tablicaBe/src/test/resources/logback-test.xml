@@ -8,7 +8,7 @@
   <logger name="org.springframework" level="info"/>
   <logger name="org.hibernate" level="WARN"/>
 
-  <root level="info">
+  <root level="debug">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

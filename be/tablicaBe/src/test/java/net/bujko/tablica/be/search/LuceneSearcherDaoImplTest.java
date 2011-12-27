@@ -63,7 +63,7 @@ public class LuceneSearcherDaoImplTest {
     public void testAddSearch() throws Exception {
         String adId1 = new Random().nextInt(5678) + "";
         String hashedId1 = "hashedId_" + adId1;
-        String title1 = "title_" + adId1;
+        String title1 = "ad1 Title " + adId1;
         String description1 = "description for " + adId1;
 
         Category c1 = cm.getCategoryById("1");
@@ -145,23 +145,24 @@ public class LuceneSearcherDaoImplTest {
 
 
         //finds nothing
-        res = searchDaoInstance.search(c1.getId() + " AND " + c2.getId());
+        res = searchDaoInstance.search("cat:"+c1.getId() + " AND cat:" + c2.getId());
         assertEquals(0, res.size());
 
 
         //searching by cart2 returns item2
-        res = searchDaoInstance.search(c2.getId());
+        res = searchDaoInstance.search("cat:"+c2.getId());
         assertEquals(1, res.size());
         Ad si2 = res.get(0);
         assertEquals(itemId2, si2.getId());
 
         //returns two items
-        res = searchDaoInstance.search(c1.getId() + " OR " + c2.getId());
+        /*
+        res = searchDaoInstance.search("cat:"+c1.getId() + " OR cat:" + c2.getId());
         assertEquals(2, res.size());
 
         assertEquals(adId1, res.get(0).getId());
         assertEquals(itemId2, res.get(1).getId());
-
+*/
 //        searchDaoInstance.rebuild();
 
         /**
@@ -213,6 +214,23 @@ public class LuceneSearcherDaoImplTest {
         assertEquals(adId3, adFound1.getId());
 
 
+        //szukanie po cat1 i phrase zwraca ad1
+        m = new HashMap<String, String>();
+        m.put("cat", c1.getId());
+        m.put("phrase", "ad1");
+        res = searchDaoInstance.search(searchDaoInstance.buildQuery(m));
+        assertEquals(1, res.size());
+        adFound1 = res.get(0);
+        assertEquals(adId1, adFound1.getId());
+
+
+
+
+        //szukanie po cat1, atrybutach od ad1 i phrase od ad1 tez zwraca tylko ad1
+
+        //szukanie po phrase (bez cat) zwraca ad1
+
+
     }
 
     @Test
@@ -221,11 +239,11 @@ public class LuceneSearcherDaoImplTest {
         String catName = UUID.randomUUID() + "";
         params.put(ISearcherDao.FIELD_CAT_NAME, catName);
 
-        assertEquals(ISearcherDao.FIELD_CAT_NAME + ":\"" + catName + "\"", searchDaoInstance.buildQuery(params));
+        assertEquals("+"+ISearcherDao.FIELD_CAT_NAME + ":\"" + catName + "\"", searchDaoInstance.buildQuery(params));
     }
 
     @Test
-    public void testuildQueryCatAndAtts() {
+    public void testuildQueryCatAndAttsAndPhrase() {
         Map<String, String> params = new LinkedHashMap<String, String>();
         String catName = UUID.randomUUID() + "";
         params.put(ISearcherDao.FIELD_CAT_NAME, catName);
@@ -236,8 +254,12 @@ public class LuceneSearcherDaoImplTest {
 
         String attChoice2 = "attId2|choiceId2";
         params.put("attChoice2", attChoice2);
-        assertEquals(ISearcherDao.FIELD_CAT_NAME + ":\"" + catName + "\" "
-                + "AND attChoice:\"" + attChoice1 + "\" AND attChoice:\"" + attChoice2 + "\"",
+
+        params.put("phrase", "phrase" + catName);
+        assertEquals("+"+ISearcherDao.FIELD_CAT_NAME + ":\"" + catName + "\""
+                + " AND ( title:" + ("phrase" + catName+"*")
+                + " description:" + ("phrase" + catName+"*)")
+                + " AND +attChoice:\"" + attChoice1 + "\" AND +attChoice:\"" + attChoice2 + "\"",
                 searchDaoInstance.buildQuery(params));
     }
 }

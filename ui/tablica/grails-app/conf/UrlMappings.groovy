@@ -22,6 +22,12 @@ class UrlMappings {
                    
                }
 
+               name searchByPhrase: "/q/$catCode?/$phrase"{
+                   controller= "search"
+                   action="byPhrase"
+                   
+               }
+
         
                name adDetails: "/ogloszenie/${niewazneCo}_$id?"{
                     controller = "ad"

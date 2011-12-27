@@ -17,10 +17,11 @@
     <h2>wybrana ${searchCat.label} [id: ${searchCat.id}, code: ${searchCat.code}]</h2>
     <div>
 
-      <g:if test="${searchCat.attributes}">
+
         <g:form name="catAttsSelect" action="redir" id="1">
           <g:hiddenField name="catCode" value="${searchCat.code}" />
-
+          <g:textField name="q" value="${params.q}" /><br />      
+      <g:if test="${searchCat.attributes}">
           <g:each in="${searchCat.attributes}">
             <g:select name="att|${it.code}"
                       from="${it.choices}"
@@ -32,9 +33,10 @@
                       />
         
           </g:each>
-        </g:form>
-
+        
       </g:if>
+
+        </g:form>
 
 
 
