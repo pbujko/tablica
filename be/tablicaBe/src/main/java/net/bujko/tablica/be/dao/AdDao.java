@@ -23,4 +23,7 @@ public interface AdDao {
     Ad findById(String id) throws Exception;
     
     List<Ad> listAll() throws Exception;
+    
+    List<Ad> listRecent(int from, int limit) throws Exception;
+    
 }

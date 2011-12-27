@@ -218,7 +218,7 @@ public class CategoryManager implements InitializingBean {
         }
         return null;
     }
-
+    
     @Override
     public void afterPropertiesSet() throws Exception {
         init();

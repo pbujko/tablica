@@ -7,6 +7,7 @@ package net.bujko.tablica.be.search;
 import net.bujko.tablica.be.model.Ad;
 import java.util.List;
 import java.util.Map;
+import net.bujko.tablica.be.model.Category;
 
 /**
  *
@@ -29,6 +30,9 @@ public interface ISearcherDao {
     public void rebuild() throws Exception;
 
     public String buildQuery(Map<String, String> params);
+            
+    Map<Category, Integer> extractCategories(List<Ad> ads);    
+
     
     /**
      * zwraca status indeksu

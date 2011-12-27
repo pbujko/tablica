@@ -4,6 +4,7 @@
  */
 package net.bujko.tablica.be.search;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import javax.sql.DataSource;
 import net.bujko.tablica.be.categs.CategoryManager;
@@ -155,14 +156,6 @@ public class LuceneSearcherDaoImplTest {
         Ad si2 = res.get(0);
         assertEquals(itemId2, si2.getId());
 
-        //returns two items
-        /*
-        res = searchDaoInstance.search("cat:"+c1.getId() + " OR cat:" + c2.getId());
-        assertEquals(2, res.size());
-
-        assertEquals(adId1, res.get(0).getId());
-        assertEquals(itemId2, res.get(1).getId());
-*/
 //        searchDaoInstance.rebuild();
 
         /**
@@ -229,6 +222,13 @@ public class LuceneSearcherDaoImplTest {
         //szukanie po cat1, atrybutach od ad1 i phrase od ad1 tez zwraca tylko ad1
 
         //szukanie po phrase (bez cat) zwraca ad1
+        m = new HashMap<String, String>();
+
+        m.put("phrase", "ad1");
+        res = searchDaoInstance.search(searchDaoInstance.buildQuery(m));
+        assertEquals(1, res.size());
+        adFound1 = res.get(0);
+        assertEquals(adId1, adFound1.getId());
 
 
     }
@@ -261,5 +261,28 @@ public class LuceneSearcherDaoImplTest {
                 + " description:" + ("phrase" + catName+"*)")
                 + " AND +attChoice:\"" + attChoice1 + "\" AND +attChoice:\"" + attChoice2 + "\"",
                 searchDaoInstance.buildQuery(params));
+    }
+    
+    @Test
+    public void testextractCategories() throws Exception{
+    List<Ad> l = new ArrayList<Ad>();
+    Ad ad1=new Ad();
+    ad1.addCategory(cm.getCategoryById("1"));
+    l.add(ad1);
+    
+    Ad ad2=new Ad();
+    ad2.addCategory(cm.getCategoryById("2"));
+    l.add(ad2);
+    
+    Ad ad3=new Ad();
+    ad3.addCategory(cm.getCategoryById("1"));
+    l.add(ad3);
+    
+assertEquals(2,     searchDaoInstance.extractCategories(l).size());
+assertEquals(new Integer(2),
+searchDaoInstance.extractCategories(l).get(cm.getCategoryById("1")));
+
+assertEquals(new Integer(1),
+searchDaoInstance.extractCategories(l).get(cm.getCategoryById("2")));
     }
 }

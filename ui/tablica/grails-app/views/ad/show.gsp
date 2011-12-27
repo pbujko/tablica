@@ -9,10 +9,12 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>show ad</title>
+        <meta name="layout" content="main" />
+
   </head>
   <body>
-    <h1>show ad - ${ad.id}</h1>
-${ad.title}<br />
+    <h1>${ad.title}</h1>
+
     ${ad.description}
   </body>
 </html>

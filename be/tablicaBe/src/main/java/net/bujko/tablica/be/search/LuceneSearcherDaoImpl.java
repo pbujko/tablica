@@ -250,7 +250,10 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
 
 
         if (params.containsKey("phrase")) {
-            sb.append(" AND (");
+            if (sb.length() > 0) {
+                sb.append(" AND ");
+            }
+            sb.append("(");
             for (String word : params.get("phrase").split(" ")) {
                 sb.append(" ").append(FIELD_TITLE).append(":").append(word.toLowerCase()).append("*");
                 sb.append(" ").append(FIELD_DESCRIPTION).append(":").append(word.toLowerCase()).append("*");
@@ -307,5 +310,19 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
             logger.error("UPDSUMM", e);
         }
         logger.debug("end updating summary...");
+    }
+
+    @Override
+    public Map<Category, Integer> extractCategories(List<Ad> ads) {
+        Map<Category, Integer> retM = new HashMap<Category, Integer>();
+        for (Ad ad : ads) {
+            if (retM.containsKey(ad.getCategory())) {
+                retM.put(ad.getCategory(), retM.get(ad.getCategory()) + 1);
+            } else {
+                retM.put(ad.getCategory(), 1);
+            }
+        }
+
+        return retM;
     }
 }

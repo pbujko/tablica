@@ -8,23 +8,16 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Sec level</title>
+    <title>Sample title</title>
     <meta name="layout" content="main" />
 
   </head>
   <body>
-    <h1>Podkategorie w <i>${parentCat.label}</i></h1>
-
+    <h1>Najnowsze ogłoszenia</h1>
     <ul>
-      <g:each in="${cats}">
-        <li>
-
-        <g:link mapping="search" params="[ code:it.code]">${it.label} (${application.searchStats['adsPerCat_'+it.id]})</g:link>
-        </li>
-
+      <g:each in="${res}">
+        <li><g:link mapping="adDetails" params="[id:it.id, niewazneCo:it.title]">${it.title}</g:link></li>
       </g:each>
     </ul>
-
-
   </body>
 </html>

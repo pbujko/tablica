@@ -13,15 +13,13 @@
 
   </head>
   <body>
-    <h1>wyniki wyszukiwania</h1>
-    <h2>wybrana ${searchCat.label} [id: ${searchCat.id}, code: ${searchCat.code}]</h2>
-    <div>
-
-
-        <g:form name="catAttsSelect" action="redir" id="1">
-          <g:hiddenField name="catCode" value="${searchCat.code}" />
-          <g:textField name="q" value="${params.q}" /><br />      
-      <g:if test="${searchCat.attributes}">
+    <h1>Ogloszenia w <i>${searchCat.label}</i></h1>
+    
+   
+      <g:form name="catAttsSelect" action="redir" id="1">
+        <g:hiddenField name="catCode" value="${searchCat.code}" />
+        szukaj w '${searchCat.label}': <g:textField name="q" value="${params.q}" /><br />      
+        <g:if test="${searchCat.attributes}">
           <g:each in="${searchCat.attributes}">
             <g:select name="att|${it.code}"
                       from="${it.choices}"
@@ -31,21 +29,17 @@
                       noSelection="['':'--'+it.label+'--']"
                       onChange="document.forms['catAttsSelect'].submit();"
                       />
-        
-          </g:each>
-        
-      </g:if>
 
-        </g:form>
+          </g:each>
+        </g:if>
+      </g:form>
 
 
 
       <ul>
         <g:each in="${res}">
-
           <li>
           <g:link mapping="adDetails" params="[niewazneCo:it.title, id:it.id]" >${it.title}</g:link>
-          [${it.id}]
           </li>
         </g:each>
       </ul>

@@ -3,9 +3,12 @@ package tablica
 class SearchController {
     def searchDao
     def categoryManager
+    def adService        
+
     
     def ATTS_SEPARATOR='-'
     def ATTS_KEYVAL_SEPARATOR='.'
+    
     def index() {
         print "search: ${params}"
 
@@ -38,9 +41,27 @@ class SearchController {
         
         def searchQ = searchDao.buildQuery(searchQParams)        
         println searchQ
-        [searchCat:searchCat, res:searchDao.search(searchQ)]
+        [searchCat:searchCat, res:searchDao.search(searchQ), hideSearch:"aa"]
     }
-            
+
+    def byPhrase(){
+        def searchQParams=[:]
+
+        if(params.q){
+            searchQParams.phrase=params.q
+        }
+        
+        def searchQ = searchDao.buildQuery(searchQParams)        
+        println searchQ
+        def res=searchDao.search(searchQ);
+        [res:res, cats:searchDao.extractCategories(res)]
+        
+    }
+    
+    def recent(){
+        [res:adService.listRecent(0,10)]
+    }
+    
     def redir() {    
         println "redir ${params}"
         

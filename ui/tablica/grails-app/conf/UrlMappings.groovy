@@ -10,30 +10,42 @@ class UrlMappings {
 		"/"(controller:"index")
 		"500"(controller:"error")
         
-               name subcategs: "/ogloszenia/$parentCode"{
-                   controller= "index"
-                   action="secLevel"
+        name subcategs: "/ogloszenia/$parentCode"{
+            controller= "index"
+            action="secLevel"
                    
-               }
+        }
 
-               name search: "/szukaj/$code/$atts?"{
-                   controller= "search"
-                   action="index"
+        name searchPhrase: "/szukaj"{
+            controller= "search"
+            action="byPhrase"
                    
-               }
-
-               name searchByPhrase: "/q/$catCode?/$phrase"{
-                   controller= "search"
-                   action="byPhrase"
+        }
+               
+        name search: "/szukaj/$code/$atts?"{
+            controller= "search"
+            action="index"
                    
-               }
+        }
 
+        name searchByPhrase: "/q/$catCode?/$phrase"{
+            controller= "search"
+            action="byPhrase"
+                   
+        }
+
+
+        name searchRecent: "/najnowsze"{
+            controller= "search"
+            action="recent"
+                   
+        }        
         
-               name adDetails: "/ogloszenie/${niewazneCo}_$id?"{
-                    controller = "ad"
-                    action = "show"
+        name adDetails: "/ogloszenie/${niewazneCo}_$id?"{
+            controller = "ad"
+            action = "show"
                        
-                }
+        }
                 
         
                 

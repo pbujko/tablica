@@ -11,6 +11,7 @@
         <node label="Psy"       id="2.1"    code="psy"/>
         <node label="Koty"      id="2.2"    code="koty"/>
         <node label="Jeże"      id="2.3"    code="jeze"/>
+        <node label="Inne"      id="2.4"    code="zwierzaki-inne"/>
     </node>
     <node label="Dom i Ogród"   id="3" code="dom-i-ogrod">
         <node label="Meble"     id="3.1" code="meble"/>

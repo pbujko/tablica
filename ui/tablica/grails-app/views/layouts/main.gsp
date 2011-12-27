@@ -11,17 +11,21 @@
   <div id="spinner" class="spinner" style="display:none;">
     <img src="${resource(dir:'images',file:'spinner.gif')}" alt="${message(code:'spinner.alt',default:'Loading...')}" />
   </div>
+  <div id="head">
+    <g:link controller="index" >home</g:link><br />
+
+    <g:if test="${!hideSearch}">
+    <g:form name="searchByPhrase" controller="search" action="byPhrase" method="get">
+      szukaj w ogloszeniach: <g:textField name="q" value="${params.q}" /><br />
+    </g:form>
+    </g:if>
+  </div>
 
 <g:layoutBody />
 
-
+<hr/>
 <div id="footer">
-  <h4>Linki testowe</h4>
-  <g:link controller="index" >home</g:link><br />
-  <g:link mapping="adDetails" params="[id:'2', niewazneCo:'gazy-jelitowe']">szczegoly ogloszenia </g:link><br />
-  <g:link mapping="adDetails" params="[id:'2982', niewazneCo:'gazy-jelitowe']">szczegoly nieistniejacego ogloszenia </g:link>
-  <p>Total ads: ${application.searchStats.adsTotal}</p>
-  <p>ogonki test: śĄłŁąóŚ</p>          
+  Wszystkich ogłoszeń: ${application.searchStats.adsTotal}
 </div>
 
 </body>

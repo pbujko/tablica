@@ -2,10 +2,10 @@ package tablica
 
 class IndexController {
     def categoryManager
-    
+    def adService
     def index = {
-
-        [categoryManager:categoryManager]
+        
+        [categoryManager:categoryManager, recentAds:adService.listRecent(0,2)]
     }
     
     def secLevel={
