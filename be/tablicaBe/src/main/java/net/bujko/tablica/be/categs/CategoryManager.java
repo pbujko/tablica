@@ -4,9 +4,11 @@
  */
 package net.bujko.tablica.be.categs;
 
+import java.util.ArrayList;
 import net.bujko.tablica.be.categs.binding.categs.AllNodes;
 import net.bujko.tablica.be.categs.binding.categs.Node;
 import java.util.Collection;
+import java.util.Collections;
 import net.bujko.tablica.be.model.Category;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,9 +21,12 @@ import javax.xml.bind.Unmarshaller;
 
 import net.bujko.tablica.be.categs.binding.atts.AllAtts;
 import net.bujko.tablica.be.categs.binding.atts.Attribute;
+import net.bujko.tablica.be.city.binding.AllCities;
+import net.bujko.tablica.be.city.binding.City;
 import net.bujko.tablica.be.dao.CategoryDao;
 import net.bujko.tablica.be.model.AttributeChoiceEntity;
 import net.bujko.tablica.be.model.AttributeEntity;
+import net.bujko.tablica.be.model.CityEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -43,6 +48,7 @@ public class CategoryManager implements InitializingBean {
     // attributeId -> attributeEntity
     private Map<String, AttributeEntity> allAttEntityById;
     private Map<String, AttributeChoiceEntity> allAttChoiceEntById;
+    private Map<String, CityEntity> allCitiesById;
     Logger logger = LoggerFactory.getLogger(CategoryManager.class);
     @Autowired
     CategoryDao categoryDao;
@@ -53,6 +59,7 @@ public class CategoryManager implements InitializingBean {
         allCategsByCode = new HashMap<String, Category>();
         allAttEntityById = new HashMap<String, AttributeEntity>();
         allAttChoiceEntById = new HashMap<String, AttributeChoiceEntity>();
+        allCitiesById = new HashMap<String, CityEntity>();
         JAXBContext context = JAXBContext.newInstance(
                 "net.bujko.tablica.be.categs.binding.categs");
         Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -106,6 +113,16 @@ public class CategoryManager implements InitializingBean {
             logger.trace("adding to allAttEntityById: {}", ae);
         }
 
+
+        context = JAXBContext.newInstance(
+                "net.bujko.tablica.be.city.binding");
+        unmarshaller = context.createUnmarshaller();
+        AllCities allCities = (AllCities) unmarshaller.unmarshal(getClass().getClassLoader().getResourceAsStream("cities.xml"));
+        for (City city : allCities.getCity()) {
+            processCity(city, null);
+        }
+
+
         logger.info("{} is up. Categories loaded: {}", this.getClass().getName(), allCategsById.size());
     }
 
@@ -135,6 +152,28 @@ public class CategoryManager implements InitializingBean {
         for (Node tmpN : n.getNode()) {
             processNode(c, tmpN);
         }
+    }
+
+    void processCity(City city, City parentCity) throws Exception {
+
+        CityEntity ce = new CityEntity(city);
+        if (this.allCitiesById.containsValue(ce)) {
+            throw new Exception("DUPL_CITY: " + ce);
+        } else if (getCityByCode(ce.getCode()) != null) {
+            throw new Exception("DUPL_CITYCODE: " + ce);
+        } else {
+            this.allCitiesById.put(ce.getId(), ce);
+        }
+
+        if (parentCity != null) {
+            ce.setParentCityEntity(this.allCitiesById.get(parentCity.getId()));
+            this.allCitiesById.get(parentCity.getId()).addChildCity(ce);
+        }
+
+        for (City c : city.getCity()) {
+            processCity(c, city);
+        }
+
     }
 
     public Collection<Category> getAllCategories() {
@@ -174,7 +213,6 @@ public class CategoryManager implements InitializingBean {
     }
 
     public Set<Category> getTopLevelCategories() {
-
         return topLevelCats;
     }
 
@@ -218,7 +256,32 @@ public class CategoryManager implements InitializingBean {
         }
         return null;
     }
-    
+
+    public CityEntity getCityById(String c) {
+        return this.allCitiesById.get(c);
+    }
+
+    public CityEntity getCityByCode(String cCode) {
+        for (CityEntity ce : this.allCitiesById.values()) {
+            if (ce.getCode().equals(cCode)) {
+                return ce;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * gets random city,
+     * method mainly for test purposes
+     *  
+     * @return 
+     */
+    public CityEntity getRandomCity() {
+        List <CityEntity>rl = new ArrayList<CityEntity>(this.allCitiesById.values());
+        Collections.shuffle(rl);
+        return rl.get(0);
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         init();

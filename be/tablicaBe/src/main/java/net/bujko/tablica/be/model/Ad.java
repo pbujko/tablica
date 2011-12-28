@@ -19,6 +19,7 @@ public class Ad {
     //private Set<Category> assignedCategories = new HashSet<Category>();
     private Category category;
     private String description, id, hashedId, title;
+    private CityEntity city;
 //    private Collection<AttributeEntity> atts = new HashSet<AttributeEntity>();
     /**
      * jakie opcje zostaly wybrane z atrybutow
@@ -121,6 +122,14 @@ public class Ad {
 
     public Map<String, String> getChoices() {
         return this.choices;
+    }
+
+    public CityEntity getCity() {
+        return city;
+    }
+
+    public void setCity(CityEntity city) {
+        this.city = city;
     }
 
     @Override

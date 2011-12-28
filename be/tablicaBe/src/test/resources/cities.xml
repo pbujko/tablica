@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : cities.xml
+    Created on : December 28, 2011, 12:03 PM
+    Author     : pbujko
+    Description:
+        Purpose of the document follows.
+-->
+
+<allCities>
+    <city label="miasto numer 1" id="1" >
+        <city label="dzielnica w miescie 1.1" id="1.1" />
+        <city label="miasto numer 1.2" id="1.2" />
+    </city>      
+    <city label="miasto numer 2" id="2" />
+    <city label="miasto numer 3" id="3" />
+    <city label="miasto numer 4" id="4" />
+</allCities>

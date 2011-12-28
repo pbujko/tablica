@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.junit.runner.RunWith;
 import net.bujko.tablica.be.model.Ad;
 import net.bujko.tablica.be.model.Category;
+import net.bujko.tablica.be.model.CityEntity;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -34,6 +35,7 @@ public class AdDaoImplTest {
     CategoryManager cm;
     Category c01, c1, c11;
     String attChoiceId, attChoiceId2, choiceId, choiceId2;
+    CityEntity city;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -57,6 +59,8 @@ public class AdDaoImplTest {
         attChoiceId2 = UUID.randomUUID().toString();
         choiceId2 = "choice2_" + attChoiceId2;
 
+
+        city = cm.getRandomCity();
     }
 
     /**
@@ -78,12 +82,14 @@ public class AdDaoImplTest {
         mAttChoices.put(attChoiceId, choiceId);
         mAttChoices.put(attChoiceId2, choiceId2);
         ad.addChoices(mAttChoices);
-
+ad.setCity(city);
+        
         adDao.save(ad);
 
 
         System.out.println(String.format("saved, id %s", ad));
 
+        //load back
         Ad res =
                 adDao.findById(ad.getId());
         assertNotNull(res);
@@ -94,7 +100,7 @@ public class AdDaoImplTest {
         assertTrue(ad.getAssignedCategories().contains(c1));
         assertTrue(ad.getAssignedCategories().contains(c01));
         assertEquals(mAttChoices, ad.getChoices());
-
+assertEquals(city, ad.getCity());
         assertEquals(1, adDao.listAll().size());
     }
 }

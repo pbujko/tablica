@@ -19,5 +19,7 @@
         <li><g:link mapping="adDetails" params="[id:it.id, niewazneCo:it.title]">${it.title}</g:link></li>
       </g:each>
     </ul>
+    <g:paginate controller="search" action="recent" total="${total}" maxsteps="1" max="5" />
+
   </body>
 </html>

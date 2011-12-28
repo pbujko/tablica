@@ -10,10 +10,26 @@ class AdController {
         if(!ad)
             render(view: "noAd")
             
-    [ad: ad]
+        [ad: ad]
     }
     
     
+    
     def editView(){}
-    def editSave(){}
+    
+    def create(){}
+    def save(){    
+        println params
+        AdWrapper adW = new AdWrapper(params.title, params.email)
+        println adW
+        if(adW.validate())
+        render "ok"
+        else 
+       { render "boo "
+          adW.errors.allErrors.each {
+        println it
+    }
+        }
+       
+    }
 }
