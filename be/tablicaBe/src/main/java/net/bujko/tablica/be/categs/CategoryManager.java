@@ -12,6 +12,7 @@ import java.util.Collections;
 import net.bujko.tablica.be.model.Category;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class CategoryManager implements InitializingBean {
         allCategsByCode = new HashMap<String, Category>();
         allAttEntityById = new HashMap<String, AttributeEntity>();
         allAttChoiceEntById = new HashMap<String, AttributeChoiceEntity>();
-        allCitiesById = new HashMap<String, CityEntity>();
+        allCitiesById = new LinkedHashMap<String, CityEntity>();
         JAXBContext context = JAXBContext.newInstance(
                 "net.bujko.tablica.be.categs.binding.categs");
         Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -277,9 +278,13 @@ public class CategoryManager implements InitializingBean {
      * @return 
      */
     public CityEntity getRandomCity() {
-        List <CityEntity>rl = new ArrayList<CityEntity>(this.allCitiesById.values());
+        List<CityEntity> rl = new ArrayList<CityEntity>(this.allCitiesById.values());
         Collections.shuffle(rl);
         return rl.get(0);
+    }
+
+    public Collection<CityEntity> getAllCities() {
+        return this.allCitiesById.values();
     }
 
     @Override

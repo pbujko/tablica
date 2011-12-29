@@ -6,8 +6,9 @@ class SearchController {
     def adService        
 
     
-    def ATTS_SEPARATOR='-'
-    def ATTS_KEYVAL_SEPARATOR='.'
+    def ATTS_SEPARATOR='.'
+    def ATTS_KEYVAL_SEPARATOR='-'
+    def ATTS_CITY='city'
     
     def index() {
         print "search: ${params}"
@@ -15,18 +16,25 @@ class SearchController {
         def searchQParams=[:]
         
         def choicesSelected = [:]
+        def selectedCityCode
         if(params.atts){
 
             params.atts.tokenize(ATTS_SEPARATOR).each(){
-                                
+                                                
                 def attChoiceCode = it.tokenize(ATTS_KEYVAL_SEPARATOR)[1]
                 def attCode = it.tokenize(ATTS_KEYVAL_SEPARATOR)[0]
-                def attChoice = categoryManager.getChoiceByCode(attChoiceCode)
-                def tmpAtt = categoryManager.getAttributeByCode(attCode)
+                if(attCode == ATTS_CITY){                    
+                    searchQParams['city']=categoryManager.getCityByCode(attChoiceCode).id
+                    selectedCityCode=attChoiceCode
+                }                
+                else{
                 
-                choicesSelected[attCode] = attChoice
-                searchQParams['attChoice'+attCode]=  tmpAtt.id+"|"+attChoice.id                       
-                                
+                    def attChoice = categoryManager.getChoiceByCode(attChoiceCode)
+                    def tmpAtt = categoryManager.getAttributeByCode(attCode)
+                
+                    choicesSelected[attCode] = attChoice
+                    searchQParams['attChoice'+attCode]= tmpAtt.id+"|"+attChoice.id                       
+                }           
             }
 
         }        
@@ -40,8 +48,9 @@ class SearchController {
         }
         
         def searchQ = searchDao.buildQuery(searchQParams)        
-        println searchQ
-        [searchCat:searchCat, res:searchDao.search(searchQ), hideSearch:"aa"]
+        println searchQ       
+       
+        [searchCat:searchCat, res:searchDao.search(searchQ), hideSearch:"aa", allCities:categoryManager.getAllCities(), citySelected:selectedCityCode]
     }
 
     def byPhrase(){
@@ -73,6 +82,10 @@ class SearchController {
         }.each(){            
             attsUrl = attsUrl + ATTS_SEPARATOR+"${it.key.substring(4)}${ATTS_KEYVAL_SEPARATOR}${it.value}"
         }
+        
+        if(params.city != "0")
+        attsUrl = attsUrl + ATTS_SEPARATOR + ATTS_CITY +ATTS_KEYVAL_SEPARATOR + categoryManager.getCityById(params.city).code
+        
         if(attsUrl)
         attsUrl=attsUrl.substring(1)
         log.info(">>${attsUrl}<<")

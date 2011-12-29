@@ -83,6 +83,7 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
     
     @Override
     public synchronized void add(Ad ad) throws Exception {
+        logger.debug("add ad {}", ad);
         Document doc = new Document();
         doc.add(new Field(FIELD_ID, ad.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         doc.add(new Field(FIELD_HASHEDID, ad.getHashedId(), Field.Store.YES, Field.Index.NO));
@@ -91,7 +92,6 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
         doc.add(new Field(FIELD_DESCRIPTION, ad.getDescription().toLowerCase(), Field.Store.NO, Field.Index.ANALYZED));
         doc.add(new Field(FIELD_DESCRIPTION_STORE, ad.getDescription(), Field.Store.YES, Field.Index.NO));
         doc.add(new Field(FIELD_ASSIGNED_CAT, ad.getCategory().getId(), Field.Store.YES, Field.Index.NO));
-        
         
         for (Category c : ad.getAssignedCategories()) {
             doc.add(new Field(FIELD_CAT_NAME, c.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
@@ -103,8 +103,10 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
         }
         
         doc.add(new Field(FIELD_CITY, ad.getCity().getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        logger.debug("adding city {}", ad.getCity().getId());
         for (CityEntity c : ad.getCity().getAncestors()) {
             doc.add(new Field(FIELD_CITY, c.getId(), Field.Store.NO, Field.Index.NOT_ANALYZED));
+            logger.debug("addig city ancestor {}", c.getId());
         }
 
         //delete old
@@ -233,8 +235,10 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
             }
             
             doc.add(new Field(FIELD_CITY, ad.getCity().getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            logger.debug("adding city {}", ad.getCity().getId());            
             for (CityEntity c : ad.getCity().getAncestors()) {
                 doc.add(new Field(FIELD_CITY, c.getId(), Field.Store.NO, Field.Index.NOT_ANALYZED));
+                logger.debug("addig city ancestor {}", c.getId());
             }
             
             tmpWriter.addDocument(doc);

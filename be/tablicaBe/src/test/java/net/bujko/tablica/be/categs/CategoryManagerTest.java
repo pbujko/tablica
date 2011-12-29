@@ -140,6 +140,11 @@ public class CategoryManagerTest {
         assertEquals(cm.getCityById("1"), cm.getCityById("1.2").getParentCityEntity());
         assertEquals(1, cm.getCityById("1.2").getAncestors().size());
         assertEquals(0, cm.getCityById("1").getAncestors().size());
-        
+        assertEquals(0, cm.getCityById("1").getDepth());
+        assertEquals(0, cm.getCityById("2").getDepth());
+        assertEquals(0, cm.getCityById("3").getDepth());
+        assertEquals(0, cm.getCityById("4").getDepth());
+        assertEquals(1, cm.getCityById("1.1").getDepth());
+        assertEquals(1, cm.getCityById("1.2").getDepth());
     }
 }
