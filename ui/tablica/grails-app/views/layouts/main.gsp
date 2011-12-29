@@ -14,11 +14,8 @@
   <div id="head">
     <g:link controller="index" >home</g:link><br />
 
-    <g:if test="${!hideSearch}">
-    <g:form name="searchByPhrase" controller="search" action="byPhrase" method="get">
-      szukaj w ogloszeniach: <g:textField name="q" value="${params.q}" /><br />
-    </g:form>
-    </g:if>
+
+
   </div>
 
 <g:layoutBody />

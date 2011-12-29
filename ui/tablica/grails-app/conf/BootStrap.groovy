@@ -28,12 +28,12 @@ class BootStrap {
         }
                 
         Ad ad = new Ad()       
-        ad.setDescription("description ad cat 1.1")
+        ad.setDescription("niemiecka fura prima glanc pomada. oddam za piniondze niemałe")
         ad.setTitle("Mercedesa")
         ad.setHashedId("---1---1--asd-")      
         ad.addCategory(categoryManager.getCategoryById("1.1"))
         ad.addChoice("cat1_1", "1_1")
-        ad.setCity(categoryManager.getCityById("0"))
+        ad.setCity(categoryManager.getCityById("1"))
         adDao.save(ad)        
         
         ad = new Ad()       
@@ -65,7 +65,7 @@ class BootStrap {
         ad.setTitle("Kota mam")
         ad.setHashedId("-sfd-ssssssss-")
         ad.addCategory(categoryManager.getCategoryById("2.2"))
-        ad.setCity(categoryManager.getCityById("0"))
+        ad.setCity(categoryManager.getCityById("1"))
         adDao.save(ad)                  
         
         ad = new Ad()       
@@ -81,7 +81,7 @@ class BootStrap {
         ad.setDescription("sprzedaje bo sra po kątach")
         ad.setHashedId("-sfdkicicikcic-")
         ad.addCategory(categoryManager.getCategoryById("2.2"))
-        ad.setCity(categoryManager.getCityById("2.2"))
+        ad.setCity(categoryManager.getCityById("3"))
         adDao.save(ad)                                  
 
         //wolaj init jeszcze raz tylko dlatego, ze po automatycznym init baza jest kasowana przez powyzszy SQL.

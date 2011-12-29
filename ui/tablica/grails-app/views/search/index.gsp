@@ -19,11 +19,7 @@
   <g:form name="catAttsSelect" action="redir" id="1">
     <g:hiddenField name="catCode" value="${searchCat.code}" />
 
-    <select name="city" onChange="document.forms['catAttsSelect'].submit();">
-      <g:each in="${allCities}">
-        <option value="${it.id}" style="padding-left: ${it.depth * 5}px"  <g:if test="${it.code==citySelected}">selected="selected"</g:if>>${it.label}</option>
-      </g:each>
-    </select>
+  Lokalizacja: <g:render template="citiesDropDownTemplate" model="[allCities: allCities, citySelected:citySelected]" /><br />
 
 
     szukaj w '${searchCat.label}': <g:textField name="q" value="${params.q}" /><br />      

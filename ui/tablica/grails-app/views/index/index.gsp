@@ -6,6 +6,7 @@
   </head>
   <body>
 
+    <g:render template="/search/searchAllTemplate" model="[allCities: allCities, citySelected:citySelected]" /><br />    
     <h1>Strona główna</h1>
     <h3>Przeglądaj kategorie</h3>
     <ul>

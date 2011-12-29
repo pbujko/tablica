@@ -13,6 +13,8 @@
 
   </head>
   <body>
+
+    <g:render template="/search/searchAllTemplate" model="[allCities: allCities, citySelected:citySelected]" /><br />
     <h1>Podkategorie w <i>${parentCat.label}</i></h1>
 
     <ul>

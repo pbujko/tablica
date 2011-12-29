@@ -13,6 +13,8 @@
 
   </head>
   <body>
+    <g:render template="/search/searchAllTemplate" model="[allCities: allCities, citySelected:citySelected]" /><br />    
+    
     <h1>Wyniki wyszukiwania</h1>
     <h2><i>${params.q}</i> (${res.size})</h2>
 

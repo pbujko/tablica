@@ -59,6 +59,8 @@ class SearchController {
         if(params.q){
             searchQParams.phrase=params.q
         }
+        if(params.city && params.city !='cala_irlandia')
+            searchQParams.city=categoryManager.getCityByCode(params.city)?.id
         
         def searchQ = searchDao.buildQuery(searchQParams)        
         println searchQ
