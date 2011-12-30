@@ -50,6 +50,15 @@ class AdImageController {
         byte[] image = something.thumbnail
         response.outputStream << image
     }    
+    
+    def delete={
+        def ad = AdImage.get(params.id)
+        if(ad && ad.hashedId==params.hashedId){
+            ad.delete()
+            println "deleted adImage ${params.id}"
+        }
+        render "deleted"
+    }
 
     /**
     def getImageThumbnail = {

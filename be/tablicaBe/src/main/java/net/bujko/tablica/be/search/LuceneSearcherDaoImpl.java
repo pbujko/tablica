@@ -58,8 +58,8 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
     final String FIELD_CITY = "city";
     Logger logger = LoggerFactory.getLogger(LuceneSearcherDaoImpl.class);
     Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_35);
-    //Directory index = new RAMDirectory();
-    Directory index = FSDirectory.open(new java.io.File("/Users/pbujko/Documents/tmp/lucene"));
+    Directory index = new RAMDirectory();
+   // Directory index = FSDirectory.open(new java.io.File("/Users/pbujko/Documents/tmp/lucene"));
     private Map<String, Object> summary = new HashMap<String, Object>();
     @Autowired
     CategoryManager cm;
@@ -76,7 +76,7 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
         if (createNew) {
             conf.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         } else {
-            conf.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
+            conf.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
         }
         return new IndexWriter(index, conf);
     }
@@ -202,10 +202,10 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
     
     @Override
     public synchronized void rebuild() throws Exception {
-        logger.info("rebuild start...");
+        logger.info("rebuild start, using index: {}...", this.index);
 
-//        Directory tmpIndex = new RAMDirectory();
-        Directory tmpIndex = FSDirectory.open(new java.io.File("/Users/pbujko/Documents/tmp/lucene"));
+       // Directory tmpIndex = new RAMDirectory();
+//        Directory tmpIndex = FSDirectory.open(new java.io.File("/Users/pbujko/Documents/tmp/lucene"));
 
         /**
         
@@ -247,7 +247,7 @@ public final class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBe
         tmpWriter.commit();
         tmpWriter.close();
         
-        this.index = tmpIndex;
+//        this.index = tmpIndex;
         logger.info("rebuild end, added {} entries", cnt);
         updateSummary();
     }
