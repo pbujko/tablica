@@ -17,7 +17,10 @@ class AdController {
     
     def editView(){}
     
-    def create(){}
+    def create(){
+        
+        [imguuid:UUID.randomUUID().toString()]
+    }
     def save(){    
         println params
         AdWrapper adW = new AdWrapper(params.title, params.email)
