@@ -91,11 +91,3 @@ log4j = {
 info 'net.bujko'    
 }
 
-fileuploader {
-	avatar {
-		maxSize = 1024 * 11256 //256 kbytes
-		allowedExtensions = ["jpg","jpeg","gif","png"]
-		path = "/Users/pbujko/tmp/"
-	}
-
-}
