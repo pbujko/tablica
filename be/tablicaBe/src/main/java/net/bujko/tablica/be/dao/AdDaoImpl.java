@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +35,9 @@ import org.springframework.stereotype.Repository;
 public class AdDaoImpl implements AdDao {
 
     private final String COLUMN_AD_ADATTS = "ad_atts";
-    private final String COLUMN_ADD_CITY="ad_city";
+    private final String COLUMN_AD_CITY = "ad_city",
+            COLUMN_AD_PRICE = "ad_price",
+            COLUMN_AD_IMG = "ad_img", COLUMN_AD_MODIFIED = "ad_modifyDate", COLUMN_AD_CREATED = "ad_createDate";
     Logger logger = LoggerFactory.getLogger(AdDaoImpl.class);
     @Autowired
     DataSource dataSource;
@@ -47,15 +51,19 @@ public class AdDaoImpl implements AdDao {
         Connection conn = dataSource.getConnection();
         PreparedStatement ps = conn.prepareStatement("insert into ad("
                 + "description,ad_hashed_id, ad_title, "
-                + COLUMN_AD_ADATTS+","
-                + COLUMN_ADD_CITY
+                + COLUMN_AD_ADATTS + ","
+                + COLUMN_AD_CITY + ","
+                + COLUMN_AD_PRICE + ","
+                + COLUMN_AD_IMG
                 + ") "
-                + "values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                + "values(?,?,?,?,?,  ?,?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, ad.getDescription());
         ps.setString(2, ad.getHashedId());
         ps.setString(3, ad.getTitle());
         ps.setString(4, marshallAttChoices(ad.getChoices()));
         ps.setString(5, ad.getCity().getId());
+        ps.setString(6, ad.getPrice());
+        ps.setString(7, marshallImages(ad.getImages()));
         ps.executeUpdate();
 
         ResultSet rs = ps.getGeneratedKeys();
@@ -116,8 +124,13 @@ public class AdDaoImpl implements AdDao {
                         ad.addCategory(c);
                     }
                 }
-                ad.setCity(cm.getCityById(rs.getString(COLUMN_ADD_CITY)));
-
+                ad.setCity(cm.getCityById(rs.getString(COLUMN_AD_CITY)));
+                ad.setPrice(rs.getString(COLUMN_AD_PRICE));
+                ad.setImages(unmarshallImages(rs.getString(COLUMN_AD_IMG)));
+                ad.setCreated(rs.getTimestamp(COLUMN_AD_CREATED));
+                if (rs.getTimestamp(COLUMN_AD_MODIFIED) != null) {
+                    ad.setModified(rs.getTimestamp(COLUMN_AD_MODIFIED));
+                }
 
                 return ad;
             } else {
@@ -158,7 +171,13 @@ public class AdDaoImpl implements AdDao {
                     }
                 }
 
-                ad.setCity(cm.getCityById(rs.getString(COLUMN_ADD_CITY)));
+                ad.setCity(cm.getCityById(rs.getString(COLUMN_AD_CITY)));
+                ad.setPrice(rs.getString(COLUMN_AD_PRICE));
+                ad.setImages(unmarshallImages(rs.getString(COLUMN_AD_IMG)));
+                ad.setCreated(rs.getTimestamp(COLUMN_AD_CREATED));
+                if (rs.getTimestamp(COLUMN_AD_MODIFIED) != null) {
+                    ad.setModified(rs.getTimestamp(COLUMN_AD_MODIFIED));
+                }
 
                 retL.add(ad);
             }
@@ -197,6 +216,27 @@ public class AdDaoImpl implements AdDao {
         return retM;
     }
 
+    private String marshallImages(Collection<String> imgIds) {
+        if (imgIds == null || imgIds.isEmpty()) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String i : imgIds) {
+            sb.append(i).append(",");
+        }
+
+        return sb.toString();
+    }
+
+    private Collection<String> unmarshallImages(String s) {
+        Collection<String> retc = new ArrayList<String>();
+        if (s == null || s.isEmpty()) {
+            return retc;
+        }
+        retc.addAll(Arrays.asList(s.split(",")));
+        return retc;
+    }
+
     @Override
     public List<Ad> listRecent(int from, int limit) throws Exception {
 
@@ -215,7 +255,14 @@ public class AdDaoImpl implements AdDao {
                 ad.setHashedId(rs.getString("ad_hashed_id"));
                 ad.setTitle(rs.getString("ad_title"));
                 ad.setDescription(rs.getString("description"));
-                ad.setCity(cm.getCityById(rs.getString(COLUMN_ADD_CITY)));
+                ad.setCity(cm.getCityById(rs.getString(COLUMN_AD_CITY)));
+                ad.setPrice(rs.getString(COLUMN_AD_PRICE));
+                ad.setImages(unmarshallImages(rs.getString(COLUMN_AD_IMG)));
+                ad.setCreated(rs.getTimestamp(COLUMN_AD_CREATED));
+                if (rs.getTimestamp(COLUMN_AD_MODIFIED) != null) {
+                    ad.setModified(rs.getTimestamp(COLUMN_AD_MODIFIED));
+                }
+
                 retL.add(ad);
             }
 

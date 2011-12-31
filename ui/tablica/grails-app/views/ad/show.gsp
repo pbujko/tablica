@@ -13,10 +13,12 @@
 
   </head>
   <body>
-        <g:render template="/search/searchAllTemplate" model="[allCities: allCities, citySelected:citySelected]" /><br />
-    
-    <h1>${ad.title}</h1>
+  <g:render template="/search/searchAllTemplate" model="[allCities: allCities, citySelected:citySelected]" /><br />
 
-    ${ad.description}
-  </body>
+  <h1>${ad.title}</h1>
+  <g:if test="${ad.price}">
+    <h3><g:formatNumber number='${Integer.parseInt(ad.price)}' type="currency" currencyCode="EUR" /></h3>
+  </g:if>
+${ad.description}
+</body>
 </html>

@@ -5,6 +5,7 @@
 package net.bujko.tablica.be.model;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,7 +21,9 @@ public class Ad {
     private Category category;
     private String description, id, hashedId, title;
     private CityEntity city;
-//    private Collection<AttributeEntity> atts = new HashSet<AttributeEntity>();
+    private String price;
+    private Collection<String> images = new HashSet<String>();
+    private Date created, modified;
     /**
      * jakie opcje zostaly wybrane z atrybutow
      * moze byc puste kiedy nie wybrano zadnego atrybutu
@@ -103,15 +106,16 @@ public class Ad {
         return this.category;
     }
 
-    public void addChoices(Map<String, String> aChoices) throws Exception{
-        if(aChoices == null)
+    public void addChoices(Map<String, String> aChoices) throws Exception {
+        if (aChoices == null) {
             return;
-        
-        for(String k: aChoices.keySet()){
+        }
+
+        for (String k : aChoices.keySet()) {
             addChoice(k, aChoices.get(k));
         }
     }
-    
+
     public void addChoice(String attId, String choiceId) throws Exception {
         if (this.choices.containsKey(attId)) {
             throw new Exception("ATTR_ALREADY_ASSIGND: " + attId);
@@ -130,6 +134,46 @@ public class Ad {
 
     public void setCity(CityEntity city) {
         this.city = city;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public Collection<String> getImages() {
+        return images;
+    }
+
+    public void addImageId(String iid) {
+        this.images.add(iid);
+    }
+
+    public void setImages(Collection<String> images) {
+        this.images = images;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getModified() {
+        if (modified != null) {
+            return modified;
+        } else {
+            return created;
+        }
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
     }
 
     @Override

@@ -38,6 +38,7 @@ class BootStrap {
             ad.addCategory(categoryManager.getCategoryById("1.1"))
             ad.addChoice("cat1_1", "1_1")
             ad.setCity(categoryManager.getCityById("1"))
+            ad.setPrice("6890")
             adDao.save(ad)        
         
             ad = new Ad()       
@@ -46,6 +47,7 @@ class BootStrap {
             ad.setHashedId("-sfd-sdf-sdffgh-sdfgg-")
             ad.addCategory(categoryManager.getCategoryById("1.1"))
             ad.setCity(categoryManager.getCityById("2.2"))
+            ad.setPrice("2000")
             adDao.save(ad)   
         
             ad = new Ad()       
@@ -54,6 +56,7 @@ class BootStrap {
             ad.setHashedId("-sfd-sdf-sdf-sdfgg-")
             ad.addCategory(categoryManager.getCategoryById("1.1"))
             ad.setCity(categoryManager.getCityById("3"))
+            ad.setPrice("765")
             adDao.save(ad)        
 
             ad = new Ad()       
