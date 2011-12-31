@@ -13,25 +13,12 @@
   <meta name="layout" content="main" />
   <uploader:head />
   <g:javascript>
-
-    function onUploadComplete(id){
-    var location='<g:createLink controller="adImage" action="thumbnail" />/'+id
-    
-    var htm = '<div style="width: 150px; float: left;" id="imgPrev_'+id+'">'+
-      '<img src="' +location+'"/><br />' +
-      '<a href="#" onclick="del('+id+')">usun</a>'+
-      '</div>';
-    $(htm).appendTo('#adImgPrev');
-    }
-    
-    
-    function del(id){
-      var delLocation='<g:createLink controller="adImage" action="delete" params="[hashedId:imguuid]"/>&id='+id
-      $.get(delLocation);
-      $('#imgPrev_'+id).remove();
-    }
-    
+    var THUMBNAIL_BASE = '<g:createLink controller="adImage" action="thumbnail" />/';   
+    var DEL_LOCATION = '<g:createLink controller="adImage" action="delete" params="[hashedId:imguuid]"/>&id='
+  
   </g:javascript>
+  <g:javascript src="adCreate.js" />
+  
 </head>
 <body>
   <h1>Dodaj ogloszenie</h1>
