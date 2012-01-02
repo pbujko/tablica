@@ -16,7 +16,7 @@
 		base-package="net.bujko.tablica.be" />
 
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean id="propertyConfigurer"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">
             <value>classpath:database.properties</value>
         </property>

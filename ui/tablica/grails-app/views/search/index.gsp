@@ -19,11 +19,11 @@
   <g:form name="catAttsSelect" action="redir" id="1">
     <g:hiddenField name="catCode" value="${searchCat.code}" />
 
-  Lokalizacja: <g:render template="citiesDropDownTemplate" model="[allCities: allCities, citySelected:citySelected]" /><br />
-
-
-    szukaj w '${searchCat.label}': <g:textField name="q" value="${params.q}" /><br />      
+    Lokalizacja: <g:render template="citiesDropDownTemplate" model="[allCities: allCities, citySelected:scc]" /><br />
+  szukaj w '${searchCat.label}': <g:textField name="q" value="${params.q}" /><br />     
+    <g:render template="pricesDropDownTemplate" /><br />
     <g:if test="${searchCat.attributes}">
+      <br />
       <g:each in="${searchCat.attributes}">
         <g:select name="att|${it.code}"
                   from="${it.choices}"
@@ -35,7 +35,7 @@
                   />
 
       </g:each>
-    </g:if>
+    </g:if>    
   </g:form>
 
 

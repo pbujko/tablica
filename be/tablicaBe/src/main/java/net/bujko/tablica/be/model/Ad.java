@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class Ad {
     private String description, id, hashedId, title;
     private CityEntity city;
     private String price;
-    private Collection<String> images = new HashSet<String>();
+    private Collection<String> images = new LinkedHashSet<String>();
     private Date created, modified;
     /**
      * jakie opcje zostaly wybrane z atrybutow
@@ -146,6 +147,14 @@ public class Ad {
 
     public Collection<String> getImages() {
         return images;
+    }
+
+    public String getCover() {
+        if (!images.isEmpty()) {
+            return images.iterator().next();
+        } else {
+            return null;
+        }
     }
 
     public void addImageId(String iid) {

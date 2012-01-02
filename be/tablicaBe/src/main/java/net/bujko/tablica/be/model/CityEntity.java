@@ -33,7 +33,7 @@ public class CityEntity {
 
     public String getCode() {
         if (code == null || code.isEmpty()) {
-            return label.toLowerCase().replace(' ', '_');
+            return label.toLowerCase().replace(' ', '_').replace('.', '_');
         } else {
             return code;
         }
@@ -53,15 +53,6 @@ public class CityEntity {
 
     public String getLabel() {
         return label;
-    }
-
-    public String getLabelFormatted() {
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<=this.getDepth(); i++){
-            sb.append("  ");
-            
-        }
-        return sb.append(this.label).toString();
     }
 
     public void setLabel(String label) {

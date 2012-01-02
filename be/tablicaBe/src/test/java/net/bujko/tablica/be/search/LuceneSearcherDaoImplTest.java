@@ -4,6 +4,7 @@
  */
 package net.bujko.tablica.be.search;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import javax.sql.DataSource;
@@ -17,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.junit.runner.RunWith;
 import net.bujko.tablica.be.model.Ad;
 import java.util.List;
-import net.bujko.tablica.be.model.AttributeChoiceEntity;
 import net.bujko.tablica.be.model.Category;
 import net.bujko.tablica.be.model.CityEntity;
 import org.junit.AfterClass;
@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/spring-context.xml"})
 public class LuceneSearcherDaoImplTest {
-    
+
     @Autowired
     @Qualifier("searchDao")
     LuceneSearcherDaoImpl searchDaoInstance;
@@ -43,19 +43,23 @@ public class LuceneSearcherDaoImplTest {
     DataSource ds;
     @Autowired
     CategoryManager cm;
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
-    
+
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() throws Exception {
-        ds.getConnection().createStatement().executeUpdate("truncate table ad_categs;");
-        ds.getConnection().createStatement().executeUpdate("truncate table ad;");
+
+        Connection c = ds.getConnection();
+        c.createStatement().executeUpdate("truncate table ad_categs;");
+
+        c.createStatement().executeUpdate("truncate table ad;");
+        c.close();
     }
 
     /**
@@ -63,17 +67,18 @@ public class LuceneSearcherDaoImplTest {
      */
     @Test
     public void testAddSearch() throws Exception {
+        System.out.println("testAddSearch");
         String adId1 = new Random().nextInt(5678) + "";
         String hashedId1 = "hashedId_" + adId1;
         String title1 = "ad1 Title " + adId1;
         String description1 = "description for " + adId1;
-        
+
         Category c1 = cm.getCategoryById("1");
         assertNotNull(c1);
-        
+
         CityEntity city1 = cm.getRandomCity();
         assertNotNull(city1);
-        
+
         Ad ad1 = new Ad();
         ad1.setId(adId1);
         ad1.addCategory(c1);
@@ -85,20 +90,21 @@ public class LuceneSearcherDaoImplTest {
         ad1.addChoice(att11Id, choice1);
         ad1.addChoice(att12Id, choice2);
         ad1.setCity(city1);
-        
+        ad1.setPrice("1000");
+
         searchDaoInstance.add(ad1);
         System.out.println("saved ad1: " + ad1);
-        
-        
+
+
         Category c2 = cm.getCategoryById("2");
         String itemId2 = new Random().nextInt(1234) + "";
         String hashedId2 = "hashedId2_" + itemId2;
         String title2 = "title_" + itemId2;
         String description2 = "description2 for " + itemId2;
-        
+
         CityEntity city2 = cm.getRandomCity();
         assertNotNull(city2);
-        
+
         Ad ad2 = new Ad();
         ad2.setId(itemId2);
         ad2.addCategory(c2);
@@ -106,6 +112,7 @@ public class LuceneSearcherDaoImplTest {
         ad2.setTitle(title2);
         ad2.setDescription(description2);
         ad2.setCity(city2);
+        ad2.setPrice("2000");
         searchDaoInstance.add(ad2);
 
 
@@ -117,7 +124,7 @@ public class LuceneSearcherDaoImplTest {
         List<Ad> res = searchDaoInstance.search(searchDaoInstance.buildQuery(m));
         assertEquals(1, res.size());
         Ad adFound1 = res.get(0);
-        assertEquals(adId1, adFound1.getId());        
+        assertEquals(adId1, adFound1.getId());
 
         //szukanie po catId1 i po att1 zwraca ad1        
         m = new HashMap<String, String>();
@@ -163,6 +170,16 @@ public class LuceneSearcherDaoImplTest {
         Ad si2 = res.get(0);
         assertEquals(itemId2, si2.getId());
 
+        //szukanie po pricemin
+        res = searchDaoInstance.search("price:[0 TO 01500]");
+        assertEquals(1, res.size());
+        assertEquals(ad1, res.get(0));
+
+        //szukanie po price max
+
+        //szukanie po range
+
+
 //        searchDaoInstance.rebuild();
 
         /**
@@ -181,7 +198,7 @@ public class LuceneSearcherDaoImplTest {
         ad3.setTitle("t33");
         ad3.setDescription("d3");
         String att31Id = "cat2_1", choice3 = "2_1_3";
-        
+
         CityEntity city3 = cm.getRandomCity();
         assertNotNull(city3);
         ad3.addChoice(att31Id, choice3);
@@ -232,74 +249,102 @@ public class LuceneSearcherDaoImplTest {
 
         //szukanie po phrase (bez cat) zwraca ad1
         m = new HashMap<String, String>();
-        
+
         m.put("phrase", "ad1");
         res = searchDaoInstance.search(searchDaoInstance.buildQuery(m));
         assertEquals(1, res.size());
         adFound1 = res.get(0);
         assertEquals(adId1, adFound1.getId());
-        
+
         //szukanie po city2 zwraca napewno ad2 - moze tez zwracac inne (city jest generowane losowo)
         m = new HashMap<String, String>();
         m.put("city", city2.getId());
         res = searchDaoInstance.search(searchDaoInstance.buildQuery(m));
-        assertTrue(res.size()>0);       
+        assertTrue(res.size() > 0);
         assertTrue(res.contains(ad2));
     }
-    
+
     @Test
     public void testBuildQueryCat() {
+        System.out.println("testBuildQueryCat()");
         Map<String, String> params = new HashMap<String, String>();
         String catName = UUID.randomUUID() + "";
         params.put(ISearcherDao.FIELD_CAT_NAME, catName);
-        
+
         assertEquals("+" + ISearcherDao.FIELD_CAT_NAME + ":\"" + catName + "\"", searchDaoInstance.buildQuery(params));
     }
-    
+
     @Test
     public void testBuildQueryCatAndAttsAndPhraseAndCity() {
+        System.out.println("testBuildQueryCatAndAttsAndPhraseAndCity()");
+
         Map<String, String> params = new LinkedHashMap<String, String>();
         String catName = UUID.randomUUID() + "";
         params.put(ISearcherDao.FIELD_CAT_NAME, catName);
-        
-        
+
+
         String attChoice1 = "attId1|choiceId1";
         params.put("attChoice1", attChoice1);
-        
+
         String attChoice2 = "attId2|choiceId2";
         params.put("attChoice2", attChoice2);
-        
+
         params.put("phrase", "phrase" + catName);
-        
-        params.put("city", "cityId"+catName);
-        
+
+        params.put("city", "cityId" + catName);
+
         assertEquals("+" + ISearcherDao.FIELD_CAT_NAME + ":\"" + catName + "\""
                 + " AND ( title:" + ("phrase" + catName + "*")
                 + " description:" + ("phrase" + catName + "*)")
                 + " AND +attChoice:\"" + attChoice1 + "\" AND +attChoice:\"" + attChoice2 + "\""
-                + " AND +city:\"cityId"+catName+"\"",
+                + " AND +city:\"cityId" + catName + "\"",
                 searchDaoInstance.buildQuery(params));
     }
-    
+
+    @Test
+    public void testBuildQueryPrice() {
+        System.out.println("testBuildQueryPrice()");
+
+        Map<String, String> params = new LinkedHashMap<String, String>();
+        params.put("priceMin", "123");
+
+        assertEquals("price:[00123 TO " + Integer.MAX_VALUE + "]",
+                searchDaoInstance.buildQuery(params));
+
+        params.clear();
+        params.put("priceMax", "567");
+        assertEquals("price:[" + Integer.MIN_VALUE + " TO 00567]",
+                searchDaoInstance.buildQuery(params));
+
+        params.clear();
+        params.put("priceMin", "777");
+        params.put("priceMax", "888");
+        assertEquals("price:[00777 TO 00888]",
+                searchDaoInstance.buildQuery(params));
+
+    }
+
     @Test
     public void testExtractCategories() throws Exception {
+        System.out.println("testExtractCategories()");
+
         List<Ad> l = new ArrayList<Ad>();
         Ad ad1 = new Ad();
         ad1.addCategory(cm.getCategoryById("1"));
         l.add(ad1);
-        
+
         Ad ad2 = new Ad();
         ad2.addCategory(cm.getCategoryById("2"));
         l.add(ad2);
-        
+
         Ad ad3 = new Ad();
         ad3.addCategory(cm.getCategoryById("1"));
         l.add(ad3);
-        
+
         assertEquals(2, searchDaoInstance.extractCategories(l).size());
         assertEquals(new Integer(2),
                 searchDaoInstance.extractCategories(l).get(cm.getCategoryById("1")));
-        
+
         assertEquals(new Integer(1),
                 searchDaoInstance.extractCategories(l).get(cm.getCategoryById("2")));
     }

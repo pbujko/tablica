@@ -9,6 +9,8 @@ class SearchController {
     def ATTS_SEPARATOR='.'
     def ATTS_KEYVAL_SEPARATOR='-'
     def ATTS_CITY='city'
+    def ATTS_PRICEMIN='cenaOd'
+    def ATTS_PRICEMAX='cenaDo'
     
     def index() {
         print "search: ${params}"
@@ -26,6 +28,14 @@ class SearchController {
                 if(attCode == ATTS_CITY){                    
                     searchQParams['city']=categoryManager.getCityByCode(attChoiceCode).id
                     selectedCityCode=attChoiceCode
+                }   
+                else if(attCode == ATTS_PRICEMIN){
+                    searchQParams['priceMin']=attChoiceCode   
+                    params['priceMin']=attChoiceCode
+                }
+                else if(attCode == ATTS_PRICEMAX){
+                    searchQParams['priceMax']=attChoiceCode                    
+                    params['priceMax']=attChoiceCode
                 }                
                 else{
                 
@@ -49,8 +59,8 @@ class SearchController {
         
         def searchQ = searchDao.buildQuery(searchQParams)        
         println searchQ       
-       
-        [searchCat:searchCat, res:searchDao.search(searchQ), hideSearch:"aa", allCities:categoryManager.getAllCities(), citySelected:selectedCityCode]
+        println "scc ${selectedCityCode}"
+        [searchCat:searchCat, res:searchDao.search(searchQ), hideSearch:"aa", allCities:categoryManager.getAllCities(), scc:selectedCityCode]
     }
 
     def byPhrase(){
@@ -86,7 +96,14 @@ class SearchController {
         }
         
         if(params.city != "0")
-        attsUrl = attsUrl + ATTS_SEPARATOR + ATTS_CITY +ATTS_KEYVAL_SEPARATOR + categoryManager.getCityById(params.city).code
+        attsUrl = attsUrl + ATTS_SEPARATOR + ATTS_CITY + ATTS_KEYVAL_SEPARATOR + categoryManager.getCityById(params.city).code
+
+        if(params.cenaOd)
+        attsUrl = attsUrl + ATTS_SEPARATOR + ATTS_PRICEMIN + ATTS_KEYVAL_SEPARATOR + params.cenaOd
+
+        if(params.cenaDo)
+        attsUrl = attsUrl + ATTS_SEPARATOR + ATTS_PRICEMAX + ATTS_KEYVAL_SEPARATOR + params.cenaDo
+
         
         if(attsUrl)
         attsUrl=attsUrl.substring(1)

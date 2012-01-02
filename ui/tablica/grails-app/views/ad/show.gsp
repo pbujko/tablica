@@ -17,8 +17,9 @@
 
   <h1>${ad.title}</h1>
   <g:if test="${ad.price}">
-    <h3><g:formatNumber number='${Integer.parseInt(ad.price)}' type="currency" currencyCode="EUR" /></h3>
+    <h3><g:formatNumber number='${Integer.parseInt(ad.price)}' type="number" /></h3>
   </g:if>
-${ad.description}
+  <p>${ad.description}</p>
+  <g:formatDate date="${ad.modified}" type="datetime" style="MEDIUM" />
 </body>
 </html>

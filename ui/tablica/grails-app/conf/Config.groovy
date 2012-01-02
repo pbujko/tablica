@@ -91,3 +91,4 @@ log4j = {
 info 'net.bujko'    
 }
 
+lucene.indexLocation='/Users/pbujko/Documents/tmp/lucene'

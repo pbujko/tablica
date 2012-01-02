@@ -10,16 +10,43 @@
 
 <allCities>
     <city label="--Cała Irlandia--" id="0" code="cala_irlandia" >
-        <city label="Connaht" id="1" />        
-        <city label="Leinster" id="2">
-            <city label="Carlow" id="2.1" />        
-            <city label="Dublin" id="2.2" >
-                <city label="Dublin South" id="3.1" />
-                <city label="Dublin North" id="3.2" />                            
-            </city>                    
-            <city label="Kildare" id="2.3" />
-        </city>   
-        <city label="Munster" id="3" />
-        <city label="Ulster" id="4" />
+
+        <city label="Dublin City" id="1" >
+            <city label="City Centre" id="1.1" />
+            <city label="North City" id="1.2" />
+            <city label="South City" id="1.3" />
+            <city label="West Dublin" id="1.4" />
+            <city label="North County" id="1.5" />
+            <city label="South County" id="1.6" />
+        </city>
+        
+        <city label="Cork City" id="2" />        
+        <city label="Galway City" id="3" />        
+        <city label="Limerick City" id="4" />        
+        <city label="Waterford City" id="5" />        
+        <city label="Belfast City" id="6" />        
+        
+        <city label="Co. Kildare" id="10" />
+        <city label="Co. Kilkenny" id="11" />
+        <city label="Co. Laois" id="12" />
+        <city label="Co. Leitrim" id="13" />
+        <city label="Co. Limerick" id="14" />
+        <city label="Co. Longford" id="15" />
+        <city label="Co. Louth" id="16" />
+        <city label="Co. Mayo" id="17" />
+        <city label="Co. Meath" id="18" />
+        <city label="Co. Monaghan" id="19" />
+        <city label="Co. North Tipperary" id="20" />
+        <city label="Co. Offaly" id="21" />
+        <city label="Co. Roscommon" id="22" />
+        <city label="Co. Sligo" id="23" />
+        <city label="Co. Dublin" id="24" >
+        </city>
+        <city label="Co. South Tipperary" id="25" />
+        <city label="Co. Waterford" id="26" />
+        <city label="Co. Westmeath" id="27" />
+        <city label="Co. Wexford" id="28" />
+        <city label="Co. Wicklow" id="29" />
+
     </city>
 </allCities>

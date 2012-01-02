@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/spring-context.xml"})
 public class AdDaoImplTest {
-    
+
     @Autowired
     AdDao adDao;
     @Autowired
@@ -43,25 +43,25 @@ public class AdDaoImplTest {
     String attChoiceId, attChoiceId2, choiceId, choiceId2, price;
     CityEntity city;
     String adImg1, adImg2, adImg3;
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
-    
+
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() throws Exception {
 //        ds.getConnection().createStatement().executeUpdate("truncate table ad_categs;");
 //        ds.getConnection().createStatement().executeUpdate("truncate table ad;");
 
-        
+
         for (Ad a : adDao.listAll()) {
             adDao.delete(a);
         }
-        
+
         c01 = cm.getCategoryById("0.1");
         c1 = cm.getCategoryById("1");
         c11 = cm.getCategoryById("11");
@@ -70,13 +70,13 @@ public class AdDaoImplTest {
         attChoiceId2 = UUID.randomUUID().toString();
         choiceId2 = "choice2_" + attChoiceId2;
         price = new Random().nextInt(9999) + "";
-        
+
         city = cm.getRandomCity();
-        
+
         adImg1 = UUID.randomUUID().toString();
         adImg2 = UUID.randomUUID().toString();
         adImg3 = UUID.randomUUID().toString();
-        
+
     }
 
     /**
@@ -84,16 +84,16 @@ public class AdDaoImplTest {
      */
     @Test
     public void testSave() throws Exception {
-        
+
         assertNotNull(c11);
-        
+
         String hashId = UUID.randomUUID().toString();
         Ad ad = new Ad();
         ad.setHashedId(hashId);
         ad.setTitle("title_" + hashId);
         ad.setDescription("description_" + hashId);
         ad.addCategory(c11);
-        
+
         Map<String, String> mAttChoices = new HashMap<String, String>();
         mAttChoices.put(attChoiceId, choiceId);
         mAttChoices.put(attChoiceId2, choiceId2);
@@ -103,10 +103,10 @@ public class AdDaoImplTest {
         ad.addImageId(adImg1);
         ad.addImageId(adImg2);
         ad.addImageId(adImg3);
-        
+
         adDao.save(ad);
-        
-        
+
+
         System.out.println(String.format("saved, id %s", ad));
 
         //load back
@@ -122,12 +122,12 @@ public class AdDaoImplTest {
         assertEquals(mAttChoices, ad.getChoices());
         assertEquals(city, ad.getCity());
         assertEquals(1, adDao.listAll().size());
-        
+
         assertEquals(price, ad.getPrice());
         assertEquals(3, ad.getImages().size());
-        
+
         assertTrue(ad.getImages().contains(adImg1));
-                assertTrue(ad.getImages().contains(adImg3));
-                        assertTrue(ad.getImages().contains(adImg2));
+        assertTrue(ad.getImages().contains(adImg3));
+        assertTrue(ad.getImages().contains(adImg2));
     }
 }
