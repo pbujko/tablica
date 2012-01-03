@@ -38,16 +38,19 @@ class AdImageController {
 
     }
 
-    def image= {
+    def image() {
         def something = AdImage.get( params.id )
         byte[] image = something.image
+
+        response.contentType="image/jpeg";        
         response.outputStream << image
     }
     
 
-    def thumbnail= {
+    def thumbnail() {
         def something = AdImage.get( params.id )
         byte[] image = something.thumbnail
+        response.contentType="image/jpeg";
         response.outputStream << image
     }    
     
@@ -60,6 +63,16 @@ class AdImageController {
         render "deleted"
     }
 
+    def test(){
+        
+        def list = AdImage.findAllByHashedId(params.id)
+        list.each{
+            
+            println it.id
+            
+        }
+        render "l: ${list}"
+    }
     /**
     def getImageThumbnail = {
         def logFile = AdImage.get(params.id)

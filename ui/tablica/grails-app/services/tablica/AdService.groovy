@@ -17,7 +17,7 @@ class AdService {
   
         def hashedId = UUID.randomUUID().toString()
         //create Ad object
-        
+        println "params: ${params}"
         net.bujko.tablica.be.model.Ad ad = new net.bujko.tablica.be.model.Ad()
         ad.setTitle(params.title)
         ad.setDescription(params.description)
@@ -25,6 +25,12 @@ class AdService {
         ad.addCategory(categoryManager.getCategoryById(params.category))
         ad.setCity(categoryManager.getCityById(params.city))
         ad.setPrice(params.price)
+        
+        //add images
+        AdImage.findAllByHashedId(params.imguuid).each{
+            ad.addImageId(it.id.toString())
+        }
+        
         
         //save to AdDao
         log.debug "saving ad ${ad}"        

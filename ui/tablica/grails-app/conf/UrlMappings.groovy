@@ -51,6 +51,11 @@ class UrlMappings {
             action = "show"
                        
         }
+        
+        name image:"/image/$id/img.jpg"{
+            controller = "adImage"
+            action = "image"
+        }
                 
         
                 
