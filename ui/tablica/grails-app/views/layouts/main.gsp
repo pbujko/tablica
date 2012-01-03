@@ -8,11 +8,14 @@
   <g:javascript library="application" />
 </head>
 <body>
-  <div id="spinner" class="spinner" style="display:none;">
+  <div id="spinner" class="spinner" style="display:none; position:absolute; bottom: 40px;">
     <img src="${resource(dir:'images',file:'spinner.gif')}" alt="${message(code:'spinner.alt',default:'Loading...')}" />
   </div>
   <div id="head">
-    <g:link controller="index" >home</g:link><br />
+    <g:link controller="index" >home</g:link>&nbsp;|&nbsp; 
+    <g:link mapping="newAd">+Dodaj ogłoszenie</g:link>    
+    
+    <br />
 
 
 

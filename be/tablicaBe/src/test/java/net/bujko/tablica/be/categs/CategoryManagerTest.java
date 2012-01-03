@@ -25,15 +25,16 @@ import static org.junit.Assert.*;
  * 
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/spring-context.xml"})
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = {"/spring-context.xml"})
 public class CategoryManagerTest {
 
-    @Autowired
-    CategoryManager cm;
+//    @Autowired
+    CategoryManager cm = new CategoryManager();
 
     @Before
     public void setUp() throws Exception {
+        cm.init();
     }
 
     @Test

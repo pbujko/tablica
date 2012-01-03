@@ -25,7 +25,10 @@ environments {
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE"
+            url = "jdbc:mysql://localhost:3306/tablica"
+            driverClassName = "com.mysql.jdbc.Driver"
+            username = "root"
+            
         }
     }
     production {

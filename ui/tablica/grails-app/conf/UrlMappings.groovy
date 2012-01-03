@@ -40,6 +40,11 @@ class UrlMappings {
             action="recent"
                    
         }        
+
+        name newAd: "/nowe-gloszenie"{
+            controller="ad"
+            action="create"
+        }
         
         name adDetails: "/ogloszenie/${niewazneCo}_$id?"{
             controller = "ad"

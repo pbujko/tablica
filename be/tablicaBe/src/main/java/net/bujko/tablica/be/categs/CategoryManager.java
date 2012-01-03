@@ -51,8 +51,8 @@ public class CategoryManager implements InitializingBean {
     private Map<String, AttributeChoiceEntity> allAttChoiceEntById;
     private Map<String, CityEntity> allCitiesById;
     Logger logger = LoggerFactory.getLogger(CategoryManager.class);
-    @Autowired
-    CategoryDao categoryDao;
+//    @Autowired
+//    CategoryDao categoryDao;
 
     public void init() throws Exception {
 
@@ -75,7 +75,7 @@ public class CategoryManager implements InitializingBean {
         }
 
         for (Category c : allCategsById.values()) {
-            categoryDao.saveOrUpdate(c);
+//            categoryDao.saveOrUpdate(c);
             if (c.getParent() == null) {
                 topLevelCats.add(c);
             }
