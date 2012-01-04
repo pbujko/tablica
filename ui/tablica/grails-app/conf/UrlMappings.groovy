@@ -41,7 +41,7 @@ class UrlMappings {
                    
         }        
 
-        name newAd: "/nowe-gloszenie"{
+        name newAd: "/nowe-ogloszenie"{
             controller="ad"
             action="create"
         }

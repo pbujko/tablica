@@ -24,14 +24,12 @@ import net.bujko.tablica.be.categs.binding.atts.AllAtts;
 import net.bujko.tablica.be.categs.binding.atts.Attribute;
 import net.bujko.tablica.be.city.binding.AllCities;
 import net.bujko.tablica.be.city.binding.City;
-import net.bujko.tablica.be.dao.CategoryDao;
 import net.bujko.tablica.be.model.AttributeChoiceEntity;
 import net.bujko.tablica.be.model.AttributeEntity;
 import net.bujko.tablica.be.model.CityEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**

@@ -60,11 +60,12 @@ $(document).ready(function(){
 function onUploadComplete(id){
     var location=THUMBNAIL_BASE+id
     
-    var htm = '<div style="width: 150px; float: left;" id="imgPrev_'+id+'">'+
-    '<img src="' +location+'"/><br />' +
-    '<a href="#" onclick="del('+id+')">usuń</a>'+
+    var htm = '<div style="width: 70px; float: left;" id="imgPrev_'+id+'">'+
+    '<img width="60" src="' +location+'"/><br />' +
+    '<a href="javascript:void(0)" style="font-size: 12px" onclick="del('+id+')">usuń</a>'+
     '</div>';
     $(htm).appendTo('#adImgPrev');
+    $(".qq-upload-list").empty();
 }
     
     
@@ -91,6 +92,20 @@ function handleAdCreateOk(data){
     document.location = AD_BASE_LOCATION + data
 }
 
+function afterSubCatDDLoaded(){   
+    $('#category').change(function() {
+        $.get(FRAGMENT_ATTS_DDPWN,{
+            catId:this.value
+        },function(data){
+            $("#catAtts").html(data);
+        });
+    });            
+}
+
+function showMoreFields(){
+    $("#moreData").show("fast");    
+    $("#showMoreFieldsNavi").hide();
+}
 
 function showProgress(){
     $("#spinner").show();
