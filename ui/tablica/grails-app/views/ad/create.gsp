@@ -19,6 +19,7 @@
     var THUMBNAIL_BASE = '<g:createLink controller="adImage" action="thumbnail" />/';   
     var DEL_LOCATION = '<g:createLink controller="adImage" action="delete" params="[hashedId:imguuid]"/>&id='
     var AD_BASE_LOCATION = '<g:createLink controller="ad" action="show" />/';
+    var FRAGMENT_SUBCATS_DDWN = '${createLink(controller:'fragments',action: 'listCatsById')}';
     var FRAGMENT_ATTS_DDPWN = '${createLink(controller:'fragments', action:'renderAttsForCat')}';
   </g:javascript>
   <g:javascript src="adCreate.js" />
@@ -66,11 +67,7 @@
             optionKey="id"
             optionValue="label"
             noSelection="['':'--Wybierz kategorię--']"
-            onChange="${remoteFunction(controller:'fragments',
-action: 'listCatsById',
-update: [success: 'subCats', failure: 'ohno'],
-params: '\'cId=\' + this.value',
-onComplete:'afterSubCatDDLoaded()')}"/>
+            onChange="onTopCatChange(this)"/>
   
   <div id="subCats">
 

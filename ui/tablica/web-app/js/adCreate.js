@@ -102,6 +102,15 @@ function afterSubCatDDLoaded(){
     });            
 }
 
+function onTopCatChange(dropdown){   
+    $.get(FRAGMENT_SUBCATS_DDWN,{
+        cId:dropdown.value
+    }, function(data){
+        $("#subCats").html(data);
+        afterSubCatDDLoaded();
+    });
+}
+
 function showMoreFields(){
     $("#moreData").show("fast");    
     $("#showMoreFieldsNavi").hide();
