@@ -24,7 +24,7 @@ CREATE TABLE `ad` (
   PRIMARY KEY (`ad_id`),
   UNIQUE KEY `ad_id` (`ad_id`),
   UNIQUE KEY `ad_hashed_id` (`ad_hashed_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `category` (
   `cat_id` varchar(255) NOT NULL,
   `label` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`cat_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -51,7 +51,7 @@ CREATE TABLE `ad_categs` (
   PRIMARY KEY (`ad_id`,`cat_id`),
   KEY `FK11D08417716F6A88` (`ad_id`),
   KEY `FK11D084175A3E2C50` (`cat_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 

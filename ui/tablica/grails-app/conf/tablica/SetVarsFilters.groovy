@@ -3,6 +3,7 @@ package tablica
 class SetVarsFilters {
     
     def categoryManager
+    def searchDao
 
     def filters = {
         all(controller:'index|ad|search', action:'*') {
@@ -12,7 +13,10 @@ class SetVarsFilters {
             after = { Map model ->
                 if(model){
                     model.allCities = categoryManager.getAllCities()
-                    model.citySelected = params.city}
+                    model.citySelected = params.city
+                }
+                
+
             }
             afterView = { Exception e ->
 

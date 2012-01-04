@@ -62,33 +62,7 @@ class AdImageController {
         }
         render "deleted"
     }
-
-    def test(){
-        
-        def list = AdImage.findAllByHashedId(params.id)
-        list.each{
-            
-            println it.id
-            
-        }
-        render "l: ${list}"
-    }
-    /**
-    def getImageThumbnail = {
-        def logFile = AdImage.get(params.id)
-        assert logFile != null
-        println "Retrieved image size ${logFile.image.length}"
-        def imageTool = new org.grails.plugins.imagetools.ImageTool()
-        imageTool.load(logFile.image)
-        imageTool.thumbnail(800)
-        def thumbImage = imageTool.getBytes("JPEG")
-        println "Returning thumb size ${thumbImage.length}"
-        response.contentType = "image/jpeg"
-        response.contentLength = thumbImage.length
-        response.outputStream.write(thumbImage)    	    
-    }
     
-    */
     private InputStream selectInputStream(HttpServletRequest request) {
         if (request instanceof MultipartHttpServletRequest) {
             MultipartFile uploadedFile = ((MultipartHttpServletRequest) request).getFile('qqfile')

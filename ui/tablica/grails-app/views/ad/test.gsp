@@ -1,0 +1,24 @@
+<!--
+  To change this template, choose Tools | Templates
+  and open the template in the editor.
+-->
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Sample title</title>
+  </head>
+  <body>
+    <h1>Sample line</h1>
+    ${params}
+  <g:form action="test">
+    
+    <g:textArea name="myField" value="myValue" rows="5" cols="40"/>
+  <g:submitButton name="update" value="Update" />
+
+    
+  </g:form>
+  </body>
+</html>

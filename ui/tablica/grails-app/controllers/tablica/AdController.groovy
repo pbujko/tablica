@@ -4,6 +4,7 @@ class AdController {
     def adDao
     def adService      
     def categoryManager
+    def searchDao
     
 
     def show() {
@@ -29,7 +30,8 @@ class AdController {
         AdWrapper adW = new AdWrapper(params)        
         try{
             if(adW.validate()){
-                def retAd = adService.save(params)        
+                def retAd = adService.save(params)    
+                servletContext["searchStats"] = searchDao.summary
                 render "${retAd?.id}"           
             }            
             else {
@@ -43,5 +45,11 @@ class AdController {
             render "${e.message}"            
         }                
        
+    }
+    
+        def test(){
+        
+        print params
+        render(view:'test', model:[params:params])
     }
 }

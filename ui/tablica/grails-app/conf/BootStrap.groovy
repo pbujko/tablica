@@ -14,10 +14,7 @@ class BootStrap {
     def adDao, categoryManager, searchDao
     
     def init = { servletContext ->
-        
-        servletContext["searchStats"] = searchDao.summary
-        
-        
+                
         if (GrailsUtil.environment == GrailsApplication.ENV_DEVELOPMENT) {
     
             String sqlFilePath = 'grails-app/conf/setUpDB.sql'
@@ -32,7 +29,7 @@ class BootStrap {
             }
                 
             Ad ad = new Ad()       
-            ad.setDescription("niemiecka fura prima glanc pomada. oddam za piniondze niemałe")
+            ad.setDescription("niemiecka fura prima glanc pomada. oddam za piniondze niemaue. zażółć gęślą jaźń")
             ad.setTitle("Mercedesa")
             ad.setHashedId("---1---1--asd-")      
             ad.addCategory(categoryManager.getCategoryById("1.1"))
@@ -85,7 +82,7 @@ class BootStrap {
 
             ad = new Ad()       
             ad.setTitle("Jaguar domowy")
-            ad.setDescription("sprzedaje bo sra po kątach")
+            ad.setDescription("sprzedaje bo sra po kontach")
             ad.setHashedId("-sfdkicicikcic-")
             ad.addCategory(categoryManager.getCategoryById("2.2"))
             ad.setCity(categoryManager.getCityById("3"))
@@ -96,6 +93,9 @@ class BootStrap {
             categoryManager.init()
         
         }
+        
+        servletContext["searchStats"] = searchDao.summary
+
     }
     def destroy = {
     }

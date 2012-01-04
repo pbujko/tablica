@@ -39,9 +39,14 @@
 </div>
 
 <g:if test="${ad.price}">
-  <h3><g:formatNumber number='${Integer.parseInt(ad.price)}' type="number" /></h3>
+  <h3><g:formatNumber number='${Integer.parseInt(ad.price)}' type="number" /> EUR</h3>
 </g:if>
 <p>${ad.description}</p>
+<p>${ad.city.parentCityEntity.id !='0'?ad.city.parentCityEntity.label+', ':''}${ad.city.label}</p>
+<p>
+  <g:link mapping="subcategs" params="[parentCode:ad.category.parent.code]">${ad.category.parent.label}</g:link> / 
+  <g:link mapping="search" params="[code:ad.category.code]">${ad.category.label}</g:link>
+</p>
 <g:formatDate date="${ad.modified}" type="datetime" style="MEDIUM" />
 </body>
 </html>

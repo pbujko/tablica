@@ -34,7 +34,8 @@ $(document).ready(function(){
                 required: 'Wymagany'  
             },                
             description: {
-                required: 'Wymagany'  
+                required: 'Wymagany',
+                minlength: 'Opis jest za krótki'
             },                            
             email: {
                 required: 'Wymagany',

@@ -135,6 +135,8 @@ public class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBean {
         w.addDocument(doc);
         w.commit();
         w.close();
+        
+        updateSummary();
     }
 
     @Override
@@ -143,6 +145,8 @@ public class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBean {
         w.deleteDocuments(new Term(FIELD_ID, item.getId()));
         w.commit();
         w.close();
+        
+        updateSummary();
     }
 
     @Override
