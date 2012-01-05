@@ -6,8 +6,7 @@ $(document).ready(function(){
             category:'required',
             title: "required",
             description: {
-                required:true,
-                minlength:20
+                required:true
             },
             email:{
                 required:true,
@@ -34,8 +33,7 @@ $(document).ready(function(){
                 required: 'Wymagany'  
             },                
             description: {
-                required: 'Wymagany',
-                minlength: 'Opis jest za krótki'
+                required: 'Wymagany'
             },                            
             email: {
                 required: 'Wymagany',

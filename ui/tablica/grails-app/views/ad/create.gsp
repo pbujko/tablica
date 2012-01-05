@@ -8,13 +8,14 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Sample title</title>
+    <title>Dodaj ogłoszenie</title>
+    <meta name="layout" content="main" />
+
   <g:javascript library="jquery" plugin="jquery"/>
   <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 
-
-  <meta name="layout" content="main" />
   <uploader:head />
+
   <g:javascript>
     var THUMBNAIL_BASE = '<g:createLink controller="adImage" action="thumbnail" />/';   
     var DEL_LOCATION = '<g:createLink controller="adImage" action="delete" params="[hashedId:imguuid]"/>&id='
@@ -23,40 +24,10 @@
     var FRAGMENT_ATTS_DDPWN = '${createLink(controller:'fragments', action:'renderAttsForCat')}';
   </g:javascript>
   <g:javascript src="adCreate.js" />
-
-  <style type="text/css" media="screen">
-    .error{
-      color: red;    
-    }
-
-
-    label
-    {
-      width: 5em;
-      float: left;
-      text-align: right;
-      margin-right: 0.5em;
-   
-    }
-    
-    label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
-
-    .submit input
-    {
-      margin-left: 5em;
-    }
-
-    .qq-upload-button{
-
-      color: blue;
-      background: none repeat scroll 0 0 #cccccc;
-      padding: 3px 0;
-    }
-
-  </style>
+  <link rel="stylesheet" href="${resource(dir: 'css', file: 'adCreate.css')}" type="text/css" media="screen" charset="utf-8"/>
 </head>
 <body>
-  <h1>Dodaj ogloszenie</h1>
+  <h1>Dodaj ogłoszenie</h1>
 
 <g:form name="newAdForm" url="[action:'save',controller:'ad']">
   <g:hiddenField name="imguuid" value="${imguuid}" />
@@ -68,7 +39,7 @@
             optionValue="label"
             noSelection="['':'--Wybierz kategorię--']"
             onChange="onTopCatChange(this)"/>
-  
+
   <div id="subCats">
 
   </div>
@@ -117,7 +88,7 @@
                   />
 </p>
 
-<div id="moreData" style="display:nonek">
+<div id="moreData" style="display:none">
   <h4>Opcjonalne informacje:</h4>
   <p>Im wiecej informacji podasz tym łatwiej znaleść Twoje ogłoszenie</p>
 
@@ -126,11 +97,11 @@
     <label for="phone">Telefon</label>
   <g:textField name="phone" value="" />    
   </p>  
-  
+
   <div id="catAtts">
-    
+
   </div>
-    
+
   <p>
     <label for="">Dodaj Zdjęcia</label>
   <uploader:uploader id="yourUploaderId" url="${[controller:'adImage', action:'upload']}" params="[aa:imguuid]" sizeLimit="510241024" >

@@ -1,0 +1,26 @@
+.error{
+    color: red;    
+}
+
+
+label
+{
+    width: 5em;
+    float: left;
+    text-align: right;
+    margin-right: 0.5em;
+
+}
+
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+
+.submit input
+{
+    margin-left: 5em;
+}
+
+.qq-upload-button{
+    color: blue;
+    background: none repeat scroll 0 0 #cccccc;
+    padding: 3px 0;
+}
