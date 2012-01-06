@@ -37,7 +37,7 @@ public class AdDaoImpl implements AdDao {
     private final String COLUMN_AD_ADATTS = "ad_atts";
     private final String COLUMN_AD_CITY = "ad_city",
             COLUMN_AD_PRICE = "ad_price",
-            COLUMN_AD_IMG = "ad_img", COLUMN_AD_MODIFIED = "ad_modifyDate", COLUMN_AD_CREATED = "ad_createDate";
+            COLUMN_AD_IMG = "ad_img", COLUMN_AD_MODIFIED = "ad_modifyDate", COLUMN_AD_CREATED = "ad_createDate", COLUMN_AD_CONTACT = "ad_contact";
     Logger logger = LoggerFactory.getLogger(AdDaoImpl.class);
     @Autowired
     DataSource dataSource;
@@ -50,13 +50,16 @@ public class AdDaoImpl implements AdDao {
         logger.trace("saving Ad {}", ad);
         Connection conn = dataSource.getConnection();
         PreparedStatement ps = conn.prepareStatement("insert into ad("
-                + "description,ad_hashed_id, ad_title, "
+                + "description,"
+                + "ad_hashed_id, "
+                + "ad_title, "
                 + COLUMN_AD_ADATTS + ","
                 + COLUMN_AD_CITY + ","
                 + COLUMN_AD_PRICE + ","
-                + COLUMN_AD_IMG
+                + COLUMN_AD_IMG + ","
+                + COLUMN_AD_CONTACT
                 + ") "
-                + "values(?,?,?,?,?,  ?,?)", Statement.RETURN_GENERATED_KEYS);
+                + "values(?,?,?,?,?,  ?,?,?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, ad.getDescription());
         ps.setString(2, ad.getHashedId());
         ps.setString(3, ad.getTitle());
@@ -64,6 +67,7 @@ public class AdDaoImpl implements AdDao {
         ps.setString(5, ad.getCity().getId());
         ps.setString(6, ad.getPrice());
         ps.setString(7, marshallImages(ad.getImages()));
+        ps.setString(8, ad.getPhone());
         ps.executeUpdate();
 
         ResultSet rs = ps.getGeneratedKeys();
@@ -131,6 +135,7 @@ public class AdDaoImpl implements AdDao {
                 if (rs.getTimestamp(COLUMN_AD_MODIFIED) != null) {
                     ad.setModified(rs.getTimestamp(COLUMN_AD_MODIFIED));
                 }
+                ad.setPhone(rs.getString(COLUMN_AD_CONTACT));
 
                 return ad;
             } else {
@@ -140,7 +145,17 @@ public class AdDaoImpl implements AdDao {
 
             conn.close();
         }
+    }
 
+    @Override
+    public Ad findByIdAndHashedId(String id, String hashedId) throws Exception {
+
+        Ad retAd = findById(id);
+        if (retAd != null && hashedId.equals(retAd.getHashedId())) {
+            return retAd;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -178,7 +193,7 @@ public class AdDaoImpl implements AdDao {
                 if (rs.getTimestamp(COLUMN_AD_MODIFIED) != null) {
                     ad.setModified(rs.getTimestamp(COLUMN_AD_MODIFIED));
                 }
-
+                ad.setPhone(rs.getString(COLUMN_AD_CONTACT));
                 retL.add(ad);
             }
 
@@ -237,6 +252,13 @@ public class AdDaoImpl implements AdDao {
         return retc;
     }
 
+    /**
+     * celowo nie ustawiam wszystkich pol w Ad poniewaz lista wykorzystujaca te wyniki wyswietla tylko kompaktowe info (tytul, cena, miasto, kategoria, id)
+     * @param from
+     * @param limit
+     * @return
+     * @throws Exception 
+     */
     @Override
     public List<Ad> listRecent(int from, int limit) throws Exception {
 
@@ -254,7 +276,7 @@ public class AdDaoImpl implements AdDao {
                 ad.setId(rs.getInt("ad_id") + "");
                 ad.setHashedId(rs.getString("ad_hashed_id"));
                 ad.setTitle(rs.getString("ad_title"));
-                ad.setDescription(rs.getString("description"));
+//                ad.setDescription(rs.getString("description"));
                 ad.setCity(cm.getCityById(rs.getString(COLUMN_AD_CITY)));
                 ad.setPrice(rs.getString(COLUMN_AD_PRICE));
                 ad.setImages(unmarshallImages(rs.getString(COLUMN_AD_IMG)));
@@ -262,6 +284,7 @@ public class AdDaoImpl implements AdDao {
                 if (rs.getTimestamp(COLUMN_AD_MODIFIED) != null) {
                     ad.setModified(rs.getTimestamp(COLUMN_AD_MODIFIED));
                 }
+
 
                 retL.add(ad);
             }

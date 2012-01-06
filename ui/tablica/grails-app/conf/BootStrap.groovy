@@ -36,6 +36,7 @@ class BootStrap {
             ad.addChoice("cat1_1", "1_1")
             ad.setCity(categoryManager.getCityById("1"))
             ad.setPrice("6890")
+            ad.setPhone("0800 123456")
             adDao.save(ad)        
         
             ad = new Ad()       

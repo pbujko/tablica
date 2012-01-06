@@ -85,7 +85,7 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-    info   'grails.app.services'
+    debug   'grails.app.services'
     warn   'org.mortbay.log'
 
 info 'net.bujko'    

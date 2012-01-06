@@ -44,9 +44,29 @@
 <p>${ad.description}</p>
 <p>${ad.city.parentCityEntity.id !='0'?ad.city.parentCityEntity.label+', ':''}${ad.city.label}</p>
 <p>
-  <g:link mapping="subcategs" params="[parentCode:ad.category.parent.code]">${ad.category.parent.label}</g:link> / 
-  <g:link mapping="search" params="[code:ad.category.code]">${ad.category.label}</g:link>
+<g:link mapping="subcategs" params="[parentCode:ad.category.parent.code]">${ad.category.parent.label}</g:link> / 
+<g:link mapping="search" params="[code:ad.category.code]">${ad.category.label}</g:link>
 </p>
+
+<div class="phone">
+  <h4>Kontakt z ogłoszeniodawcą:</h4>  
+  Wyślij wiadomość: <g:remoteLink action="showAdContactMsgForm" 
+                                  controller="fragments" 
+                                  update="contactMsgForm"                                  
+                                  params="[id:ad.id, hashedId:ad.hashedId]">[pokaż formularz]</g:remoteLink>          
+  
+  <div id="contactMsgForm"></div>
+
+  <g:if test="${ad.phone}">    
+    Zadzwoń: 
+    <span id="adContact">
+      <g:remoteLink action="showAdContact" controller="fragments" update="adContact"
+                    params="[id:ad.id, hashedId:ad.hashedId]">[pokaż numer]</g:remoteLink>          
+    </span>
+  </g:if>  
+</div>
+<p>
 <g:formatDate date="${ad.modified}" type="datetime" style="MEDIUM" />
+</p>
 </body>
 </html>

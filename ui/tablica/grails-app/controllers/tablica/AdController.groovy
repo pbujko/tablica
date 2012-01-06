@@ -26,7 +26,7 @@ class AdController {
     }
     
     def save(){    
-
+        println "ad save ${params}"
         AdWrapper adW = new AdWrapper(params)        
         try{
             if(adW.validate()){

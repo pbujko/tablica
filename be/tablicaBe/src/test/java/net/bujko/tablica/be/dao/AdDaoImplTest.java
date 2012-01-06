@@ -129,5 +129,11 @@ public class AdDaoImplTest {
         assertTrue(ad.getImages().contains(adImg1));
         assertTrue(ad.getImages().contains(adImg3));
         assertTrue(ad.getImages().contains(adImg2));
+
+        res =
+                adDao.findByIdAndHashedId(ad.getId(), hashId);
+        assertNotNull(res);
+        assertEquals(res, ad);
+        assertEquals(hashId, res.getHashedId());
     }
 }
