@@ -1,10 +1,10 @@
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
-// grails.config.locations = [ "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
+ grails.config.locations = [ //"classpath:${appName}-config.properties",
+                             //"classpath:${appName}-config.groovy",
+                             "file:${userHome}/.grails/${appName}-config.properties",
+                             "file:${userHome}/.grails/${appName}-config.groovy"]
 
 // if(System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
@@ -85,10 +85,11 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-    debug   'grails.app.services'
+    info   'grails.app.services'
     warn   'org.mortbay.log'
 
 info 'net.bujko'    
 }
 
-lucene.indexLocation='/Users/pbujko/Documents/tmp/lucene'
+//lucene.indexLocation='/Users/pbujko/Documents/tmp/lucene'
+lucene.indexLocation=''

@@ -20,7 +20,7 @@
     <g:hiddenField name="catCode" value="${searchCat.code}" />
 
     Lokalizacja: <g:render template="citiesDropDownTemplate" model="[allCities: allCities, citySelected:scc]" /><br />
-  szukaj w '${searchCat.label}': <g:textField name="q" value="${params.q}" /><br />     
+    szukaj w '${searchCat.label}': <g:textField name="q" value="${params.q}" /><br />     
     <g:render template="pricesDropDownTemplate" /><br />
     <g:if test="${searchCat.attributes}">
       <br />
@@ -43,8 +43,8 @@
   <ul>
     <g:each in="${res}">
       <li>
-      <g:link mapping="adDetails" params="[niewazneCo:it.title, id:it.id]" >${it.title}</g:link>
-      </li>
+      <g:render template="/fragments/singleAdInListTemplate" model="[ad:it]" />
+      </li>        
     </g:each>
   </ul>
 

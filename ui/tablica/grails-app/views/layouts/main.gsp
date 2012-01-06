@@ -25,7 +25,7 @@
 
 <hr/>
 <div id="footer">
-  Wszystkich ogłoszeń: ${application.searchStats.adsTotal}
+  Wszystkich ogłoszeń: ${application.searchStats.adsTotal}, v: <g:meta name="app.version"/>
 </div>
 
 </body>

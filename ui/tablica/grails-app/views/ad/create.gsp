@@ -106,7 +106,7 @@
     <label for="">Dodaj Zdjęcia</label>
   <uploader:uploader id="yourUploaderId" url="${[controller:'adImage', action:'upload']}" params="[aa:imguuid]" sizeLimit="510241024" >
     <uploader:onComplete> 
-      onUploadComplete(responseJSON.imgId)
+      onUploadComplete(responseJSON)
     </uploader:onComplete>
   </uploader:uploader>
   </p>

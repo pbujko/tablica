@@ -55,15 +55,18 @@ $(document).ready(function(){
 
 
 
-function onUploadComplete(id){
-    var location=THUMBNAIL_BASE+id
-    
+function onUploadComplete(respJson){
+    var id = respJson.imgId
+
+    if(id){
+    var location=THUMBNAIL_BASE+id    
     var htm = '<div style="width: 70px; float: left;" id="imgPrev_'+id+'">'+
     '<img width="60" src="' +location+'"/><br />' +
     '<a href="javascript:void(0)" style="font-size: 12px" onclick="del('+id+')">usuń</a>'+
     '</div>';
     $(htm).appendTo('#adImgPrev');
-    $(".qq-upload-list").empty();
+    }
+    $(".qq-upload-list").empty();    
 }
     
     

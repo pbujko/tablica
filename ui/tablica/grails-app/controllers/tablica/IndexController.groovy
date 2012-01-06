@@ -4,7 +4,7 @@ class IndexController {
     def categoryManager
     def adService
     def index = {
-        
+
         [categoryManager:categoryManager, recentAds:adService.listRecent(0,2)]
     }
     

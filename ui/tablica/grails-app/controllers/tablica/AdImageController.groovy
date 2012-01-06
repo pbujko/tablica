@@ -11,12 +11,19 @@ import javax.servlet.http.HttpServletRequest
 class AdImageController {
 
     def upload() { 
-        println 'upload'
-        // File uploaded = new File('/Users/pbujko/Documents/tmp/aaa.upl')
-        InputStream inputStream = selectInputStream(request)
-        // uploaded << inputStream         
+        println "upload: ${params.qqfile}"
+        def InputStream inputStream
+        try{
+            inputStream = selectInputStream(request, params)
+            // uploaded << inputStream         
 
-
+        }
+        catch(e){
+            log.warn(e)
+            return render(text: [success:false] as JSON, contentType:'text/json')                        
+        }
+        
+        
         def imageTool = new org.grails.plugins.imagetools.ImageTool()
         imageTool.load(inputStream.bytes)
         imageTool.thumbnailSpecial(120, 120, 3, 2)
@@ -30,7 +37,7 @@ class AdImageController {
         def bigImage = imageTool.getBytes("JPEG")
         println "Returning bigImage size ${bigImage.length}"
         adImage.image=bigImage 
-   //     adImage.image = inputStream.bytes
+        //     adImage.image = inputStream.bytes
         adImage.save()
         println "done processing image, id: ${adImage.id}, hashedId: ${adImage.hashedId}"
         
@@ -63,11 +70,30 @@ class AdImageController {
         render "deleted"
     }
     
-    private InputStream selectInputStream(HttpServletRequest request) {
+    private InputStream selectInputStream(HttpServletRequest request, params) {
         if (request instanceof MultipartHttpServletRequest) {
-            MultipartFile uploadedFile = ((MultipartHttpServletRequest) request).getFile('qqfile')
+            println "instance of multipart..."
+            MultipartFile uploadedFile = ((MultipartHttpServletRequest) request).getFile('qqfile')   
+            
+            def fExtension = uploadedFile.originalFilename.lastIndexOf('.') >= 0 ? uploadedFile.originalFilename.substring( uploadedFile.originalFilename.lastIndexOf('.')+1 ) : uploadedFile.originalFilename
+            print fExtension
+            if(fExtension != 'png' && fExtension != 'PNG'&& fExtension != 'jpg' && fExtension != 'JPG'){
+                log.debug "bad multipart file type ${fExtension}"
+                throw new Exception("BAD FILE " +fExtension)
+            }            
+                        
             return uploadedFile.inputStream
         }
-        return request.inputStream
+        else{
+            println "NOT instance of multipart..."        
+            def fExtension = params.qqfile.lastIndexOf('.') >= 0 ? params.qqfile.substring( params.qqfile.lastIndexOf('.')+1 ) : params.qqfile        
+            if(fExtension != 'png' && fExtension != 'PNG'&& fExtension != 'jpg' && fExtension != 'JPG'){
+                throw new Exception("bad file type ${fExtension}, filename: ${params.qqfile}")
+            }            
+                        
+            return request.inputStream            
+        }
+
+
     }
 }

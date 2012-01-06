@@ -151,6 +151,9 @@ public class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBean {
 
     @Override
     public List<Ad> search(String searchQ) throws Exception {
+        
+        if(searchQ == null || searchQ.trim().isEmpty())
+            return new ArrayList<Ad>();
 
         String LUCENE_ESCAPE_CHARS = "[\\\\+\\-\\!\\(\\)\\:\\^\\]\\{\\}\\~\\*\\?]";
         Pattern LUCENE_PATTERN = Pattern.compile(LUCENE_ESCAPE_CHARS);
@@ -168,9 +171,9 @@ public class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBean {
 
         List retL =
                 new ArrayList<Ad>(hits.length);
-        logger.debug("hits: {}", hits.length);
+        logger.trace("hits: {}", hits.length);
         for (ScoreDoc sd : hits) {
-            logger.debug("doc {}", sd);
+//            logger.debug("doc {}", sd);
 
             Document d = searcher.doc(sd.doc);
             Ad ad = new Ad();
@@ -178,16 +181,10 @@ public class LuceneSearcherDaoImpl implements ISearcherDao, InitializingBean {
             ad.setTitle(d.get(FIELD_TITLE_STORE));
             ad.setHashedId(d.get(FIELD_HASHEDID));
             ad.setDescription(d.get(FIELD_DESCRIPTION_STORE));
-//            for (Fieldable f : d.getFieldables(FIELD_CAT_NAME)) {
-//                Category tmpC = cm.getCategoryById(f.stringValue());
-//                if (tmpC != null) {
-//                    ad.addCategory(tmpC);
-//                } else {
-//                    logger.error("UNKNWNCAT: {}, itemId: {}", f.stringValue(), ad.getId());
-//                }                
-//            }
             ad.addCategory(cm.getCategoryById(d.get(FIELD_ASSIGNED_CAT)));
             ad.setCity(cm.getCityById(d.get(FIELD_CITY)));
+            if(d.get(FIELD_PRICE)!=null && !d.get(FIELD_PRICE).trim().isEmpty())
+                ad.setPrice(d.get(FIELD_PRICE));
             retL.add(ad);
         }
 

@@ -16,10 +16,12 @@
     <h1>Najnowsze ogłoszenia</h1>
     <ul>
       <g:each in="${res}">
-        <li><g:link mapping="adDetails" params="[id:it.id, niewazneCo:it.title]">${it.title}</g:link></li>
+        <li>
+        <g:render template="/fragments/singleAdInListTemplate" model="[ad:it]" />
+        </li>        
       </g:each>
     </ul>
-    <g:paginate controller="search" action="recent" total="${total}" maxsteps="1" max="5" />
+  <g:paginate controller="search" action="recent" total="${total}" maxsteps="1" max="5" />
 
-  </body>
+</body>
 </html>
