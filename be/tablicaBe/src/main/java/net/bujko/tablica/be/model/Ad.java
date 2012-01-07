@@ -20,7 +20,7 @@ public class Ad {
 
     //private Set<Category> assignedCategories = new HashSet<Category>();
     private Category category;
-    private String description, id, hashedId, title, phone;
+    private String description, id, hashedId, title, phone, email;
     private CityEntity city;
     private String price;
     private Collection<String> images = new LinkedHashSet<String>();
@@ -193,7 +193,14 @@ public class Ad {
         this.phone = phone;
     }
 
-    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

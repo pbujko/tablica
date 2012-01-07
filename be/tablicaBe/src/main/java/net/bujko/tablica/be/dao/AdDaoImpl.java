@@ -37,7 +37,9 @@ public class AdDaoImpl implements AdDao {
     private final String COLUMN_AD_ADATTS = "ad_atts";
     private final String COLUMN_AD_CITY = "ad_city",
             COLUMN_AD_PRICE = "ad_price",
-            COLUMN_AD_IMG = "ad_img", COLUMN_AD_MODIFIED = "ad_modifyDate", COLUMN_AD_CREATED = "ad_createDate", COLUMN_AD_CONTACT = "ad_contact";
+            COLUMN_AD_IMG = "ad_img", COLUMN_AD_MODIFIED = "ad_modifyDate", 
+            COLUMN_AD_CREATED = "ad_createDate", COLUMN_AD_CONTACT = "ad_contact",
+            COLUMN_AD_EMAIL = "ad_email";
     Logger logger = LoggerFactory.getLogger(AdDaoImpl.class);
     @Autowired
     DataSource dataSource;
@@ -57,9 +59,10 @@ public class AdDaoImpl implements AdDao {
                 + COLUMN_AD_CITY + ","
                 + COLUMN_AD_PRICE + ","
                 + COLUMN_AD_IMG + ","
-                + COLUMN_AD_CONTACT
+                + COLUMN_AD_CONTACT +","
+                + COLUMN_AD_EMAIL
                 + ") "
-                + "values(?,?,?,?,?,  ?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                + "values(?,?,?,?,?,  ?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, ad.getDescription());
         ps.setString(2, ad.getHashedId());
         ps.setString(3, ad.getTitle());
@@ -68,6 +71,7 @@ public class AdDaoImpl implements AdDao {
         ps.setString(6, ad.getPrice());
         ps.setString(7, marshallImages(ad.getImages()));
         ps.setString(8, ad.getPhone());
+        ps.setString(9, ad.getEmail());
         ps.executeUpdate();
 
         ResultSet rs = ps.getGeneratedKeys();
@@ -136,6 +140,7 @@ public class AdDaoImpl implements AdDao {
                     ad.setModified(rs.getTimestamp(COLUMN_AD_MODIFIED));
                 }
                 ad.setPhone(rs.getString(COLUMN_AD_CONTACT));
+                ad.setEmail(rs.getString(COLUMN_AD_EMAIL));
 
                 return ad;
             } else {
@@ -193,7 +198,7 @@ public class AdDaoImpl implements AdDao {
                 if (rs.getTimestamp(COLUMN_AD_MODIFIED) != null) {
                     ad.setModified(rs.getTimestamp(COLUMN_AD_MODIFIED));
                 }
-                ad.setPhone(rs.getString(COLUMN_AD_CONTACT));
+//                ad.setPhone(rs.getString(COLUMN_AD_CONTACT));
                 retL.add(ad);
             }
 

@@ -15,6 +15,7 @@ CREATE TABLE `ad` (
   `description` varchar(255) DEFAULT NULL,
   `ad_hashed_id` varchar(50) NOT NULL,
   `ad_title` varchar(255) NOT NULL,
+  `ad_email` varchar(50),
   `ad_atts` varchar(255),
   `ad_createDate` timestamp,
   `ad_modifyDate` datetime,

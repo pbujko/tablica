@@ -29,6 +29,6 @@ class FragmentsController {
     
     def showAdContactMsgForm(){
         
-        render "tbd, showAdContactMsgForm"
+        render(template:'adContactFormTemplate')
     }
 }

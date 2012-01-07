@@ -18,3 +18,9 @@ label.error { float: none; color: red; padding-left: .5em; vertical-align: top; 
 {
     margin-left: 5em;
 }
+
+.qq-upload-button{
+    color: blue;
+    background: none repeat scroll 0 0 #cccccc;
+    padding: 3px 0;
+}

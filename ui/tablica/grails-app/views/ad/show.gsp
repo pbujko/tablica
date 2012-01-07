@@ -14,7 +14,13 @@
   <g:javascript library="jquery" plugin="jquery"/>
   <g:javascript src="fancybox/jquery.fancybox.pack.js" />
   <link rel="stylesheet" type="text/css" href="${resource(dir: 'js/fancybox', file: 'jquery.fancybox.css')}" media="screen" />
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+
   <g:javascript src="adShow.js" />  
+  <link rel="stylesheet" href="${resource(dir: 'css', file: 'adShow.css')}" type="text/css" media="screen" charset="utf-8"/>
+  <g:javascript>
+    var CAPTCHA_IMG = "${createLink(controller: 'simpleCaptcha', action: 'captcha')}";
+  </g:javascript>
 
 </head>
 <body>
@@ -50,18 +56,19 @@
 
 <div class="phone">
   <h4>Kontakt z ogłoszeniodawcą:</h4>  
-  Wyślij wiadomość: <g:remoteLink action="showAdContactMsgForm" 
+  Wyślij <g:remoteLink action="showAdContactMsgForm" 
                                   controller="fragments" 
                                   update="contactMsgForm"                                  
-                                  params="[id:ad.id, hashedId:ad.hashedId]">[pokaż formularz]</g:remoteLink>          
+                                  params="[id:ad.id, hashedId:ad.hashedId]"
+                                  onComplete="onPrvMsgFormLoadCompletted()">wiadomość</g:remoteLink>          
   
   <div id="contactMsgForm"></div>
 
   <g:if test="${ad.phone}">    
-    Zadzwoń: 
+    Skontaktuj się  
     <span id="adContact">
       <g:remoteLink action="showAdContact" controller="fragments" update="adContact"
-                    params="[id:ad.id, hashedId:ad.hashedId]">[pokaż numer]</g:remoteLink>          
+                    params="[id:ad.id, hashedId:ad.hashedId]">przez telefon</g:remoteLink>          
     </span>
   </g:if>  
 </div>

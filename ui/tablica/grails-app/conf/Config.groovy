@@ -1,8 +1,8 @@
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
- grails.config.locations = [ //"classpath:${appName}-config.properties",
-                             //"classpath:${appName}-config.groovy",
+grails.config.locations = [ //"classpath:${appName}-config.properties",
+    //"classpath:${appName}-config.groovy",
                              "file:${userHome}/.grails/${appName}-config.properties",
                              "file:${userHome}/.grails/${appName}-config.groovy"]
 
@@ -14,18 +14,18 @@ grails.project.groupId = appName // change this to alter the default package nam
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
 grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
-                      xml: ['text/xml', 'application/xml'],
-                      text: 'text/plain',
-                      js: 'text/javascript',
-                      rss: 'application/rss+xml',
-                      atom: 'application/atom+xml',
-                      css: 'text/css',
-                      csv: 'text/csv',
-                      all: '*/*',
-                      json: ['application/json','text/json'],
-                      form: 'application/x-www-form-urlencoded',
-                      multipartForm: 'multipart/form-data'
-                    ]
+    xml: ['text/xml', 'application/xml'],
+    text: 'text/plain',
+    js: 'text/javascript',
+    rss: 'application/rss+xml',
+    atom: 'application/atom+xml',
+    css: 'text/css',
+    csv: 'text/csv',
+    all: '*/*',
+    json: ['application/json','text/json'],
+    form: 'application/x-www-form-urlencoded',
+    multipartForm: 'multipart/form-data'
+]
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
@@ -88,8 +88,18 @@ log4j = {
     debug   'grails.app.services'
     warn   'org.mortbay.log'
 
-info 'net.bujko'    
+    info 'net.bujko'    
 }
+
+simpleCaptcha {
+    // number of characters in CAPTCHA text
+    captchaLength = 4
+
+
+    // the charcters shown in the CAPTCHA text must be one of the following
+    chars = "ABC1234567890"
+}
+
 
 //lucene.indexLocation='/Users/pbujko/Documents/tmp/lucene'
 lucene.indexLocation=''

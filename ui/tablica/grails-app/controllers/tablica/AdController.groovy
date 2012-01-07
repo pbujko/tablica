@@ -6,6 +6,8 @@ class AdController {
     def categoryManager
     def searchDao
     
+    def simpleCaptchaService
+
 
     def show() {
         println grails.util.GrailsUtil.getEnvironment()
@@ -47,9 +49,32 @@ class AdController {
        
     }
     
-        def test(){
+    def test(){
         
         print params
         render(view:'test', model:[params:params])
     }
+    
+    def postPv(){
+        println "post pv ${params}"
+        boolean captchaValid = simpleCaptchaService.validateCaptcha(params.captcha)   
+        println "cv ${captchaValid}"
+        if(captchaValid){
+            
+            def meta = [:]
+            meta.msgBody = params.msgBody
+            meta.sender = params.senderEmail
+            meta.adId = params.id
+            def ad = adDao.findById(params.id)
+            if(ad){
+                def m=new Message(msgTo:ad.email, meta:meta.encodeAsJSON(), type:"PW")
+                if (m.save()) {
+                    render "ok"    
+                }
+                else
+                 log.error m.errors                            
+            }                                
+        }                
+    }
+    
 }
