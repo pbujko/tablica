@@ -100,6 +100,20 @@ simpleCaptcha {
     chars = "ABC1234567890"
 }
 
+grails{
+    mail {
+        host = "smtp.gmail.com"
+        port = 465
+        username = "pbujko@gmail.com"
+        password = "abc123ABC"
+        props = ["mail.smtp.auth":"true", 					   
+              "mail.smtp.socketFactory.port":"465",
+              "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+              "mail.smtp.socketFactory.fallback":"false"]
+    }
+}
+grails.mail.default.from="DO_NOT_REPLY@tablica.ie"
+//grails.mail.disabled=true
 
 //lucene.indexLocation='/Users/pbujko/Documents/tmp/lucene'
 lucene.indexLocation=''

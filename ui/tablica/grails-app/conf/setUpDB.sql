@@ -23,6 +23,8 @@ CREATE TABLE `ad` (
   `ad_price` varchar(10),
   `ad_img` varchar(255),
   `ad_contact` varchar(255),
+  `ad_state` enum('PENDING', 'CONFIRMED'),
+  `ad_stateModified` datetime,
   PRIMARY KEY (`ad_id`),
   UNIQUE KEY `ad_id` (`ad_id`),
   UNIQUE KEY `ad_hashed_id` (`ad_hashed_id`)

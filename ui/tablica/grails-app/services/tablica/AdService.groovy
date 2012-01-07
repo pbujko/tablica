@@ -1,5 +1,6 @@
 package tablica
 
+
 class AdService {
     def adDao
     def categoryManager
@@ -26,7 +27,8 @@ class AdService {
         ad.setCity(categoryManager.getCityById(params.city))
         ad.setPrice(params.price)
         if(params.phone)
-            ad.setPhone(params.phone)
+        ad.setPhone(params.phone)
+        ad.setEmail(params.email)    
         
         //add images
         AdImage.findAllByHashedId(params.imguuid).each{
@@ -53,5 +55,19 @@ class AdService {
         log.info "ad added to lucene"
         
         return ad
+    }
+    
+    
+    def encodeAd(ad){
+
+        if(ad)      
+           return new String( (ad.id + ad.hashedId).encodeAsMD5().encodeAsBase64() ) 
+        else
+            return ""
+    }
+    
+    def decodeAd(ad, encodedAd){
+        //compare 
+        return encodeAd(ad) == encodedAd       
     }
 }

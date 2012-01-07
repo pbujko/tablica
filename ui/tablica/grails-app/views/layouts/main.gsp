@@ -5,7 +5,7 @@
 
     <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
   <g:layoutHead />
-  <g:javascript library="application" />
+
 </head>
 <body>
   <div id="spinner" class="spinner" style="display:none; position:absolute; bottom: 40px;">
@@ -26,6 +26,9 @@
 <hr/>
 <div id="footer">
   Wszystkich ogłoszeń: ${application.searchStats.adsTotal}, v: <g:meta name="app.version"/>
+  <div>
+    <g:link controller="ad" action="activate" id="1" params="[k:'Mjg1ZGQ1YzU3MGMzNzY3YWYyMDk1MDY3YjZlNGUyMTI=']">test: aktywuj ogloszenie</g:link> 
+  </div>
 </div>
 
 </body>

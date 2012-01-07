@@ -130,10 +130,24 @@ public class AdDaoImplTest {
         assertTrue(ad.getImages().contains(adImg3));
         assertTrue(ad.getImages().contains(adImg2));
 
+        assertEquals(Ad.State.PENDING, ad.getState());
+        assertEquals(Ad.State.PENDING, res.getState());
+
         res =
                 adDao.findByIdAndHashedId(ad.getId(), hashId);
         assertNotNull(res);
         assertEquals(res, ad);
         assertEquals(hashId, res.getHashedId());
+
+
+        //update
+        Ad ad1 = new Ad();
+        ad1.setId(ad.getId());
+        ad1.setState(Ad.State.CONFIRMED);
+        adDao.update(ad1);
+        res =
+                adDao.findByIdAndHashedId(ad.getId(), hashId);
+
+        assertEquals(Ad.State.CONFIRMED, res.getState());
     }
 }

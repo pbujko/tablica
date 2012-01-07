@@ -35,6 +35,11 @@ public class Ad {
      * 
      */
     private Map<String, String> choices = new HashMap<String, String>();
+    private State state;
+
+    public enum State {
+        PENDING, CONFIRMED;
+    }
 
     public Ad() {
     }
@@ -199,6 +204,18 @@ public class Ad {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+    
+    public boolean isActive(){    
+        return this.state == State.CONFIRMED;
     }
 
     @Override

@@ -23,8 +23,9 @@
     var FRAGMENT_SUBCATS_DDWN = '${createLink(controller:'fragments',action: 'listCatsById')}';
     var FRAGMENT_ATTS_DDPWN = '${createLink(controller:'fragments', action:'renderAttsForCat')}';
   </g:javascript>
-  <g:javascript src="adCreate.js" />
-  <link rel="stylesheet" href="${resource(dir: 'css', file: 'adCreate.css')}" type="text/css" media="screen" charset="utf-8"/>
+
+  <script type="text/javascript" src="${resource(dir: 'js', file: 'adCreate.js')}?${meta(name:'app.version')}"></script>  
+  <link rel="stylesheet" href="${resource(dir: 'css', file: 'adCreate.css')}?${meta(name:'app.version')}" type="text/css" media="screen" charset="utf-8"/>
 </head>
 <body>
   <h1>Dodaj ogłoszenie</h1>

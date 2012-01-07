@@ -7,7 +7,7 @@ class AdController {
     def searchDao
     
     def simpleCaptchaService
-
+    def messengerService
 
     def show() {
         println grails.util.GrailsUtil.getEnvironment()
@@ -15,7 +15,8 @@ class AdController {
 
         if(!ad)
         render(view: "noAd")
-            
+        else if(!ad.active)
+        render(view: "adNotActive", model:[ad:ad])
         [ad: ad]
     }
     
@@ -51,14 +52,20 @@ class AdController {
     
     def test(){
         
-        print params
-        render(view:'test', model:[params:params])
+        def ad = adDao.findById("1")
+        def encoded = adService.encodeAd(ad)
+        println "encoded: ${encoded}"
+        
+        println adService.decodeAd(ad, encoded)
+        println adService.decodeAd(adDao.findById("3"), encoded)       
+        println adService.decodeAd(adDao.findById("2000"), encoded)        
     }
     
     def postPv(){
-        println "post pv ${params}"
+
         boolean captchaValid = simpleCaptchaService.validateCaptcha(params.captcha)   
-        println "cv ${captchaValid}"
+        log.debug "captcha ${captchaValid}"
+//        captchaValid=true
         if(captchaValid){
             
             def meta = [:]
@@ -68,13 +75,31 @@ class AdController {
             def ad = adDao.findById(params.id)
             if(ad){
                 def m=new Message(msgTo:ad.email, meta:meta.encodeAsJSON(), type:"PW")
-                if (m.save()) {
+                if (m.save(flush:true)) {                    
+                    messengerService.send(m)
                     render "ok"    
                 }
                 else
-                 log.error m.errors                            
+                log.error "POSTPV: ${m.errors}"                            
             }                                
         }                
     }
     
+    def activate(){
+        def verified
+        def ad
+        if(params.id.isInteger()){        
+            ad = adDao.findById(params.id)
+            verified = adService.decodeAd(ad, params.k)
+            //verified=true
+        }
+ 
+        if(verified){
+            //do activate
+            render(view:"activated", model:[ad:ad])
+        }else
+        
+        render(view:"activationFailed")
+
+    }
 }

@@ -16,7 +16,7 @@ public interface AdDao {
 
     void save(Ad ad) throws Exception;
 
-    void update(Ad ad) throws Exception;
+    boolean update(Ad ad) throws Exception;
 
     void delete(Ad ad) throws Exception;
 

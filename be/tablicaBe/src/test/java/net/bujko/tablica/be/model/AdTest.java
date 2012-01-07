@@ -58,4 +58,13 @@ public class AdTest {
         adInstance.addChoice(attId, "choice_" + attId);
 
     }
+
+    @Test
+    public void testActive() {
+        assertFalse(adInstance.isActive());
+        adInstance.setState(Ad.State.PENDING);
+        assertFalse(adInstance.isActive());
+        adInstance.setState(Ad.State.CONFIRMED);
+        assertTrue(adInstance.isActive());
+    }
 }

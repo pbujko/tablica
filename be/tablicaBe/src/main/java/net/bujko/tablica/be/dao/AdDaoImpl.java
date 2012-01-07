@@ -35,11 +35,13 @@ import org.springframework.stereotype.Repository;
 public class AdDaoImpl implements AdDao {
 
     private final String COLUMN_AD_ADATTS = "ad_atts";
-    private final String COLUMN_AD_CITY = "ad_city",
+    private final String COLUMN_AD_ID = "ad_id",
+            COLUMN_AD_CITY = "ad_city",
             COLUMN_AD_PRICE = "ad_price",
-            COLUMN_AD_IMG = "ad_img", COLUMN_AD_MODIFIED = "ad_modifyDate", 
+            COLUMN_AD_IMG = "ad_img", COLUMN_AD_MODIFIED = "ad_modifyDate",
             COLUMN_AD_CREATED = "ad_createDate", COLUMN_AD_CONTACT = "ad_contact",
-            COLUMN_AD_EMAIL = "ad_email";
+            COLUMN_AD_EMAIL = "ad_email",
+            COLUMN_AD_STATE = "ad_state", COLUMN_AD_STATECHANGED = "ad_stateModified";
     Logger logger = LoggerFactory.getLogger(AdDaoImpl.class);
     @Autowired
     DataSource dataSource;
@@ -59,10 +61,12 @@ public class AdDaoImpl implements AdDao {
                 + COLUMN_AD_CITY + ","
                 + COLUMN_AD_PRICE + ","
                 + COLUMN_AD_IMG + ","
-                + COLUMN_AD_CONTACT +","
-                + COLUMN_AD_EMAIL
+                + COLUMN_AD_CONTACT + ","
+                + COLUMN_AD_EMAIL + ","
+                + COLUMN_AD_STATE + ","
+                + COLUMN_AD_STATECHANGED
                 + ") "
-                + "values(?,?,?,?,?,  ?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                + "values(?,?,?,?,?,  ?,?,?,?,?, now())", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, ad.getDescription());
         ps.setString(2, ad.getHashedId());
         ps.setString(3, ad.getTitle());
@@ -72,12 +76,15 @@ public class AdDaoImpl implements AdDao {
         ps.setString(7, marshallImages(ad.getImages()));
         ps.setString(8, ad.getPhone());
         ps.setString(9, ad.getEmail());
+        ps.setString(10, Ad.State.PENDING.toString());
         ps.executeUpdate();
 
         ResultSet rs = ps.getGeneratedKeys();
         rs.next();
         int insertedKeyValue = rs.getInt(1);
         ad.setId(insertedKeyValue + "");
+
+        ad.setState(Ad.State.PENDING);
 
         //store category
         logger.trace("saving categs, ad:{}, categ {}", ad, ad.getCategory().getId());
@@ -92,9 +99,42 @@ public class AdDaoImpl implements AdDao {
         logger.debug("saved Ad {}", ad);
     }
 
+    /**
+     * dotyka tylko te pola ktore sa nie null w przekazanym obiekcie ad
+     * @param ad
+     * @return 
+     */
     @Override
-    public void update(Ad ad) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean update(Ad ad) throws SQLException, Exception {
+        boolean updated = false;
+        Connection conn = null;
+
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement ps;
+            if (ad.getState() != null) {
+                logger.debug("updating Ad {}, new state: {}", ad, ad.getState());
+                ps = conn.prepareStatement(String.format("update ad set %s=?, %s=now() where %s=?",
+                        COLUMN_AD_STATE,
+                        COLUMN_AD_STATECHANGED,
+                        COLUMN_AD_ID));
+                ps.setString(1, ad.getState().toString());
+                ps.setInt(2, Integer.parseInt(ad.getId()));
+                updated = ps.executeUpdate() == 1;
+            }
+
+
+
+        } catch (Exception e) {
+            throw new Exception("ADDAOUPD ", e);
+        } finally {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+
+        }
+
+        return updated;
     }
 
     @Override
@@ -141,6 +181,8 @@ public class AdDaoImpl implements AdDao {
                 }
                 ad.setPhone(rs.getString(COLUMN_AD_CONTACT));
                 ad.setEmail(rs.getString(COLUMN_AD_EMAIL));
+
+                ad.setState(rs.getString(COLUMN_AD_STATE) != null ? Ad.State.valueOf(rs.getString(COLUMN_AD_STATE)) : Ad.State.PENDING);
 
                 return ad;
             } else {

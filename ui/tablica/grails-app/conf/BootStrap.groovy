@@ -37,8 +37,11 @@ class BootStrap {
             ad.setCity(categoryManager.getCityById("1"))
             ad.setPrice("6890")
             ad.setPhone("0800 123456")
-            ad.setEmail("pbujko@gmail.com")
+            ad.setEmail("pbujko@gmail.com")            
             adDao.save(ad)        
+            
+            ad.setState(Ad.State.CONFIRMED)
+            adDao.update(ad)
         
             ad = new Ad()       
             ad.setDescription("opis syrenke")
@@ -47,8 +50,11 @@ class BootStrap {
             ad.addCategory(categoryManager.getCategoryById("1.1"))
             ad.setCity(categoryManager.getCityById("2"))
             ad.setPrice("2000")
+            ad.setEmail("pbujko@gmail.com")            
             adDao.save(ad)   
-        
+            ad.setState(Ad.State.CONFIRMED)
+            adDao.update(ad)
+            
             ad = new Ad()       
             ad.setDescription("opis syrenke")
             ad.setTitle("Syrenke")
@@ -56,22 +62,31 @@ class BootStrap {
             ad.addCategory(categoryManager.getCategoryById("1.1"))
             ad.setCity(categoryManager.getCityById("3"))
             ad.setPrice("765")
+            ad.setEmail("pbujko@gmail.com")            
             adDao.save(ad)        
+            ad.setState(Ad.State.CONFIRMED)
+            adDao.update(ad)
 
+            
             ad = new Ad()       
             ad.setDescription("owczarka niemieckiego")
             ad.setTitle("Owczarka niemieckiego")
             ad.setHashedId("-sfd-sssss-")
             ad.addCategory(categoryManager.getCategoryById("2.1"))
             ad.setCity(categoryManager.getCityById("1.2"))
+            ad.setEmail("pbujko@gmail.com")            
             adDao.save(ad)          
+            ad.setState(Ad.State.CONFIRMED)
+            adDao.update(ad)
 
+            
             ad = new Ad()       
-            ad.setDescription("kocura perskiego")
-            ad.setTitle("Kota mam")
+            ad.setDescription("kocura perskiego - nie aktywowane")
+            ad.setTitle("Kota mam (jeszcze nie aktywowane)")
             ad.setHashedId("-sfd-ssssssss-")
             ad.addCategory(categoryManager.getCategoryById("2.2"))
             ad.setCity(categoryManager.getCityById("1.4"))
+            ad.setEmail("pbujko@gmail.com")                        
             adDao.save(ad)                  
         
             ad = new Ad()       
@@ -80,7 +95,10 @@ class BootStrap {
             ad.setHashedId("-sfd-sjjaqsssssss-")
             ad.addCategory(categoryManager.getCategoryById("1.4"))
             ad.setCity(categoryManager.getCityById("5"))
+            ad.setEmail("pbujko@gmail.com")            
             adDao.save(ad)                          
+            ad.setState(Ad.State.CONFIRMED)
+            adDao.update(ad)
 
             ad = new Ad()       
             ad.setTitle("Jaguar domowy")
@@ -88,7 +106,10 @@ class BootStrap {
             ad.setHashedId("-sfdkicicikcic-")
             ad.addCategory(categoryManager.getCategoryById("2.2"))
             ad.setCity(categoryManager.getCityById("3"))
+            ad.setEmail("pbujko@gmail.com")                        
             adDao.save(ad)                                  
+            ad.setState(Ad.State.CONFIRMED)
+            adDao.update(ad)
 
             //wolaj init jeszcze raz tylko dlatego, ze po automatycznym init baza jest kasowana przez powyzszy SQL.
             //w produkcji nie ma potrzeby manualnego wolania init()

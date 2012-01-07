@@ -41,6 +41,7 @@ function onPrvMsgSent(){
 
 function onPrvMsgBoo(){
     alert('Problem z wysłaniem. Wprowadź nowy kod');
+    $("#captcha").attr('value', '');
     $("#captchaImg").attr("src", CAPTCHA_IMG+'/'+Math.random());
 
 }
