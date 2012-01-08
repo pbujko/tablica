@@ -15,7 +15,6 @@ import org.codehaus.groovy.grails.web.json.*; // package containing JSONObject, 
 class MessengerService {
     def mailService
     def adDao
-    
     def executorService
             
     def send(message){
@@ -44,6 +43,24 @@ class MessengerService {
                     message.save()                    
                 }
             }
+            else if(message.type == 'ACTIVATE'){         
+                mailService.sendMail {
+
+                    def o = JSON.parse(message.meta)
+                    def ad = adDao.findById(o.adId)
+                                        
+                    to message.msgTo      
+                    subject "Aktywacja ogłoszenia: '${ad.title}'"
+                    body( view:"/mailing/adActivation", 
+                        model:[ad:ad, key:new AdEncoder().encodeAd(ad)])
+                    
+                    message = Message.get(message.id)
+                    message.sent = new Date()
+                    
+                    message.save()                    
+                }
+            }
+            
             else
             log.warn "UNKNMSGTYPE: ${message.type}, ${message.id}"
             

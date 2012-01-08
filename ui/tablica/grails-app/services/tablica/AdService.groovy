@@ -5,6 +5,7 @@ class AdService {
     def adDao
     def categoryManager
     def searchDao
+    def messengerService
     
     def listRecent(from, limit) {
         adDao.listRecent(from, limit)
@@ -54,20 +55,27 @@ class AdService {
         searchDao.add(ad)
         log.info "ad added to lucene"
         
+        def meta = [:]
+        meta.adId = ad.id        
+        def m=new Message(msgTo:ad.email, meta:meta.encodeAsJSON(), type:"ACTIVATE")
+        if (m.save()) {                    
+            messengerService.send(m)
+        }
+        
+        log.debug "activation email scheduled for delivery"
+        
         return ad
     }
     
-    
-    def encodeAd(ad){
-
-        if(ad)      
-           return new String( (ad.id + ad.hashedId).encodeAsMD5().encodeAsBase64() ) 
-        else
-            return ""
-    }
-    
-    def decodeAd(ad, encodedAd){
-        //compare 
-        return encodeAd(ad) == encodedAd       
-    }
+//    
+//    def encodeAd(ad){
+//        if(ad)      
+//        return new String( (ad.id + ad.hashedId).encodeAsMD5().encodeAsBase64() ) 
+//        else
+//        return ""
+//    }
+//    
+//    def decodeAd(ad, encodedAd){
+//        return encodeAd(ad) == encodedAd       
+//    }
 }

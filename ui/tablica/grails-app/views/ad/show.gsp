@@ -74,7 +74,7 @@
   </g:if>  
 </div>
 <p>
-<g:formatDate date="${ad.modified}" type="datetime" style="MEDIUM" />
+<g:formatDate date="${ad.modified}" type="datetime" style="MEDIUM" />, odslon TBD
 </p>
 </body>
 </html>

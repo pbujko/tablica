@@ -10,7 +10,7 @@ class AdController {
     def messengerService
 
     def show() {
-        println grails.util.GrailsUtil.getEnvironment()
+        log.info "show ad ${params.id}"
         def ad = adDao.findById(params.id)
 
         if(!ad)
@@ -53,19 +53,21 @@ class AdController {
     def test(){
         
         def ad = adDao.findById("1")
-        def encoded = adService.encodeAd(ad)
+        def adEncoder=new AdEncoder()
+
+        def encoded = adEncoder.encodeAd(ad)
         println "encoded: ${encoded}"
         
-        println adService.decodeAd(ad, encoded)
-        println adService.decodeAd(adDao.findById("3"), encoded)       
-        println adService.decodeAd(adDao.findById("2000"), encoded)        
+        println adEncoder.decodeAd(ad, encoded)
+        println adEncoder.decodeAd(adDao.findById("3"), encoded)       
+        println adEncoder.decodeAd(adDao.findById("2000"), encoded)        
     }
     
     def postPv(){
 
         boolean captchaValid = simpleCaptchaService.validateCaptcha(params.captcha)   
         log.debug "captcha ${captchaValid}"
-//        captchaValid=true
+        //        captchaValid=true
         if(captchaValid){
             
             def meta = [:]
@@ -90,12 +92,14 @@ class AdController {
         def ad
         if(params.id.isInteger()){        
             ad = adDao.findById(params.id)
-            verified = adService.decodeAd(ad, params.k)
+            verified = new AdEncoder().decodeAd(ad, params.k)
             //verified=true
         }
  
         if(verified){
             //do activate
+            ad.state = 'CONFIRMED'
+            adDao.update(ad)
             render(view:"activated", model:[ad:ad])
         }else
         

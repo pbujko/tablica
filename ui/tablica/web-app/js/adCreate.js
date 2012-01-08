@@ -84,12 +84,12 @@ function validateAdForm(){
 
 function handleFailure(e){
     hideProgress();
-    alert("Wystapil problem z zapisaniem ogloszenia: "+e.responseText)
+    alert("Wystąpił problem z zapisaniem ogłoszenia: "+e.responseText)
 }
 
 function handleAdCreateOk(data){
     hideProgress();
-    alert("Ogloszenie zapisane!");
+    alert("Ogłoszenie przyjęte!");
     document.location = AD_BASE_LOCATION + data
 }
 

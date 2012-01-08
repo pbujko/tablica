@@ -8,7 +8,9 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Ogloszenie nie zostalo aktywowane</title>
+    <title>Ogłoszenie nie zostało aktywowane</title>
+    <meta name="layout" content="main" />
+    
   </head>
   <body>
     <h1>Ogłoszenie nie zostało jeszcze aktywowane</h1>
@@ -18,7 +20,7 @@
     <h2>Jak aktywować to ogłoszenie?</h2>
     <ul>
       <li>Sprawdź Twoją skrzynkę email</li>
-      <li>Znajdź wiadomość o tytule "OGŁOSZENIE: ${ad.title}"</li>
+      <li>Znajdź wiadomość o tytule "Aktywacja ogłoszenia: ${ad.title}"</li>
       <li>Kliknij na link który jest w tej wiadomości</li>
       <li>Uwaga: Ogłoszenie może aktywować tylko jego Autor</li>      
     </ul>
